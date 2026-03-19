@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.Inicio_Sesion"
+             BackgroundColor="#0D0D0D"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*" Padding="0">
+
+           
+            <Grid Grid.Row="0" HeightRequest="260">
+                <Image Source="login_image.png"
+                       Aspect="AspectFill"
+                       HeightRequest="260"/>
+            </Grid>
+
+           
+            <Border Grid.Row="1"
+                    BackgroundColor="#1A1A1A"
+                    Margin="0,-20,0,0"
+                    Padding="28,32"
+                    StrokeShape="RoundRectangle 24,24,0,0"
+                    Stroke="Transparent">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Iniciar sesión"
+                       TextColor="#F5C842"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,8,0,4"/>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Correo electrónico"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="Correo"
+                                   Placeholder="tu@correo.com"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   Keyboard="Email"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Campo Contraseña -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Contraseña"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="contraseña"
+                                   Placeholder="••••••••"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   IsPassword="True"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Botón Iniciar sesión -->
+                    <Button Text="INICIAR SESIÓN"
+                            BackgroundColor="#F5C842"
+                            TextColor="#0D0D0D"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            CharacterSpacing="1.5"
+                            HeightRequest="54"
+                            CornerRadius="12"
+                            Margin="0,8,0,0"/>
+
+                    <!-- Separador -->
+                    <Grid ColumnDefinitions="*,Auto,*"
+                          VerticalOptions="Center"
+                          Margin="0,8">
+                        <BoxView Grid.Column="0" Color="#333333" HeightRequest="1" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="  o continúa con  "
+                               TextColor="#555555" FontSize="12" VerticalOptions="Center"/>
+                        <BoxView Grid.Column="2" Color="#333333" HeightRequest="1" VerticalOptions="Center"/>
+                    </Grid>
+
+                    <!-- Botón Google -->
+                    <Border BackgroundColor="#262626"
+                            Stroke="#333333"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            HeightRequest="54">
+                        <Button Text="Iniciar sesión con Google"
+                                Clicked="OnGoogleLoginClicked"
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                ImageSource="google.png"
+                                ContentLayout="Left,12"/>
+                    </Border>
+
+                    <!-- Registro -->
+                    <HorizontalStackLayout HorizontalOptions="Center" Margin="0,12,0,0">
+                        <Label Text="¿No tienes cuenta? "
+                               TextColor="#666666"
+                               FontSize="13"/>
+                        <Label Text="Regístrate"
+                               TextColor="#F5C842"
+                               FontSize="13"
+                               FontAttributes="Bold"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
