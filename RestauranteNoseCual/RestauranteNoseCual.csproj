@@ -72,6 +72,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="View\Administrador_Page.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\Inicio_Sesion.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
