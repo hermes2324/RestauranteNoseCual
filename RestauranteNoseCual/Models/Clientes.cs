@@ -1,28 +1,27 @@
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
-using System;
 
 namespace RestauranteNoseCual.Models
 {
-    [Table("Clientes")]
-    public class Clientes : BaseModel
+    [Table("Cliente")]
+    public class Cliente : BaseModel
     {
         [PrimaryKey("id", false)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [Column("nombre")]
+        [Column("Nombre")]
         public string Nombre { get; set; }
 
-        [Column("apellido")]
-        public string Apellido { get; set; }
+        [Column("Telefono")]
+        public decimal Telefono { get; set; } 
 
-        [Column("correo")]
+        [Column("Domicilio")]
+        public string Domicilio { get; set; }
+
+        [Column("Correo")]
         public string Correo { get; set; }
 
-        [Column("telefono")]
-        public string Telefono { get; set; }
-
-        [Column("fecha_registro")]
-        public DateTime FechaRegistro { get; set; } = DateTime.Now;
+        [Column("Contraseña")]
+        public string Contrasena { get; set; }
     }
 }

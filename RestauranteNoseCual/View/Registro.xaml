@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.Registro"
+             BackgroundColor="#0D0D0D"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*" Padding="0">
+
+            <!-- Imagen superior -->
+            <Grid Grid.Row="0" HeightRequest="200">
+                <Image Source="login_image.png"
+                       Aspect="AspectFill"
+                       HeightRequest="200"/>
+            </Grid>
+
+            <!-- Panel de registro -->
+            <Border Grid.Row="1"
+                    BackgroundColor="#1A1A1A"
+                    Margin="0,-20,0,0"
+                    Padding="28,32"
+                    StrokeShape="RoundRectangle 24,24,0,0"
+                    Stroke="Transparent">
+                <VerticalStackLayout Spacing="16">
+
+                    <Label Text="Crear cuenta"
+                           TextColor="#F5C842"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           Margin="0,8,0,4"/>
+
+                    <!-- Nombre -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="NOMBRE"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="Nombre"
+                                   Placeholder="Tu nombre"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Teléfono -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="TELÉFONO"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="Telefono"
+                                   Placeholder="6681234567"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   Keyboard="Telephone"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Domicilio -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="DOMICILIO"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="Domicilio"
+                                   Placeholder="Calle, número, colonia"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Correo -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CORREO ELECTRÓNICO"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="Correo"
+                                   Placeholder="tu@correo.com"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   Keyboard="Email"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Contraseña -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CONTRASEÑA"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="Contrasena"
+                                   Placeholder="••••••••"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   IsPassword="True"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Confirmar Contraseña -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CONFIRMAR CONTRASEÑA"
+                               TextColor="#888888"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"/>
+                        <Border BackgroundColor="#262626"
+                                Stroke="#333333"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="16,0"
+                                HeightRequest="52">
+                            <Entry x:Name="ConfirmarContrasena"
+                                   Placeholder="••••••••"
+                                   PlaceholderColor="#555555"
+                                   TextColor="White"
+                                   BackgroundColor="Transparent"
+                                   IsPassword="True"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Botón Registrarse -->
+                    <Button Text="CREAR CUENTA"
+                            Clicked="OnCrearCuentaClicked"
+                            BackgroundColor="#F5C842"
+                            TextColor="#0D0D0D"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            CharacterSpacing="1.5"
+                            HeightRequest="54"
+                            CornerRadius="12"
+                            Margin="0,8,0,0"/>
+
+                    <!-- Volver al login -->
+                    <HorizontalStackLayout HorizontalOptions="Center" Margin="0,8,0,16">
+                        <Label Text="¿Ya tienes cuenta? "
+                               TextColor="#666666"
+                               FontSize="13"/>
+                        <Label Text="Inicia sesión"
+                               TextColor="#F5C842"
+                               FontSize="13"
+                               FontAttributes="Bold">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnVolverLoginClicked"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentPage>

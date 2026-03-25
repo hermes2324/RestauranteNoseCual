@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.FlyoutMenuPage"
+             Title="Menú"
+             BackgroundColor="#111111">
+    <VerticalStackLayout Padding="0" Spacing="0">
+
+        <!-- Header -->
+        <Grid BackgroundColor="#F5C842"
+              HeightRequest="180"
+              Padding="24,40,24,20">
+            <VerticalStackLayout VerticalOptions="End" Spacing="6">
+                <Border BackgroundColor="#0D0D0D"
+                        StrokeShape="RoundRectangle 30"
+                        HeightRequest="56"
+                        WidthRequest="56"
+                        HorizontalOptions="Start"
+                        Stroke="Transparent">
+                    <Label Text="🍔"
+                           FontSize="28"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Border>
+                <Label Text="BONELESS HOUSE"
+                       TextColor="#0D0D0D"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       CharacterSpacing="1"/>
+                <Label Text="Hamburguesas · Alitas · Boneles"
+                       TextColor="#333333"
+                       FontSize="11"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Items del menú -->
+        <CollectionView x:Name="menuItemsCollection"
+                        SelectionMode="Single"
+                        SelectionChanged="OnMenuItemSelected"
+                        Margin="0,16,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="24,14" ColumnDefinitions="32,*">
+                        <Label Grid.Column="0"
+                               Text="{Binding IconSource}"
+                               FontSize="18"
+                               VerticalOptions="Center"/>
+                        <Label Grid.Column="1"
+                               Text="{Binding Title}"
+                               FontSize="15"
+                               TextColor="White"
+                               VerticalOptions="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Versión -->
+        <Label Text="v1.0.0"
+               TextColor="#444444"
+               FontSize="11"
+               HorizontalOptions="Center"
+               VerticalOptions="EndAndExpand"
+               Margin="0,0,0,24"/>
+
+    </VerticalStackLayout>
+</ContentPage>

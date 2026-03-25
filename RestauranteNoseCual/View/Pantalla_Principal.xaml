@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:RestauranteNoseCual.View"
+            x:Class="RestauranteNoseCual.View.Pantalla_Principal"
+            Title="Restaurante">
+
+    <!-- MENÚ LATERAL -->
+    <FlyoutPage.Flyout>
+        <local:FlyoutMenuPage x:Name="flyoutPage"/>
+    </FlyoutPage.Flyout>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <FlyoutPage.Detail>
+        <NavigationPage BarBackgroundColor="#0D0D0D"
+                        BarTextColor="#F5C842">
+            <x:Arguments>
+                <ContentPage Title=" " BackgroundColor="#0D0D0D">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="0">
+
+                            <!-- HERO SECTION -->
+                            <Grid HeightRequest="340">
+                                <Image Source="login_image.png"
+                                       Aspect="AspectFill"
+                                       HeightRequest="340"/>
+                                <!-- Overlay degradado -->
+                                <BoxView Color="#0D0D0D"
+                                         Opacity="0.55"/>
+                                <!-- Texto hero -->
+                                <VerticalStackLayout VerticalOptions="Center"
+                                                     HorizontalOptions="Center"
+                                                     Spacing="6"
+                                                     Padding="24,0">
+                                    <Label Text="🔥 BIENVENIDO A"
+                                           TextColor="#F5C842"
+                                           FontSize="13"
+                                           FontAttributes="Bold"
+                                           CharacterSpacing="3"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="BONELESS&#10;HOUSE"
+                                           TextColor="White"
+                                           FontSize="42"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"
+                                           HorizontalTextAlignment="Center"
+                                           LineHeight="1.1"/>
+                                    <Label Text="Hamburguesas · Alitas · Boneles"
+                                           TextColor="#CCCCCC"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"
+                                           Margin="0,4,0,0"/>
+                                    <!-- Botón CTA -->
+                                    <Button Text="VER MENÚ COMPLETO"
+                                            BackgroundColor="#F5C842"
+                                            TextColor="#0D0D0D"
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            CharacterSpacing="1"
+                                            CornerRadius="24"
+                                            HeightRequest="46"
+                                            Padding="24,0"
+                                            Margin="0,16,0,0"
+                                            HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+
+</FlyoutPage>

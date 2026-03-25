@@ -8,7 +8,7 @@ namespace RestauranteNoseCual
         {
             InitializeComponent();
 
-            MainPage = new Inicio_Sesion();
+            MainPage = new NavigationPage(new Inicio_Sesion());
         }
     }
 }

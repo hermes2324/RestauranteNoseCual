@@ -78,14 +78,15 @@
 
                     <!-- Botón Iniciar sesión -->
                     <Button Text="INICIAR SESIÓN"
-                            BackgroundColor="#F5C842"
-                            TextColor="#0D0D0D"
-                            FontAttributes="Bold"
-                            FontSize="15"
-                            CharacterSpacing="1.5"
-                            HeightRequest="54"
-                            CornerRadius="12"
-                            Margin="0,8,0,0"/>
+                        Clicked="OnLoginManualClicked"
+                        BackgroundColor="#F5C842"
+                        TextColor="#0D0D0D"
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        CharacterSpacing="1.5"
+                        HeightRequest="54"
+                        CornerRadius="12"
+                        Margin="0,8,0,0"/>
 
                     <!-- Separador -->
                     <Grid ColumnDefinitions="*,Auto,*"
@@ -121,7 +122,11 @@
                         <Label Text="Regístrate"
                                TextColor="#F5C842"
                                FontSize="13"
-                               FontAttributes="Bold"/>
+                               FontAttributes="Bold">           
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRegistrarseClicked"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </HorizontalStackLayout>
 
                 </VerticalStackLayout>

@@ -1,10 +1,11 @@
+ï»¿using RestauranteNoseCual.Base_de_Datos;
+using RestauranteNoseCual.Controllers;
+using RestauranteNoseCual.Models;
 namespace RestauranteNoseCual.View;
-using RestauranteNoseCual.Base_de_Datos;
 
 public partial class Inicio_Sesion : ContentPage
 {
-    private readonly AutentificacionGoogle _authService = new();
-    private AutentificacionGoogle.GoogleUser? _currentUser;
+    private readonly LoginController _loginController = new();
     public Inicio_Sesion()
 	{
 		InitializeComponent();
@@ -12,18 +13,38 @@ public partial class Inicio_Sesion : ContentPage
 
     private async void OnGoogleLoginClicked(object sender, EventArgs e)
     {
-        try
-        {
-            _currentUser = await _authService.SignInAsync();
+        var (exito, mensaje, cliente) = await _loginController.LoginGoogleAsync();
 
-            if (_currentUser != null)
-                await DisplayAlert("Éxito", $"Bienvenido, {_currentUser.Name}\n{_currentUser.Email}", "Continuar");
-            else
-                await DisplayAlert("? Cancelado", "No se completó el inicio de sesión.", "OK");
-        }
-        catch (Exception ex)
+        if (exito)
         {
-            await DisplayAlert("? Error", ex.Message, "OK");
+            await DisplayAlert("Ã‰xito", mensaje, "Continuar");
+            Application.Current.MainPage = new Pantalla_Principal();
         }
+        else
+        {
+            await DisplayAlert("Error", mensaje, "OK");
+        }
+    }
+
+    
+    private async void OnLoginManualClicked(object sender, EventArgs e)
+    {
+        var (exito, mensaje, cliente) = await _loginController
+            .LoginManualAsync(Correo.Text?.Trim(), contraseÃ±a.Text?.Trim());
+
+        if (exito)
+        {
+            await DisplayAlert("Ã‰xito", mensaje, "Continuar");
+            Application.Current.MainPage = new Pantalla_Principal();
+        }
+        else
+        {
+            await DisplayAlert("Error", mensaje, "OK");
+        }
+    }
+
+    private void OnRegistrarseClicked(object sender, EventArgs e)
+    {
+        Application.Current.MainPage = new NavigationPage(new Registro());
     }
 }
