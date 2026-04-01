@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 
@@ -49,7 +49,7 @@
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 		<MauiImage Update="Resources\Images\login_image.png">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</MauiImage>
 
 		<!-- Custom Fonts -->
@@ -68,31 +68,63 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="postgrest-csharp" Version="3.5.1" />
+		<PackageReference Include="Syncfusion.Maui.DataGrid" Version="33.1.46" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="View\Registro.xaml.cs">
-	    <DependentUpon>Registro.xaml</DependentUpon>
-	  </Compile>
+		  <Compile Update="View\Registro.xaml.cs">
+			    <DependentUpon>Registro.xaml</DependentUpon>
+			 
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="View\Administrador_Page.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="View\FlyoutMenuPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="View\Inicio_Sesion.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="View\Registro.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="View\Pantalla_Principal.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		  <MauiXaml Update="View\CarritoPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml>
+		  <MauiXaml Update="View\FlyoutMenuPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml>
+		  <MauiXaml Update="View\Inicio_Sesion.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml>
+		  <MauiXaml Update="View\MenuPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml><MauiXaml Update="View\Pedidos.xaml">
+  <Generator>MSBuild:Compile</Generator>
+</MauiXaml>
+		  <MauiXaml Update="View\Registro.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml>
+		  <MauiXaml Update="View\Pantalla_Principal.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml>
+		  <MauiXaml Update="View\SeleccionMesaPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+		  <None Update="View\CarritoPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</None>
+		  <None Update="View\MenuPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</None>
+		  <None Update="View\SeleccionMesaPage.xaml">
+			    <Generator>MSBuild:Compile</Generator>
+			 
+		</None>
 	</ItemGroup>
 
 </Project>

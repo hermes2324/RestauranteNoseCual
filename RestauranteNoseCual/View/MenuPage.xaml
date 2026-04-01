@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.MenuPage"
+             BackgroundColor="#0D0D0D"
+             Title="Menú">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- TABS de categorías -->
+        <ScrollView Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalScrollBarVisibility="Never"
+                    Padding="16,16,16,0">
+            <HorizontalStackLayout Spacing="10">
+
+                <Border x:Name="BtnTodos"
+                        BackgroundColor="#F5C842"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="Transparent"
+                        Padding="20,10">
+                    <Label Text="Todos"
+                           TextColor="#0D0D0D"
+                           FontAttributes="Bold"
+                           FontSize="13">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
+                                                  CommandParameter="Todos"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+                <Border x:Name="BtnHamburguesa"
+                        BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="#2A2A2A"
+                        Padding="20,10">
+                    <Label Text="🍔 Hamburguesas"
+                           TextColor="White"
+                           FontSize="13">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
+                                                  CommandParameter="Hamburguesa"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+                <Border x:Name="BtnAlita"
+                        BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="#2A2A2A"
+                        Padding="20,10">
+                    <Label Text="🍗 Alitas"
+                           TextColor="White"
+                           FontSize="13">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
+                                                  CommandParameter="Alita"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+                <Border x:Name="BtnBonel"
+                        BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="#2A2A2A"
+                        Padding="20,10">
+                    <Label Text="🍖 Boneless"
+                           TextColor="White"
+                           FontSize="13">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
+                                                  CommandParameter="Boneless"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+                <Border x:Name="BtnExtra"
+                        BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="#2A2A2A"
+                        Padding="20,10">
+                    <Label Text="🥔 Extras"
+                           TextColor="White"
+                           FontSize="13">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
+                                                  CommandParameter="Extra"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Cargando -->
+        <ActivityIndicator Grid.Row="1"
+                           x:Name="Cargando"
+                           IsRunning="False"
+                           IsVisible="False"
+                           Color="#F5C842"
+                           Margin="0,16"/>
+
+        <!-- Lista de productos -->
+        <CollectionView Grid.Row="2"
+                        x:Name="ListaProductos"
+                        Margin="16,12,16,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 16"
+                            Stroke="#2A2A2A"
+                            StrokeThickness="1"
+                            Margin="0,0,0,12">
+                        <Grid ColumnDefinitions="100,*"
+                              HeightRequest="100">
+
+                            <!-- Imagen desde URL -->
+                            <!-- ✅ Queda así, sin IsClippedToBounds -->
+                            <Border Grid.Column="0"
+                                BackgroundColor="#262626"
+                                StrokeShape="RoundRectangle 16,0,0,16"
+                                Stroke="Transparent">
+                                <Image Source="{Binding Fotografia}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="100"
+                                       WidthRequest="100">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                             Binding="{Binding Fotografia}"
+                             Value="">
+                                            <Setter Property="Source" Value="dotnet_bot.png"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Border>
+
+                            <!-- Info del producto -->
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Padding="14,10"
+                                                 Spacing="3"
+                                                 VerticalOptions="Center">
+                                <Label Text="{Binding Nombre}"
+                                       TextColor="White"
+                                       FontSize="14"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding Descripcion}"
+                                       TextColor="#666666"
+                                       FontSize="11"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation"/>
+                                <Label Text="{Binding Precio, StringFormat='${0:F2}'}"
+                                       TextColor="#F5C842"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       Margin="0,4,0,0"/>
+                            </VerticalStackLayout>
+
+                            <Button Grid.Column="1"
+                                    Text="Añadir"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    BackgroundColor="#F5C842"
+                                    TextColor="Black"
+                                    FontSize="12"
+                                    HeightRequest="30"
+                                    Padding="10,0"
+                                    Clicked="OnAgregarAlCarrito"
+                                    CommandParameter="{Binding .}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Grid.Row="2"
+                Text="🛒 Ver Carrito"
+                VerticalOptions="End"
+                HorizontalOptions="Center"
+                Margin="20"
+                BackgroundColor="#F5C842"
+                TextColor="Black"
+                CornerRadius="25"
+                WidthRequest="200"
+                Clicked="OnVerCarrito"/>
+    </Grid>
+</ContentPage>

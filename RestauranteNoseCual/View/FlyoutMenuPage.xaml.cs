@@ -13,9 +13,9 @@ public partial class FlyoutMenuPage : ContentPage
         menuItemsCollection.ItemsSource = new List<FlyoutPageItem>
         {
             new FlyoutPageItem { Title = "Inicio",        IconSource = "🏠", TargetType = typeof(Pantalla_Principal) },
-            new FlyoutPageItem { Title = "Ver Menú",      IconSource = "🍽️", TargetType = typeof(Pantalla_Principal) },
-            new FlyoutPageItem { Title = "Mis Pedidos",   IconSource = "📦", TargetType = typeof(Pantalla_Principal) },
-            new FlyoutPageItem { Title = "Mi Perfil",     IconSource = "👤", TargetType = typeof(Pantalla_Principal) },
+            //new FlyoutPageItem { Title = "Ver Menú", IconSource = "🍽️", TargetType = typeof(MenuPage) },
+            new FlyoutPageItem { Title = "Pedidos",   IconSource = "📦", TargetType = typeof(Pedidos) },
+            new FlyoutPageItem { Title = "Crear Orden", IconSource = "🪑", TargetType = typeof(SeleccionMesaPage) },
             new FlyoutPageItem { Title = "Cerrar Sesión", IconSource = "🚪", TargetType = null },
         };
     }

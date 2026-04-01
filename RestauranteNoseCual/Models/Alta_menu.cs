@@ -19,6 +19,9 @@ namespace RestauranteNoseCual.Models
         public decimal Precio { get; set; }
 
         [Column("Fotografia")]
-        public byte[] Fotografia { get; set; }
+        public string Fotografia { get; set; }
+
+        [Column("Categoria")]
+        public string Categoria { get; set; }
     }
 }
