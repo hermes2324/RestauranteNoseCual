@@ -1,4 +1,5 @@
-﻿using RestauranteNoseCual.View;
+﻿using RestauranteNoseCual.Services;
+using RestauranteNoseCual.View;
 
 namespace RestauranteNoseCual
 {
@@ -8,7 +9,11 @@ namespace RestauranteNoseCual
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new Inicio_Sesion());
+
+            if (SesionService.HaySesionActiva())
+                MainPage = new Pantalla_Principal();
+            else
+                MainPage = new NavigationPage(new Inicio_Sesion());
         }
     }
 }

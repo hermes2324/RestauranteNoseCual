@@ -10,7 +10,6 @@ namespace RestauranteNoseCual.Controllers
         private readonly ClienteService _clienteService = new();
         private readonly AutentificacionGoogle _authService = new();
 
-       
         public async Task<(bool exito, string mensaje, Cliente? cliente)> LoginGoogleAsync()
         {
             try
@@ -27,6 +26,9 @@ namespace RestauranteNoseCual.Controllers
                 };
 
                 var clienteGuardado = await _clienteService.GuardarClienteAsync(cliente);
+
+                SesionService.GuardarSesion(clienteGuardado.Correo, clienteGuardado.Nombre);
+
                 return (true, $"Bienvenido, {clienteGuardado.Nombre}", clienteGuardado);
             }
             catch (Exception ex)
@@ -35,7 +37,7 @@ namespace RestauranteNoseCual.Controllers
             }
         }
 
-       
+      
         public async Task<(bool exito, string mensaje, Cliente? cliente)> LoginManualAsync(string correo, string contrasena)
         {
             try
@@ -44,9 +46,11 @@ namespace RestauranteNoseCual.Controllers
                     return (false, "Ingresa correo y contraseña", null);
 
                 var cliente = await _clienteService.ValidarLoginAsync(correo, contrasena);
-
                 if (cliente == null)
                     return (false, "Correo o contraseña incorrectos", null);
+
+      
+                SesionService.GuardarSesion(cliente.Correo, cliente.Nombre);
 
                 return (true, $"Bienvenido, {cliente.Nombre}", cliente);
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using RestauranteNoseCual.Models;
+using RestauranteNoseCual.Services;
 
 namespace RestauranteNoseCual.View;
 
@@ -33,7 +34,11 @@ public partial class FlyoutMenuPage : ContentPage
                                               "¿Seguro que deseas salir?",
                                               "Sí", "No");
             if (confirm)
+            {
+                
+                SesionService.CerrarSesion();
                 Application.Current.MainPage = new NavigationPage(new Inicio_Sesion());
+            }
             return;
         }
 
