@@ -7,27 +7,35 @@ namespace RestauranteNoseCual.View;
 public partial class MenuPage : ContentPage
 {
     private readonly MenuController _menuController = new();
-    private readonly Mesa _mesaSeleccionada;
+    //private readonly Mesa _mesaSeleccionada;
     private string _categoriaActual = "Todos";
 
 
-    public MenuPage(Mesa mesa, string categoria = "Todos")
+    private readonly Mesa? _mesaSeleccionada;
+
+    // Modifica el constructor actual
+    public MenuPage(Mesa? mesa = null, string categoria = "Todos")
     {
         InitializeComponent();
-        _mesaSeleccionada = mesa;
-        _categoriaActual = categoria; 
+        _mesaSeleccionada = mesa; 
 
-        Title = $"Menú — Mesa {mesa?.Numero}";
+        if (mesa == null)
+        {
+            Title = "Orden a Domicilio";
+        }
+        else
+        {
+            Title = $"Menú — Mesa {mesa.Numero}";
+        }
 
-        
-        CargarProductosAsync(categoria);
-    }
-
-    public MenuPage()
-    {
-        InitializeComponent();
         CargarProductosAsync("Todos");
     }
+
+    //public MenuPage()
+    //{
+    //    InitializeComponent();
+    //    CargarProductosAsync("Todos");
+    //}
 
     private async void CargarProductosAsync(string categoria)
     {

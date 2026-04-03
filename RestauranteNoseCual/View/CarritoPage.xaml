@@ -30,7 +30,6 @@
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
                                     <x:String>Mesa</x:String>
-                                    <x:String>Para Llevar</x:String>
                                     <x:String>Domicilio</x:String>
                                 </x:Array>
                             </Picker.ItemsSource>

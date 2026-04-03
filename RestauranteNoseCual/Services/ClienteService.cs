@@ -38,13 +38,49 @@ namespace RestauranteNoseCual.Services
             return cliente;
         }
 
+        //public async Task<Cliente?> BuscarPorTelefonoAsync(string telefono)
+        //{
+        //    var resultado = await _supabase
+        //        .From<Cliente>()
+        //        .Where(c => c.Telefono == telefono)
+        //        .Get();
+        //    return resultado.Models.FirstOrDefault();
+        //}
         public async Task<Cliente?> BuscarPorTelefonoAsync(string telefono)
         {
-            var resultado = await _supabase
-                .From<Cliente>()
-                .Where(c => c.Telefono == telefono)
-                .Get();
-            return resultado.Models.FirstOrDefault();
+            try
+            {
+                // 1. Buscamos al cliente
+                var resultadoCliente = await _supabase
+                    .From<Cliente>()
+                    .Where(c => c.Telefono == telefono)
+                    .Get();
+
+                var cliente = resultadoCliente.Models.FirstOrDefault();
+
+                // 2. Si el cliente existe, buscamos sus últimas notas en la tabla Orden
+                if (cliente != null)
+                {
+                    var resultadoOrden = await _supabase
+                        .From<Pedido>()
+                        .Where(p => p.ClienteId == cliente.Id)
+                        .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
+                        .Limit(1)
+                        .Get();
+
+                    var ultimaOrden = resultadoOrden.Models.FirstOrDefault();
+
+                  
+                    cliente.UltimasNotas = ultimaOrden?.Notas ?? "";
+                }
+
+                return cliente;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en BuscarPorTelefono: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<Cliente> GuardarOActualizarAsync(Cliente cliente)

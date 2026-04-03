@@ -39,7 +39,7 @@
                 <Picker.Items>
                     <x:String>Todos</x:String>
                     <x:String>Mesa</x:String>
-                    <x:String>Para llevar</x:String>
+                    <x:String>Domicilio</x:String>
                 </Picker.Items>
             </Picker>
         </Border>
@@ -83,7 +83,7 @@
 
                 <syncfusion:DataGridTextColumn MappingName="NombreCliente"
                                                HeaderText="Cliente"
-                                               Width="110">
+                                               Width="170">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="White"/>

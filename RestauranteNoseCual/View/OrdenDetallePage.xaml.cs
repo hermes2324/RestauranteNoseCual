@@ -47,7 +47,7 @@ namespace RestauranteNoseCual.View
         private async void OnCobrarClicked(object sender, EventArgs e)
         {
             bool confirmar = await DisplayAlert(
-                "?? Cobrar",
+                " Cobrar",
                 $"¿Confirmas el cobro de {_pedido.Total:C2}?\nSe liberará la Mesa {_pedido.MesaId}.",
                 "Sí, cobrar", "Cancelar");
 
@@ -59,12 +59,12 @@ namespace RestauranteNoseCual.View
 
             if (exito)
             {
-                await DisplayAlert("? Listo", "Orden cobrada y mesa liberada", "OK");
+                await DisplayAlert("Listo", "Orden cobrada y mesa liberada", "OK");
                 await Navigation.PopAsync(); 
             }
             else
             {
-                await DisplayAlert("? Error", "No se pudo completar el cobro", "OK");
+                await DisplayAlert("Error", "No se pudo completar el cobro", "OK");
                 BtnCobrar.IsEnabled = true;
             }
         }

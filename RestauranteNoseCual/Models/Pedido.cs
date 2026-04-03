@@ -10,7 +10,7 @@ namespace RestauranteNoseCual.Models
         public long Id { get; set; }
 
         [Column("MesaId")]
-        public long MesaId { get; set; }
+        public long? MesaId { get; set; }
 
         [Column("NombreCliente")]
         public string NombreCliente { get; set; } = string.Empty;

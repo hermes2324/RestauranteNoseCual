@@ -50,4 +50,10 @@ public partial class SeleccionMesaPage : ContentPage
         
         await Navigation.PushAsync(new MenuPage(mesa));
     }
+
+    private async void OnPedidoDomicilioClicked(object sender, EventArgs e)
+    {
+    
+        await Navigation.PushAsync(new PedidoDomicilioPage());
+    }
 }

@@ -61,11 +61,13 @@ namespace RestauranteNoseCual.Services
 
         // Todos los pedidos
         public async Task<bool> GuardarOrdenAsync(
-    List<CarritoItem> items, long mesaId,
-    string nombreCliente, string tipoEntrega,
-    long? clienteId = null,
-    string? notas = null,
-    decimal costoEnvio = 0)
+       List<CarritoItem> items,
+       long? mesaId, 
+       string nombreCliente,
+       string tipoEntrega,
+       long? clienteId = null,
+       string? notas = null,
+       decimal costoEnvio = 0)
         {
             try
             {
@@ -73,38 +75,50 @@ namespace RestauranteNoseCual.Services
 
                 var nuevaOrden = new Pedido
                 {
-                    MesaId = mesaId,
+                    MesaId = mesaId, 
                     NombreCliente = nombreCliente,
                     TipoEntrega = tipoEntrega,
                     Total = totalOrden,
                     Estado = "Pendiente",
                     FechaHora = DateTime.Now,
-                    ClienteId = clienteId,
+                    ClienteId = clienteId, 
                     Notas = notas,
                     CostoEnvio = costoEnvio
                 };
 
-                await _supabase.From<Pedido>().Insert(nuevaOrden);
+                
+                var respuesta = await _supabase.From<Pedido>().Insert(nuevaOrden);
+                var ordenReal = respuesta.Models.FirstOrDefault();
 
-                var busqueda = await _supabase.From<Pedido>()
-                    .Where(p => p.MesaId == mesaId && p.Estado == "Pendiente")
-                    .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
-                    .Limit(1)
-                    .Get();
+                
+                if (ordenReal == null)
+                {
+                    var query = _supabase.From<Pedido>()
+                        .Where(p => p.NombreCliente == nombreCliente && p.Estado == "Pendiente");
 
-                var ordenReal = busqueda.Models.FirstOrDefault();
+                    if (mesaId.HasValue)
+                        query = query.Where(p => p.MesaId == mesaId.Value);
+
+                    var busqueda = await query
+                        .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
+                        .Limit(1)
+                        .Get();
+
+                    ordenReal = busqueda.Models.FirstOrDefault();
+                }
+
                 if (ordenReal == null) return false;
 
-                foreach (var item in items)
+               
+                var detalles = items.Select(item => new DetallePedido
                 {
-                    await _supabase.From<DetallePedido>().Insert(new DetallePedido
-                    {
-                        OrdenId = ordenReal.Id,
-                        ProductoId = item.Producto.Id,
-                        Cantidad = item.Cantidad,
-                        Subtotal = item.Subtotal
-                    });
-                }
+                    OrdenId = ordenReal.Id,
+                    ProductoId = item.Producto.Id,
+                    Cantidad = item.Cantidad,
+                    Subtotal = item.Subtotal
+                }).ToList();
+
+                await _supabase.From<DetallePedido>().Insert(detalles);
 
                 return true;
             }
@@ -186,27 +200,55 @@ namespace RestauranteNoseCual.Services
         }
 
         // Cerrar orden y liberar mesa
-        public async Task<bool> CerrarOrdenAsync(long ordenId, long mesaId)
+        //public async Task<bool> CerrarOrdenAsync(long ordenId, long mesaId)
+        //{
+        //    try
+        //    {
+
+        //        await _supabase.From<Pedido>()
+        //            .Where(p => p.Id == ordenId)
+        //            .Set(p => p.Estado, "Pagada")
+        //            .Update();
+
+
+        //        await _supabase.From<Mesa>()
+        //            .Where(m => m.Id == mesaId)
+        //            .Set(m => m.Estado, "Libre")
+        //            .Update();
+
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error: {ex.Message}");
+        //        return false;
+        //    }
+        //}
+
+        public async Task<bool> CerrarOrdenAsync(long ordenId, long? mesaId) 
         {
             try
             {
-              
+               
                 await _supabase.From<Pedido>()
                     .Where(p => p.Id == ordenId)
                     .Set(p => p.Estado, "Pagada")
                     .Update();
 
-                
-                await _supabase.From<Mesa>()
-                    .Where(m => m.Id == mesaId)
-                    .Set(m => m.Estado, "Libre")
-                    .Update();
+               
+                if (mesaId.HasValue)
+                {
+                    await _supabase.From<Mesa>()
+                        .Where(m => m.Id == mesaId.Value)
+                        .Set(m => m.Estado, "Libre")
+                        .Update();
+                }
 
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Error al cerrar orden: {ex.Message}");
                 return false;
             }
         }

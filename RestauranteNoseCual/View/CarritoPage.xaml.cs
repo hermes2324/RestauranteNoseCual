@@ -7,21 +7,32 @@ namespace RestauranteNoseCual.View
 {
     public partial class CarritoPage : ContentPage
     {
-        private readonly Mesa _mesa;
+        //private readonly Mesa _mesa;
         private readonly OrdenService _ordenService = new();
         private readonly CarritoController _carritoController = new();
 
-        public CarritoPage(Mesa mesa)
+        private readonly Mesa? _mesa;
+
+        public CarritoPage(Mesa? mesa)
         {
             InitializeComponent();
             _mesa = mesa;
 
-           
-            LblFecha.Text = $"FECHA: {DateTime.Now:dd/MM/yyyy HH:mm}";
-            ActualizarTotal();
+            if (_mesa == null) 
+            {
+                PkrEntrega.SelectedItem = "Domicilio";
+                PkrEntrega.IsEnabled = false;
 
-            if (PkrEntrega.Items.Count > 0)
-                PkrEntrega.SelectedIndex = 0;
+               
+                EntNombreCliente.Text = PedidoTemporal.NombreCliente;
+            }
+            else
+            {
+                PkrEntrega.SelectedItem = "Mesa";
+                PedidoTemporal.NombreCliente = string.Empty;
+            }
+
+            ActualizarTotal();
         }
 
         private void ActualizarTotal()
@@ -41,6 +52,7 @@ namespace RestauranteNoseCual.View
 
         private async void OnConfirmarPedido(object sender, EventArgs e)
         {
+            // 1. Validaciones iniciales
             if (string.IsNullOrWhiteSpace(EntNombreCliente.Text))
             {
                 await DisplayAlert("Atención", "Escribe el nombre del cliente.", "OK");
@@ -53,8 +65,14 @@ namespace RestauranteNoseCual.View
                 return;
             }
 
+            // 2. Determinar destino y tipo de entrega
+            bool esDomicilio = _mesa == null;
+            string destino = !esDomicilio ? $"Mesa {_mesa.Numero}" : "Domicilio";
+            string tipoEntrega = PkrEntrega.SelectedItem?.ToString() ?? (esDomicilio ? "Domicilio" : "Mesa");
+
+            // 3. Mensaje de confirmación
             bool confirmar = await DisplayAlert("Confirmar",
-                $"¿Mesa {_mesa.Numero} - Cliente: {EntNombreCliente.Text}?", "Sí", "No");
+                $"¿{destino} - Cliente: {EntNombreCliente.Text}?", "Sí", "No");
 
             if (!confirmar) return;
 
@@ -63,11 +81,23 @@ namespace RestauranteNoseCual.View
 
             try
             {
-                bool exito = await _ordenService.GuardarOrdenAsync( CarritoController.Items.ToList(),_mesa.Id,EntNombreCliente.Text.Trim(),PkrEntrega.SelectedItem?.ToString() ?? "Mesa");
+                // 4. Llamada al servicio pasando TODOS los parámetros del PedidoTemporal
+                bool exito = await _ordenService.GuardarOrdenAsync(
+                    items: CarritoController.Items.ToList(),
+                    mesaId: _mesa?.Id,
+                    nombreCliente: EntNombreCliente.Text.Trim(),
+                    tipoEntrega: tipoEntrega,
+                    clienteId: PedidoTemporal.IdCliente,     
+                    notas: PedidoTemporal.Notas,             
+                    costoEnvio: esDomicilio ? 20m : 0m        
+                );
 
                 if (exito)
                 {
+                    // 5. Limpiar datos tras el éxito
+                    LimpiarDatosTemporales();
                     CarritoController.Items.Clear();
+
                     await DisplayAlert("¡Éxito!", "Orden enviada a cocina.", "OK");
                     await Navigation.PopToRootAsync();
                 }
@@ -86,5 +116,16 @@ namespace RestauranteNoseCual.View
                 Loader.IsRunning = false;
             }
         }
+
+        // Método auxiliar para resetear la clase estática y que no se mezclen pedidos
+        private void LimpiarDatosTemporales()
+        {
+            PedidoTemporal.IdCliente = null;
+            PedidoTemporal.NombreCliente = "";
+            PedidoTemporal.Notas = "";
+            PedidoTemporal.Direccion = "";
+        }
+
+
     }
 }

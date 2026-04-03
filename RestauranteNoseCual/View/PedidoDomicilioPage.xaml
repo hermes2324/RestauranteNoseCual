@@ -89,17 +89,14 @@
                                 HeightRequest="72"/>
                     </Border>
 
-                    <!-- Costo envío -->
                     <Label Text="Costo de envío ($)" TextColor="#888888" FontSize="11" FontAttributes="Bold"/>
                     <Border BackgroundColor="#262626" Stroke="#333333"
                             StrokeThickness="1" StrokeShape="RoundRectangle 12"
                             Padding="16,0" HeightRequest="52">
-                        <Entry x:Name="EntCostoEnvio"
-                               Text="0" Placeholder="0.00"
-                               PlaceholderColor="#555555" TextColor="White"
-                               BackgroundColor="Transparent"
-                               Keyboard="Numeric"
-                               VerticalOptions="Center"/>
+                        <Label Text="20.00 (Fijo)" 
+                               TextColor="#F5C842" 
+                               VerticalOptions="Center"
+                               FontAttributes="Bold"/>  
                     </Border>
 
                     <!-- Botón continuar -->
