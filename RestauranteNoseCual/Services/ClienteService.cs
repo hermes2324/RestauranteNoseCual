@@ -37,5 +37,33 @@ namespace RestauranteNoseCual.Services
             if (cliente.Contrasena != contrasena) return null;
             return cliente;
         }
+
+        public async Task<Cliente?> BuscarPorTelefonoAsync(string telefono)
+        {
+            var resultado = await _supabase
+                .From<Cliente>()
+                .Where(c => c.Telefono == telefono)
+                .Get();
+            return resultado.Models.FirstOrDefault();
+        }
+
+        public async Task<Cliente> GuardarOActualizarAsync(Cliente cliente)
+        {
+            if (cliente.Id > 0)
+            {
+                // Actualiza domicilio si ya existe
+                await _supabase.From<Cliente>()
+                    .Where(c => c.Id == cliente.Id)
+                    .Set(c => c.Domicilio, cliente.Domicilio)
+                    .Set(c => c.Nombre, cliente.Nombre)
+                    .Update();
+                return cliente;
+            }
+            else
+            {
+                var resultado = await _supabase.From<Cliente>().Insert(cliente);
+                return resultado.Models.First();
+            }
+        }
     }
 }

@@ -95,7 +95,11 @@
 		  <MauiXaml Update="View\MenuPage.xaml">
 			    <Generator>MSBuild:Compile</Generator>
 			 
-		</MauiXaml><MauiXaml Update="View\Pedidos.xaml">
+		</MauiXaml><MauiXaml Update="View\OrdenDetallePage.xaml">
+  <Generator>MSBuild:Compile</Generator>
+</MauiXaml><MauiXaml Update="View\PedidoDomicilioPage.xaml">
+  <Generator>MSBuild:Compile</Generator>
+</MauiXaml><MauiXaml Update="View\Pedidos.xaml">
   <Generator>MSBuild:Compile</Generator>
 </MauiXaml>
 		  <MauiXaml Update="View\Registro.xaml">

@@ -1,10 +1,5 @@
 ﻿using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestauranteNoseCual.Models
 {
@@ -17,13 +12,29 @@ namespace RestauranteNoseCual.Models
         [Column("MesaId")]
         public long MesaId { get; set; }
 
+        [Column("NombreCliente")]
+        public string NombreCliente { get; set; } = string.Empty;
+
         [Column("Estado")]
         public string Estado { get; set; } = "Pendiente";
+
+        [Column("TipoEntrega")]
+        public string TipoEntrega { get; set; } = "Mesa";
 
         [Column("Total")]
         public decimal Total { get; set; }
 
         [Column("FechaHora")]
         public DateTime FechaHora { get; set; } = DateTime.Now;
+
+       
+        [Column("ClienteId")]
+        public long? ClienteId { get; set; }
+
+        [Column("Notas")]
+        public string? Notas { get; set; }
+
+        [Column("CostoEnvio")]
+        public decimal CostoEnvio { get; set; }
     }
 }

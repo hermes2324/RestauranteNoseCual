@@ -16,19 +16,18 @@
                     <ScrollView>
                         <VerticalStackLayout Spacing="0">
 
-                            <!-- ══════════════════════════════ -->
-                            <!--         HEADER SALUDO         -->
-                            <!-- ══════════════════════════════ -->
+                            <!-- HEADER SALUDO -->
                             <Grid BackgroundColor="#111111"
                                   Padding="20,48,20,20"
                                   ColumnDefinitions="*,Auto">
 
                                 <VerticalStackLayout Grid.Column="0" Spacing="4">
-                                    <Label Text="¡Buenas noches! 👋"
+                                    <Label x:Name="LblSaludo"
+                                           Text="¡Hola! 👋"
                                            TextColor="#888888"
                                            FontSize="13"/>
                                     <Label x:Name="LblNombreUsuario"
-                                           Text="Cargando..."
+                                           Text="..."
                                            TextColor="White"
                                            FontSize="22"
                                            FontAttributes="Bold"/>
@@ -55,14 +54,12 @@
                                 </Border>
                             </Grid>
 
-                            <!-- ══════════════════════════════ -->
-                            <!--       BARRA DE BÚSQUEDA       -->
-                            <!-- ══════════════════════════════ -->
+                            <!-- BARRA DE BÚSQUEDA -->
                             <Border BackgroundColor="#1A1A1A"
                                     Stroke="#2A2A2A"
                                     StrokeThickness="1"
                                     StrokeShape="RoundRectangle 16"
-                                    Margin="20,0,20,0"
+                                    Margin="20,16,20,0"
                                     Padding="16,0"
                                     HeightRequest="50">
                                 <Grid ColumnDefinitions="Auto,*">
@@ -80,23 +77,15 @@
                                 </Grid>
                             </Border>
 
-                            <!-- ══════════════════════════════ -->
-                            <!--       BANNER PROMOCIONAL      -->
-                            <!-- ══════════════════════════════ -->
+                            <!-- BANNER PROMOCIONAL -->
                             <Border BackgroundColor="#1A1A1A"
                                     StrokeShape="RoundRectangle 20"
                                     Stroke="Transparent"
-                                    Margin="20,20,20,0"
-                                    Padding="0"
+                                    Margin="20,16,20,0"
                                     HeightRequest="160">
                                 <Grid>
-                                    <!-- Fondo degradado simulado -->
-                                    <BoxView Color="#1A1A1A"/>
-                                    <BoxView Color="#F5C842"
-                                             Opacity="0.08"/>
-
-                                    <Grid ColumnDefinitions="*,Auto"
-                                          Padding="24,20">
+                                    <BoxView Color="#F5C842" Opacity="0.08"/>
+                                    <Grid ColumnDefinitions="*,Auto" Padding="24,20">
                                         <VerticalStackLayout Grid.Column="0"
                                                              Spacing="6"
                                                              VerticalOptions="Center">
@@ -121,8 +110,6 @@
                                                    FontSize="14"
                                                    FontAttributes="Bold"/>
                                         </VerticalStackLayout>
-
-                                        <!-- Emoji grande decorativo -->
                                         <Label Grid.Column="1"
                                                Text="🍔"
                                                FontSize="80"
@@ -132,9 +119,7 @@
                                 </Grid>
                             </Border>
 
-                            <!-- ══════════════════════════════ -->
-                            <!--          CATEGORÍAS           -->
-                            <!-- ══════════════════════════════ -->
+                            <!-- CATEGORÍAS -->
                             <VerticalStackLayout Padding="20,24,20,0" Spacing="14">
                                 <Label Text="CATEGORÍAS"
                                        TextColor="#888888"
@@ -142,80 +127,137 @@
                                        FontAttributes="Bold"
                                        CharacterSpacing="2"/>
 
-                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
 
                                     <!-- Hamburguesas -->
                                     <Border Grid.Column="0"
-                                            StrokeShape="RoundRectangle 18"
+                                            StrokeShape="RoundRectangle 20"
                                             Stroke="Transparent"
                                             BackgroundColor="#1E1E1E"
-                                            Padding="10,18">
-                                        <VerticalStackLayout Spacing="8">
-                                            <Label Text="🍔"
-                                                   FontSize="36"
-                                                   HorizontalOptions="Center"/>
-                                            <Label Text="Hamber-&#10;guesas"
+                                            Padding="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCategoriaClicked"
+                                      CommandParameter="Hamburguesa"/>
+                                        </Border.GestureRecognizers>
+                                        <Grid RowDefinitions="110,Auto,Auto">
+                                            <!-- Imagen ocupa todo el tope -->
+                                            <Border Grid.Row="0"
+                                                    StrokeShape="RoundRectangle 20,20,0,0"
+                                                    Stroke="Transparent"
+                                                    BackgroundColor="#2A2A2A">
+                                                <Image Source="https://c0.klipartz.com/pngpicture/203/765/gratis-png-hamburguesa-con-verduras-hamburguesa-deslizante-hamburguesa-hamburguesa.png"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="110"/>    
+                                            </Border>
+                                            <Label Grid.Row="1"
+                                                   Text="Hamburguesas"
                                                    TextColor="White"
                                                    FontSize="11"
                                                    FontAttributes="Bold"
                                                    HorizontalOptions="Center"
-                                                   HorizontalTextAlignment="Center"/>
-                                            <Label Text="12 items"
-                                                   TextColor="#666666"
+                                                   HorizontalTextAlignment="Center"
+                                                   Margin="8,10,8,2"/>
+                                            <Label Grid.Row="2"
+                                                   x:Name="LblCountHamb"
+                                                   Text="..."
+                                                   TextColor="#F5C842"
                                                    FontSize="10"
-                                                   HorizontalOptions="Center"/>
-                                        </VerticalStackLayout>
+                                                   HorizontalOptions="Center"
+                                                   Margin="0,0,0,12"/>
+                                        </Grid>
                                     </Border>
 
-                                    <!-- Alitas — resaltada -->
+                                    <!-- Alitas -->
                                     <Border Grid.Column="1"
-                                            StrokeShape="RoundRectangle 18"
-                                            Stroke="Transparent"
-                                            BackgroundColor="#F5C842"
-                                            Padding="10,18">
-                                        <VerticalStackLayout Spacing="8">
-                                            <Label Text="🍗"
-                                                   FontSize="36"
-                                                   HorizontalOptions="Center"/>
-                                            <Label Text="Alitas"
-                                                   TextColor="#0D0D0D"
+                                            StrokeShape="RoundRectangle 20"
+                                            Stroke="#F5C842"
+                                            StrokeThickness="2"
+                                            BackgroundColor="#1E1E1E"
+                                            Padding="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCategoriaClicked"
+                                      CommandParameter="Alita"/>
+                                        </Border.GestureRecognizers>
+                                        <Grid RowDefinitions="110,Auto,Auto">
+                                            <Border Grid.Row="0"
+                                                    StrokeShape="RoundRectangle 18,18,0,0"
+                                                    Stroke="Transparent"
+                                                    BackgroundColor="#2A2A2A">
+                                                <Image Source="https://www.sondemesa.com/web/image/344497-00a81b8a/alitas.png"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="110"/>    
+                                            </Border>
+                                            <!-- Badge popular -->
+                                            <Border Grid.Row="0"
+                                                    BackgroundColor="#F5C842"
+                                                    StrokeShape="RoundRectangle 8"
+                                                    Stroke="Transparent"
+                                                    Padding="6,3"
+                                                    HorizontalOptions="End"
+                                                    VerticalOptions="Start"
+                                                    Margin="0,8,8,0">
+                                                <Label Text="🔥 TOP"
+                                                       TextColor="#0D0D0D"
+                                                       FontSize="9"
+                                                       FontAttributes="Bold"/>
+                                            </Border>
+                                            <Label Grid.Row="1"
+                                                   Text="Alitas"
+                                                   TextColor="White"
                                                    FontSize="11"
                                                    FontAttributes="Bold"
-                                                   HorizontalOptions="Center"/>
-                                            <Label Text="8 items"
-                                                   TextColor="#333333"
+                                                   HorizontalOptions="Center"
+                                                   Margin="8,10,8,2"/>
+                                            <Label Grid.Row="2"
+                                                   x:Name="LblCountAlit"
+                                                   Text="..."
+                                                   TextColor="#F5C842"
                                                    FontSize="10"
-                                                   HorizontalOptions="Center"/>
-                                        </VerticalStackLayout>
+                                                   HorizontalOptions="Center"
+                                                   Margin="0,0,0,12"/>
+                                        </Grid>
                                     </Border>
 
                                     <!-- Boneles -->
                                     <Border Grid.Column="2"
-                                            StrokeShape="RoundRectangle 18"
+                                            StrokeShape="RoundRectangle 20"
                                             Stroke="Transparent"
                                             BackgroundColor="#1E1E1E"
-                                            Padding="10,18">
-                                        <VerticalStackLayout Spacing="8">
-                                            <Label Text="🍖"
-                                                   FontSize="36"
-                                                   HorizontalOptions="Center"/>
-                                            <Label Text="Boneles"
+                                            Padding="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCategoriaClicked"
+                                      CommandParameter="Boneles"/>
+                                        </Border.GestureRecognizers>
+                                        <Grid RowDefinitions="110,Auto,Auto">
+                                            <Border Grid.Row="0"
+                                                    StrokeShape="RoundRectangle 20,20,0,0"
+                                                    Stroke="Transparent"
+                                                     BackgroundColor="#2A2A2A">
+                                                <Image Source="https://dam.cocinafacil.com.mx/wp-content/uploads/2020/04/Boneless-bbq.jpg"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="110"/>    
+                                            </Border>
+                                            <Label Grid.Row="1"
+                                                   Text="Boneles"
                                                    TextColor="White"
                                                    FontSize="11"
                                                    FontAttributes="Bold"
-                                                   HorizontalOptions="Center"/>
-                                            <Label Text="10 items"
-                                                   TextColor="#666666"
+                                                   HorizontalOptions="Center"
+                                                   Margin="8,10,8,2"/>
+                                            <Label Grid.Row="2"
+                                                   x:Name="LblCountBon"
+                                                   Text="..."
+                                                   TextColor="#F5C842"
                                                    FontSize="10"
-                                                   HorizontalOptions="Center"/>
-                                        </VerticalStackLayout>
+                                                   HorizontalOptions="Center"
+                                                   Margin="0,0,0,12"/>
+                                        </Grid>
                                     </Border>
+
                                 </Grid>
                             </VerticalStackLayout>
 
-                            <!-- ══════════════════════════════ -->
-                            <!--        LO MÁS PEDIDO          -->
-                            <!-- ══════════════════════════════ -->
+                            <!-- LO MÁS PEDIDO -->
                             <VerticalStackLayout Padding="20,24,20,32" Spacing="14">
                                 <Grid ColumnDefinitions="*,Auto">
                                     <Label Grid.Column="0"
@@ -229,143 +271,59 @@
                                            Text="Ver todo →"
                                            TextColor="#F5C842"
                                            FontSize="12"
-                                           VerticalOptions="Center"/>
+                                           VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnVerTodoClicked"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
                                 </Grid>
 
-                                <!-- Card 1 -->
-                                <Border BackgroundColor="#1A1A1A"
-                                        StrokeShape="RoundRectangle 16"
-                                        Stroke="#2A2A2A"
-                                        StrokeThickness="1">
-                                    <Grid ColumnDefinitions="90,*,Auto"
-                                          Padding="0,0,16,0"
-                                          HeightRequest="90">
-                                        <Border Grid.Column="0"
-                                                BackgroundColor="#262626"
-                                                StrokeShape="RoundRectangle 16,0,0,16"
-                                                Stroke="Transparent">
-                                            <Label Text="🍔" FontSize="40"
-                                                   HorizontalOptions="Center"
-                                                   VerticalOptions="Center"/>
-                                        </Border>
-                                        <VerticalStackLayout Grid.Column="1"
-                                                             Padding="14,0"
-                                                             Spacing="3"
-                                                             VerticalOptions="Center">
-                                            <Label Text="Smash Burger Clásica"
-                                                   TextColor="White"
-                                                   FontSize="14"
-                                                   FontAttributes="Bold"/>
-                                            <Label Text="Doble carne · queso · salsa especial"
-                                                   TextColor="#666666"
-                                                   FontSize="11"/>
-                                            <Label Text="$129"
-                                                   TextColor="#F5C842"
-                                                   FontSize="15"
-                                                   FontAttributes="Bold"/>
-                                        </VerticalStackLayout>
-                                        <Label Grid.Column="2"
-                                               Text="+"
-                                               TextColor="#0D0D0D"
-                                               BackgroundColor="#F5C842"
-                                               FontSize="22"
-                                               FontAttributes="Bold"
-                                               WidthRequest="36"
-                                               HeightRequest="36"
-                                               HorizontalTextAlignment="Center"
-                                               VerticalOptions="Center"/>
-                                    </Grid>
-                                </Border>
-
-                                <!-- Card 2 -->
-                                <Border BackgroundColor="#1A1A1A"
-                                        StrokeShape="RoundRectangle 16"
-                                        Stroke="#2A2A2A"
-                                        StrokeThickness="1">
-                                    <Grid ColumnDefinitions="90,*,Auto"
-                                          Padding="0,0,16,0"
-                                          HeightRequest="90">
-                                        <Border Grid.Column="0"
-                                                BackgroundColor="#262626"
-                                                StrokeShape="RoundRectangle 16,0,0,16"
-                                                Stroke="Transparent">
-                                            <Label Text="🍗" FontSize="40"
-                                                   HorizontalOptions="Center"
-                                                   VerticalOptions="Center"/>
-                                        </Border>
-                                        <VerticalStackLayout Grid.Column="1"
-                                                             Padding="14,0"
-                                                             Spacing="3"
-                                                             VerticalOptions="Center">
-                                            <Label Text="Alitas BBQ x10"
-                                                   TextColor="White"
-                                                   FontSize="14"
-                                                   FontAttributes="Bold"/>
-                                            <Label Text="Salsa BBQ ahumada · ranch incluido"
-                                                   TextColor="#666666"
-                                                   FontSize="11"/>
-                                            <Label Text="$149"
-                                                   TextColor="#F5C842"
-                                                   FontSize="15"
-                                                   FontAttributes="Bold"/>
-                                        </VerticalStackLayout>
-                                        <Label Grid.Column="2"
-                                               Text="+"
-                                               TextColor="#0D0D0D"
-                                               BackgroundColor="#F5C842"
-                                               FontSize="22"
-                                               FontAttributes="Bold"
-                                               WidthRequest="36"
-                                               HeightRequest="36"
-                                               HorizontalTextAlignment="Center"
-                                               VerticalOptions="Center"/>
-                                    </Grid>
-                                </Border>
-
-                                <!-- Card 3 -->
-                                <Border BackgroundColor="#1A1A1A"
-                                        StrokeShape="RoundRectangle 16"
-                                        Stroke="#2A2A2A"
-                                        StrokeThickness="1">
-                                    <Grid ColumnDefinitions="90,*,Auto"
-                                          Padding="0,0,16,0"
-                                          HeightRequest="90">
-                                        <Border Grid.Column="0"
-                                                BackgroundColor="#262626"
-                                                StrokeShape="RoundRectangle 16,0,0,16"
-                                                Stroke="Transparent">
-                                            <Label Text="🍖" FontSize="40"
-                                                   HorizontalOptions="Center"
-                                                   VerticalOptions="Center"/>
-                                        </Border>
-                                        <VerticalStackLayout Grid.Column="1"
-                                                             Padding="14,0"
-                                                             Spacing="3"
-                                                             VerticalOptions="Center">
-                                            <Label Text="Boneles Picosos x12"
-                                                   TextColor="White"
-                                                   FontSize="14"
-                                                   FontAttributes="Bold"/>
-                                            <Label Text="Empanizados · salsa buffalo"
-                                                   TextColor="#666666"
-                                                   FontSize="11"/>
-                                            <Label Text="$139"
-                                                   TextColor="#F5C842"
-                                                   FontSize="15"
-                                                   FontAttributes="Bold"/>
-                                        </VerticalStackLayout>
-                                        <Label Grid.Column="2"
-                                               Text="+"
-                                               TextColor="#0D0D0D"
-                                               BackgroundColor="#F5C842"
-                                               FontSize="22"
-                                               FontAttributes="Bold"
-                                               WidthRequest="36"
-                                               HeightRequest="36"
-                                               HorizontalTextAlignment="Center"
-                                               VerticalOptions="Center"/>
-                                    </Grid>
-                                </Border>
+                                <!-- ✅ CollectionView con datos reales -->
+                                <CollectionView x:Name="ListaMasPedido"
+                                                SelectionMode="None">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BackgroundColor="#1A1A1A"
+                                                    StrokeShape="RoundRectangle 16"
+                                                    Stroke="#2A2A2A"
+                                                    StrokeThickness="1"
+                                                    Margin="0,0,0,12">
+                                                <Grid ColumnDefinitions="90,*"
+                                                      HeightRequest="90">
+                                                    <!-- Imagen real de Supabase -->
+                                                    <Border Grid.Column="0"
+                                                            BackgroundColor="#262626"
+                                                            StrokeShape="RoundRectangle 16,0,0,16"
+                                                            Stroke="Transparent">
+                                                        <Image Source="{Binding Fotografia}"
+                                                               Aspect="AspectFill"
+                                                               HeightRequest="90"
+                                                               WidthRequest="90"/>
+                                                    </Border>
+                                                    <VerticalStackLayout Grid.Column="1"
+                                                                         Padding="14,0"
+                                                                         Spacing="3"
+                                                                         VerticalOptions="Center">
+                                                        <Label Text="{Binding Nombre}"
+                                                               TextColor="White"
+                                                               FontSize="14"
+                                                               FontAttributes="Bold"/>
+                                                        <Label Text="{Binding Descripcion}"
+                                                               TextColor="#666666"
+                                                               FontSize="11"
+                                                               MaxLines="2"
+                                                               LineBreakMode="TailTruncation"/>
+                                                        <Label Text="{Binding Precio, StringFormat='${0:F2}'}"
+                                                               TextColor="#F5C842"
+                                                               FontSize="15"
+                                                               FontAttributes="Bold"
+                                                               Margin="0,4,0,0"/>
+                                                    </VerticalStackLayout>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
 
                             </VerticalStackLayout>
                         </VerticalStackLayout>

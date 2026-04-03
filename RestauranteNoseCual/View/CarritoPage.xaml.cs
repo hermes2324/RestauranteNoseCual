@@ -63,7 +63,7 @@ namespace RestauranteNoseCual.View
 
             try
             {
-                bool exito = await _ordenService.GuardarOrdenAsync(CarritoController.Items.ToList(), _mesa.Id);
+                bool exito = await _ordenService.GuardarOrdenAsync( CarritoController.Items.ToList(),_mesa.Id,EntNombreCliente.Text.Trim(),PkrEntrega.SelectedItem?.ToString() ?? "Mesa");
 
                 if (exito)
                 {

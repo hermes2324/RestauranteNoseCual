@@ -11,17 +11,23 @@ namespace RestauranteNoseCual.Controllers
 {
     public class PedidosController
     {
-        private readonly OrdenService _service = new OrdenService();
-        public ObservableCollection<Pedido> ListaPedidos { get; set; } = new ObservableCollection<Pedido>();
+        private readonly OrdenService _service = new();
+        public ObservableCollection<Pedido> ListaPedidos { get; set; } = new();
 
         public async Task CargarPedidosAsync()
         {
             var pedidos = await _service.ObtenerPedidosAsync();
             ListaPedidos.Clear();
             foreach (var p in pedidos)
-            {
                 ListaPedidos.Add(p);
-            }
+        }
+
+        // Filtrar por tipo
+        public async Task<List<Pedido>> FiltrarPorTipoAsync(string tipo)
+        {
+            if (tipo == "Todos")
+                return await _service.ObtenerPedidosAsync();
+            return await _service.ObtenerPorTipoAsync(tipo);
         }
     }
 }

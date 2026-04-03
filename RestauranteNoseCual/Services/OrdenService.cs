@@ -12,53 +12,114 @@ namespace RestauranteNoseCual.Services
     {
         private readonly Supabase.Client _supabase = Conexion.Supabase;
 
-        public async Task<bool> GuardarOrdenAsync(List<CarritoItem> items, long mesaId)
+        //public async Task<bool> GuardarOrdenAsync(List<CarritoItem> items, long mesaId,
+        //                                    string nombreCliente, string tipoEntrega)
+        //{
+        //    try
+        //    {
+        //        decimal totalOrden = items.Sum(x => x.Subtotal);
+        //        var nuevaOrden = new Pedido
+        //        {
+        //            MesaId = mesaId,
+        //            NombreCliente = nombreCliente,
+        //            TipoEntrega = tipoEntrega,
+        //            Total = totalOrden,
+        //            Estado = "Pendiente",
+        //            FechaHora = DateTime.Now
+        //        };
+
+
+        //        await _supabase.From<Pedido>().Insert(nuevaOrden);
+
+
+        //        var busqueda = await _supabase.From<Pedido>()
+        //            .Where(p => p.MesaId == mesaId && p.Estado == "Pendiente")
+        //            .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
+        //            .Limit(1)
+        //            .Get();
+
+        //        var ordenReal = busqueda.Models.FirstOrDefault();
+        //        if (ordenReal == null) return false;
+
+        //        var detalles = items.Select(item => new DetallePedido
+        //        {
+        //            OrdenId = ordenReal.Id,
+        //            ProductoId = item.Producto.Id,
+        //            Cantidad = item.Cantidad,
+        //            Subtotal = item.Subtotal
+        //        }).ToList();
+
+        //        await _supabase.From<DetallePedido>().Insert(detalles);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error: {ex.Message}");
+        //        return false;
+        //    }
+        //}
+
+        // Todos los pedidos
+        public async Task<bool> GuardarOrdenAsync(
+    List<CarritoItem> items, long mesaId,
+    string nombreCliente, string tipoEntrega,
+    long? clienteId = null,
+    string? notas = null,
+    decimal costoEnvio = 0)
         {
             try
             {
-                
-                decimal totalOrden = items.Sum(x => x.Subtotal);
+                decimal totalOrden = items.Sum(x => x.Subtotal) + costoEnvio;
 
-                
                 var nuevaOrden = new Pedido
                 {
                     MesaId = mesaId,
+                    NombreCliente = nombreCliente,
+                    TipoEntrega = tipoEntrega,
                     Total = totalOrden,
-                    Estado = "Pendiente"
+                    Estado = "Pendiente",
+                    FechaHora = DateTime.Now,
+                    ClienteId = clienteId,
+                    Notas = notas,
+                    CostoEnvio = costoEnvio
                 };
 
-                var respuesta = await _supabase.From<Pedido>().Insert(nuevaOrden);
-                var ordenReal = respuesta.Models.FirstOrDefault();
+                await _supabase.From<Pedido>().Insert(nuevaOrden);
 
+                var busqueda = await _supabase.From<Pedido>()
+                    .Where(p => p.MesaId == mesaId && p.Estado == "Pendiente")
+                    .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
+                    .Limit(1)
+                    .Get();
+
+                var ordenReal = busqueda.Models.FirstOrDefault();
                 if (ordenReal == null) return false;
 
-                
-                var detalles = items.Select(item => new DetallePedido
+                foreach (var item in items)
                 {
-                    OrdenId = ordenReal.Id,
-                    ProductoId = item.Producto.Id,
-                    Cantidad = item.Cantidad,
-                    Subtotal = item.Subtotal
-                }).ToList();
-
-                
-                await _supabase.From<DetallePedido>().Insert(detalles);
+                    await _supabase.From<DetallePedido>().Insert(new DetallePedido
+                    {
+                        OrdenId = ordenReal.Id,
+                        ProductoId = item.Producto.Id,
+                        Cantidad = item.Cantidad,
+                        Subtotal = item.Subtotal
+                    });
+                }
 
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"[GuardarOrden] {ex.Message}");
                 return false;
             }
         }
-
-
         public async Task<List<Pedido>> ObtenerPedidosAsync()
         {
             try
             {
                 var resultado = await _supabase.From<Pedido>()
+                    .Where(p => p.Estado != "Pagado") 
                     .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
                     .Get();
                 return resultado.Models;
@@ -67,6 +128,86 @@ namespace RestauranteNoseCual.Services
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 return new List<Pedido>();
+            }
+        }
+
+        //  Filtrar por tipo de entrega
+        public async Task<List<Pedido>> ObtenerPorTipoAsync(string tipoEntrega)
+        {
+            try
+            {
+                var resultado = await _supabase.From<Pedido>()
+                    .Where(p => p.TipoEntrega == tipoEntrega)
+                    .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
+                    .Get();
+                return resultado.Models;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<Pedido>();
+            }
+        }
+
+        //  Obtener detalle de una orden
+        public async Task<List<DetallePedido>> ObtenerDetalleAsync(long ordenId)
+        {
+            try
+            {
+
+                var resultado = await _supabase.From<DetallePedido>()
+                    .Where(d => d.OrdenId == ordenId)
+                    .Get();
+
+                var detalles = resultado.Models;
+
+
+                foreach (var detalle in detalles)
+                {
+                    var productoResult = await _supabase.From<AltaMenu>()
+                        .Where(p => p.Id == detalle.ProductoId)
+                        .Get();
+
+                    var producto = productoResult.Models.FirstOrDefault();
+                    if (producto != null)
+                    {
+                        detalle.NombreProducto = producto.Nombre;
+                        detalle.PrecioUnitario = producto.Precio; 
+                    }
+                }
+
+                return detalles;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<DetallePedido>();
+            }
+        }
+
+        // Cerrar orden y liberar mesa
+        public async Task<bool> CerrarOrdenAsync(long ordenId, long mesaId)
+        {
+            try
+            {
+              
+                await _supabase.From<Pedido>()
+                    .Where(p => p.Id == ordenId)
+                    .Set(p => p.Estado, "Pagada")
+                    .Update();
+
+                
+                await _supabase.From<Mesa>()
+                    .Where(m => m.Id == mesaId)
+                    .Set(m => m.Estado, "Libre")
+                    .Update();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
             }
         }
     }

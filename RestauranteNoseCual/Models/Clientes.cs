@@ -13,7 +13,7 @@ namespace RestauranteNoseCual.Models
         public string Nombre { get; set; }
 
         [Column("Telefono")]
-        public decimal Telefono { get; set; } 
+        public string Telefono { get; set; } 
 
         [Column("Domicilio")]
         public string Domicilio { get; set; }

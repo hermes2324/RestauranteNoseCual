@@ -11,12 +11,16 @@ public partial class MenuPage : ContentPage
     private string _categoriaActual = "Todos";
 
 
-    public MenuPage(Mesa mesa)
+    public MenuPage(Mesa mesa, string categoria = "Todos")
     {
         InitializeComponent();
         _mesaSeleccionada = mesa;
-        Title = $"Menú — Mesa {mesa.Numero}";
-        CargarProductosAsync("Todos");
+        _categoriaActual = categoria; 
+
+        Title = $"Menú — Mesa {mesa?.Numero}";
+
+        
+        CargarProductosAsync(categoria);
     }
 
     public MenuPage()

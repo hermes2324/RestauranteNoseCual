@@ -32,7 +32,7 @@ namespace RestauranteNoseCual.Controllers
             var nuevoCliente = new Cliente
             {
                 Nombre = nombre,
-                Telefono = decimal.TryParse(telefono, out var tel) ? tel : 0,
+                Telefono = telefono,
                 Domicilio = domicilio,
                 Correo = correo,
                 Contrasena = contrasena

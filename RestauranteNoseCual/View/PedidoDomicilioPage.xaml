@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.PedidoDomicilioPage"
+             BackgroundColor="#121212"
+             Title="Pedido a Domicilio">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- BUSCAR CLIENTE -->
+            <Label Text="BUSCAR CLIENTE" TextColor="#888888"
+                   FontSize="12" FontAttributes="Bold" CharacterSpacing="1"/>
+
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <Border Grid.Column="0" BackgroundColor="#262626"
+                        Stroke="#333333" StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16,0" HeightRequest="52">
+                    <Entry x:Name="EntBuscarTel"
+                           Placeholder="Buscar por teléfono..."
+                           PlaceholderColor="#555555" TextColor="White"
+                           BackgroundColor="Transparent"
+                           Keyboard="Telephone"
+                           VerticalOptions="Center"/>
+                </Border>
+                <Button Grid.Column="1" Text="🔍"
+                        Clicked="OnBuscarClienteClicked"
+                        BackgroundColor="#F5C842" TextColor="#0D0D0D"
+                        FontSize="18" CornerRadius="12"
+                        HeightRequest="52" WidthRequest="52"/>
+            </Grid>
+
+            <!-- DATOS DEL CLIENTE -->
+            <Border x:Name="PanelCliente"
+                    BackgroundColor="#1A1A1A"
+                    StrokeShape="RoundRectangle 16"
+                    Stroke="#2A2A2A" Padding="20,16"
+                    IsVisible="False">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="DATOS DEL CLIENTE" TextColor="#F5C842"
+                           FontSize="12" FontAttributes="Bold" CharacterSpacing="1"/>
+
+                    <!-- Nombre -->
+                    <Label Text="Nombre" TextColor="#888888" FontSize="11" FontAttributes="Bold"/>
+                    <Border BackgroundColor="#262626" Stroke="#333333"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                            Padding="16,0" HeightRequest="52">
+                        <Entry x:Name="EntNombre"
+                               Placeholder="Nombre completo"
+                               PlaceholderColor="#555555" TextColor="White"
+                               BackgroundColor="Transparent"
+                               VerticalOptions="Center"/>
+                    </Border>
+
+                    <!-- Teléfono -->
+                    <Label Text="Teléfono" TextColor="#888888" FontSize="11" FontAttributes="Bold"/>
+                    <Border BackgroundColor="#262626" Stroke="#333333"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                            Padding="16,0" HeightRequest="52">
+                        <Entry x:Name="EntTelefono"
+                               Placeholder="664 123 4567"
+                               PlaceholderColor="#555555" TextColor="White"
+                               BackgroundColor="Transparent"
+                               Keyboard="Telephone"
+                               VerticalOptions="Center"/>
+                    </Border>
+
+                    <!-- Domicilio -->
+                    <Label Text="Dirección de entrega" TextColor="#888888" FontSize="11" FontAttributes="Bold"/>
+                    <Border BackgroundColor="#262626" Stroke="#333333"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                            Padding="16,0" HeightRequest="52">
+                        <Entry x:Name="EntDomicilio"
+                               Placeholder="Calle, número, colonia..."
+                               PlaceholderColor="#555555" TextColor="White"
+                               BackgroundColor="Transparent"
+                               VerticalOptions="Center"/>
+                    </Border>
+
+                    <!-- Notas -->
+                    <Label Text="Notas / Referencias" TextColor="#888888" FontSize="11" FontAttributes="Bold"/>
+                    <Border BackgroundColor="#262626" Stroke="#333333"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                            Padding="16,8">
+                        <Editor x:Name="EntNotas"
+                                Placeholder="Entre calles, color de casa..."
+                                PlaceholderColor="#555555" TextColor="White"
+                                BackgroundColor="Transparent"
+                                HeightRequest="72"/>
+                    </Border>
+
+                    <!-- Costo envío -->
+                    <Label Text="Costo de envío ($)" TextColor="#888888" FontSize="11" FontAttributes="Bold"/>
+                    <Border BackgroundColor="#262626" Stroke="#333333"
+                            StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                            Padding="16,0" HeightRequest="52">
+                        <Entry x:Name="EntCostoEnvio"
+                               Text="0" Placeholder="0.00"
+                               PlaceholderColor="#555555" TextColor="White"
+                               BackgroundColor="Transparent"
+                               Keyboard="Numeric"
+                               VerticalOptions="Center"/>
+                    </Border>
+
+                    <!-- Botón continuar -->
+                    <Button Text="CONTINUAR AL CARRITO →"
+                            Clicked="OnContinuarClicked"
+                            BackgroundColor="#F5C842" TextColor="#0D0D0D"
+                            FontAttributes="Bold" FontSize="14"
+                            HeightRequest="54" CornerRadius="12"
+                            Margin="0,8,0,0"/>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

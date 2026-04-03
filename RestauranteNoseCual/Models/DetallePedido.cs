@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace RestauranteNoseCual.Models
 {
@@ -22,5 +23,11 @@ namespace RestauranteNoseCual.Models
 
         [Column("Subtotal")]
         public decimal Subtotal { get; set; }
+
+        [JsonIgnore]
+        public string NombreProducto { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public decimal PrecioUnitario { get; set; }
     }
 }
