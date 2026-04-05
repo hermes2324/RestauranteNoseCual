@@ -3,7 +3,7 @@ using RestauranteNoseCual.Services;
 
 namespace RestauranteNoseCual.View;
 
-public partial class Pantalla_Principal : FlyoutPage
+public partial class Pantalla_Principal : ContentPage
 {
     private readonly AltaMenuService _menuService = new();
     Mesa _mesa;
@@ -17,66 +17,57 @@ public partial class Pantalla_Principal : FlyoutPage
 
     private void CargarUsuario()
     {
-        var (correo, nombre) = SesionService.ObtenerSesion();
+        var datos = SesionService.ObtenerSesion();
+        string nombre = datos.nombre;
 
         var hora = DateTime.Now.Hour;
         string saludo = hora < 12 ? "¡Buenos días! 🌅"
                       : hora < 18 ? "¡Buenas tardes! ☀️"
                       : "¡Buenas noches! 🌙";
 
-        if (Detail is NavigationPage nav &&
-            nav.CurrentPage is ContentPage page)
-        {
-            var lblSaludo = page.FindByName<Label>("LblSaludo");
-            var lblNombre = page.FindByName<Label>("LblNombreUsuario");
-            var lblAvatar = page.FindByName<Label>("LblAvatar");
+       
+        if (LblSaludo != null) LblSaludo.Text = saludo;
+        if (LblNombreUsuario != null) LblNombreUsuario.Text = nombre;
 
-            if (lblSaludo != null) lblSaludo.Text = saludo;
-            if (lblNombre != null) lblNombre.Text = nombre;
-            if (lblAvatar != null) lblAvatar.Text = nombre.Length > 0
-                                                    ? nombre[0].ToString().ToUpper()
-                                                    : "U";
+        if (LblAvatar != null)
+        {
+            LblAvatar.Text = !string.IsNullOrEmpty(nombre)
+                             ? nombre[0].ToString().ToUpper()
+                             : "U";
         }
     }
 
     private async void CargarDatosAsync()
     {
-        if (Detail is NavigationPage nav &&
-            nav.CurrentPage is ContentPage page)
+        try
         {
-       
             var hamburguesas = await _menuService.ObtenerPorCategoriaAsync("Hamburguesa");
             var alitas = await _menuService.ObtenerPorCategoriaAsync("Alita");
             var boneles = await _menuService.ObtenerPorCategoriaAsync("Boneles");
 
-            var lblHamb = page.FindByName<Label>("LblCountHamb");
-            var lblAlit = page.FindByName<Label>("LblCountAlit");
-            var lblBon = page.FindByName<Label>("LblCountBon");
-
-            if (lblHamb != null) lblHamb.Text = $"{hamburguesas.Count} items";
-            if (lblAlit != null) lblAlit.Text = $"{alitas.Count} items";
-            if (lblBon != null) lblBon.Text = $"{boneles.Count} items";
-
            
+            if (LblCountHamb != null) LblCountHamb.Text = $"{hamburguesas.Count} items";
+            if (LblCountAlit != null) LblCountAlit.Text = $"{alitas.Count} items";
+            if (LblCountBon != null) LblCountBon.Text = $"{boneles.Count} items";
+
             var todos = await _menuService.ObtenerTodosAsync();
-            var loMasPedido = page.FindByName<CollectionView>("ListaMasPedido");
-            if (loMasPedido != null)
-                loMasPedido.ItemsSource = todos.Take(3).ToList();
+            if (ListaMasPedido != null)
+                ListaMasPedido.ItemsSource = todos.Take(3).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar datos: {ex.Message}");
         }
     }
 
     private async void OnCategoriaClicked(object sender, TappedEventArgs e)
     {
         string categoria = e.Parameter?.ToString() ?? "Todos";
-        if (Detail is NavigationPage nav)
-        {
-            await nav.PushAsync(new MenuPage(_mesa, categoria));
-        }
+        await Navigation.PushAsync(new MenuPage(_mesa, categoria));
     }
 
     private async void OnVerTodoClicked(object sender, TappedEventArgs e)
     {
-        if (Detail is NavigationPage nav)
-            await nav.PushAsync(new MenuPage());
+        await Navigation.PushAsync(new MenuPage());
     }
 }

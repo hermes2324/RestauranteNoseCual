@@ -28,7 +28,6 @@ namespace RestauranteNoseCual.Services
                 .Insert(cliente);
             return resultado.Models.First();
         }
-
         
         public async Task<Cliente?> ValidarLoginAsync(string correo, string contrasena)
         {
@@ -92,6 +91,7 @@ namespace RestauranteNoseCual.Services
                     .Where(c => c.Id == cliente.Id)
                     .Set(c => c.Domicilio, cliente.Domicilio)
                     .Set(c => c.Nombre, cliente.Nombre)
+                    .Set(c => c.Notas, cliente.Notas)
                     .Update();
                 return cliente;
             }
@@ -101,5 +101,7 @@ namespace RestauranteNoseCual.Services
                 return resultado.Models.First();
             }
         }
+
+
     }
 }

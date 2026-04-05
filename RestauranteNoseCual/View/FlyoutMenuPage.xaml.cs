@@ -1,23 +1,42 @@
 ﻿using Microsoft.Maui.Controls;
 using RestauranteNoseCual.Models;
 using RestauranteNoseCual.Services;
+using Syncfusion.Maui.DataGrid;
 
 namespace RestauranteNoseCual.View;
 
-public partial class FlyoutMenuPage : ContentPage
+public partial class FlyoutMenuPage : FlyoutPage  
 {
+    Controllers.Control_Cliente _controlCliente = new();
     public FlyoutMenuPage()
     {
         InitializeComponent();
+        CargarMenuPorRol();
+    }
 
-        menuItemsCollection.ItemsSource = new List<FlyoutPageItem>
+    private async void CargarMenuPorRol()
+    {
+        var sesion = SesionService.ObtenerSesion();
+        string rol = await _controlCliente.ObtenerRolRealAsync(sesion.correo);
+        var menuItems = new List<FlyoutPageItem>
         {
-            new FlyoutPageItem { Title = "Inicio",        IconSource = "🏠", TargetType = typeof(Pantalla_Principal) },
-            //new FlyoutPageItem { Title = "Ver Menú", IconSource = "🍽️", TargetType = typeof(MenuPage) },
-            new FlyoutPageItem { Title = "Pedidos",   IconSource = "📦", TargetType = typeof(Pedidos) },
-            new FlyoutPageItem { Title = "Crear Orden", IconSource = "🪑", TargetType = typeof(SeleccionMesaPage) },
-            new FlyoutPageItem { Title = "Cerrar Sesión", IconSource = "🚪", TargetType = null },
+            new() { Title = "Inicio", IconSource = "🏠", TargetType = typeof(Pantalla_Principal) }
         };
+
+        if (rol == "Admin" || rol == "Mesero")
+        {
+            menuItems.Add(new() { Title = "Pedidos", IconSource = "📦", TargetType = typeof(Pedidos) });
+            menuItems.Add(new() { Title = "Crear Orden", IconSource = "🪑", TargetType = typeof(SeleccionMesaPage) });
+        }
+        if (rol == "Cliente")
+        {
+            menuItems.Add(new() { Title = "Mi Perfil", IconSource = "👤", TargetType = typeof(PerfilPage) });
+            menuItems.Add(new() { Title = "Hacer Pedido", IconSource = "🍕", TargetType = typeof(MenuPage) });     
+            menuItems.Add(new() { Title = "Mis Órdenes", IconSource = "📜", TargetType = typeof(MisPedidosPage) });
+        }
+        menuItems.Add(new() { Title = "Cerrar Sesión", IconSource = "🚪", TargetType = null });
+
+        menuItemsCollection.ItemsSource = menuItems;
     }
 
     private async void OnMenuItemSelected(object sender, SelectionChangedEventArgs e)
@@ -25,17 +44,13 @@ public partial class FlyoutMenuPage : ContentPage
         if (e.CurrentSelection.FirstOrDefault() is not FlyoutPageItem item)
             return;
 
-        if (Application.Current.MainPage is FlyoutPage flyoutPage)
-            flyoutPage.IsPresented = false;
+        IsPresented = false; // ← directo, ya somos FlyoutPage
 
         if (item.TargetType == null)
         {
-            bool confirm = await DisplayAlert("Cerrar sesión",
-                                              "¿Seguro que deseas salir?",
-                                              "Sí", "No");
+            bool confirm = await DisplayAlert("Cerrar sesión", "¿Seguro que deseas salir?", "Sí", "No");
             if (confirm)
             {
-                
                 SesionService.CerrarSesion();
                 Application.Current.MainPage = new NavigationPage(new Inicio_Sesion());
             }
@@ -43,11 +58,7 @@ public partial class FlyoutMenuPage : ContentPage
         }
 
         var page = (Page)Activator.CreateInstance(item.TargetType);
-
-        if (Application.Current.MainPage is FlyoutPage fp &&
-            fp.Detail is NavigationPage navPage)
-        {
-            await navPage.PushAsync(page);
-        }
+        Detail = new NavigationPage(page) { BackgroundColor = Color.FromArgb("#0D0D0D") };
+        menuItemsCollection.SelectedItem = null;
     }
 }

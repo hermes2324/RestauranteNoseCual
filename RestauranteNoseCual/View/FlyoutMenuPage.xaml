@@ -1,67 +1,66 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RestauranteNoseCual.View.FlyoutMenuPage"
-             Title="Menú"
-             BackgroundColor="#111111">
-    <VerticalStackLayout Padding="0" Spacing="0">
+<FlyoutPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:views="clr-namespace:RestauranteNoseCual.View"
+            x:Class="RestauranteNoseCual.View.FlyoutMenuPage"
+            FlyoutLayoutBehavior="Popover">
 
-        <!-- Header -->
-        <Grid BackgroundColor="#F5C842"
-              HeightRequest="180"
-              Padding="24,40,24,20">
-            <VerticalStackLayout VerticalOptions="End" Spacing="6">
-                <Border BackgroundColor="#0D0D0D"
-                        StrokeShape="RoundRectangle 30"
-                        HeightRequest="56"
-                        WidthRequest="56"
-                        HorizontalOptions="Start"
-                        Stroke="Transparent">
-                    <Label Text="🍔"
-                           FontSize="28"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"/>
-                </Border>
-                <Label Text="BONELESS HOUSE"
-                       TextColor="#0D0D0D"
-                       FontSize="16"
-                       FontAttributes="Bold"
-                       CharacterSpacing="1"/>
-                <Label Text="Hamburguesas · Alitas · Boneles"
-                       TextColor="#333333"
-                       FontSize="11"/>
-            </VerticalStackLayout>
-        </Grid>
+    <FlyoutPage.Flyout>
+        <ContentPage Title="Menú" BackgroundColor="#111111">
+            <Grid RowDefinitions="180,*,40">
 
-        <!-- Items del menú -->
-        <CollectionView x:Name="menuItemsCollection"
-                        SelectionMode="Single"
-                        SelectionChanged="OnMenuItemSelected"
-                        Margin="0,16,0,0">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="24,14" ColumnDefinitions="32,*">
-                        <Label Grid.Column="0"
-                               Text="{Binding IconSource}"
-                               FontSize="18"
-                               VerticalOptions="Center"/>
-                        <Label Grid.Column="1"
-                               Text="{Binding Title}"
-                               FontSize="15"
-                               TextColor="White"
-                               VerticalOptions="Center"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <!-- Header -->
+                <Grid Grid.Row="0" BackgroundColor="#F5C842" Padding="24,40,24,20">
+                    <VerticalStackLayout VerticalOptions="End" Spacing="6">
+                        <Border BackgroundColor="#0D0D0D"
+                                StrokeShape="RoundRectangle 30"
+                                HeightRequest="56" WidthRequest="56"
+                                HorizontalOptions="Start" Stroke="Transparent">
+                            <Label Text="🍔" FontSize="28"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="BONELESS HOUSE" TextColor="#0D0D0D"
+                               FontSize="16" FontAttributes="Bold" CharacterSpacing="1"/>
+                        <Label Text="Hamburguesas · Alitas · Boneles"
+                               TextColor="#333333" FontSize="11"/>
+                    </VerticalStackLayout>
+                </Grid>
 
-        <!-- Versión -->
-        <Label Text="v1.0.0"
-               TextColor="#444444"
-               FontSize="11"
-               HorizontalOptions="Center"
-               VerticalOptions="EndAndExpand"
-               Margin="0,0,0,24"/>
+                <!-- Items -->
+                <CollectionView Grid.Row="1"
+                                x:Name="menuItemsCollection"
+                                SelectionMode="Single"
+                                SelectionChanged="OnMenuItemSelected"
+                                Margin="0,16,0,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="24,14" ColumnDefinitions="32,*">
+                                <Label Grid.Column="0"
+                                       Text="{Binding IconSource}"
+                                       FontSize="18" VerticalOptions="Center"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Title}"
+                                       FontSize="15" TextColor="White"
+                                       VerticalOptions="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-    </VerticalStackLayout>
-</ContentPage>
+                <!-- Versión -->
+                <Label Grid.Row="2" Text="v1.0.0" TextColor="#444444"
+                       FontSize="11" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+            </Grid>
+        </ContentPage>
+    </FlyoutPage.Flyout>
+
+    <FlyoutPage.Detail>
+        <NavigationPage BackgroundColor="#0D0D0D">
+            <x:Arguments>
+                <views:Pantalla_Principal />
+            </x:Arguments>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+
+</FlyoutPage>

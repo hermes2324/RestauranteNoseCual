@@ -29,17 +29,26 @@ namespace RestauranteNoseCual.View
 
         private async void CargarDetalleAsync()
         {
-            
             LblFolio.Text = $"#{_pedido.Id}";
             LblCliente.Text = _pedido.NombreCliente;
-            LblMesa.Text = $"Mesa {_pedido.MesaId}";
             LblTipo.Text = _pedido.TipoEntrega;
             LblTotal.Text = _pedido.Total.ToString("C2");
 
-           
-            BtnCobrar.IsVisible = _pedido.Estado != "Pagada";
+            
+            if (_pedido.TipoEntrega == "Domicilio" || _pedido.MesaId == null)
+            {
+                LblMesa.IsVisible = false;
+            }
+            else
+            {
+                LblMesa.IsVisible = true;
+                LblMesa.Text = $"Mesa {_pedido.MesaId}";
+            }
 
-           
+            string rol = SesionService.ObtenerRol();
+            bool esPersonalInterno = rol == "Admin" || rol == "Mesero";
+            BtnCobrar.IsVisible = esPersonalInterno && _pedido.Estado != "Pagada";
+
             var detalle = await _ordenService.ObtenerDetalleAsync(_pedido.Id);
             GridDetalle.ItemsSource = detalle;
         }

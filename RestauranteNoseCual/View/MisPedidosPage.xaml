@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.MisPedidosPage"
+             BackgroundColor="#0D0D0D"
+             Title="Mis Órdenes">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                BackgroundColor="#111111"
+                Stroke="Transparent"
+                Padding="20,48,20,16">
+            <Label Text="📜 Mis Órdenes"
+                   TextColor="White"
+                   FontSize="22"
+                   FontAttributes="Bold"/>
+        </Border>
+
+        <!-- Lista de órdenes -->
+        <CollectionView Grid.Row="1"
+                        x:Name="ListaOrdenes"
+                        SelectionMode="Single"
+                        SelectionChanged="OnOrdenSeleccionada"
+                        Margin="16,8,16,16">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center"
+                                     HorizontalOptions="Center"
+                                     Spacing="12">
+                    <Label Text="🍽️" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="Aún no tienes órdenes"
+                           TextColor="#555555" FontSize="15"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 16"
+                            Stroke="#2A2A2A"
+                            Margin="0,0,0,12"
+                            Padding="16,14">
+                        <Grid ColumnDefinitions="*,Auto"
+                              RowDefinitions="Auto,Auto,Auto"
+                              RowSpacing="6">
+
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Id, StringFormat='Orden #{0}'}"
+                                   TextColor="White" FontSize="15" FontAttributes="Bold"/>
+
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding FechaHora, StringFormat='{0:dd/MM/yy}'}"
+                                   TextColor="#888888" FontSize="11"
+                                   VerticalOptions="Center"/>
+
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding TipoEntrega}"
+                                   TextColor="#888888" FontSize="12"/>
+
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding Estado}"
+                                   TextColor="#F5C842" FontSize="12"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"/>
+
+                            <Label Grid.Row="2" Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Text="{Binding Total, StringFormat='Total: ${0:F2}'}"
+                                   TextColor="#F5C842" FontSize="15"
+                                   FontAttributes="Bold"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

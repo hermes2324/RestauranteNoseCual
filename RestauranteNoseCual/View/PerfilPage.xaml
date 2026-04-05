@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.PerfilPage"
+             BackgroundColor="#0D0D0D"
+             Title="Mi Perfil">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Header con avatar -->
+            <Grid BackgroundColor="#111111"
+                  Padding="20,48,20,32">
+                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                    <Border BackgroundColor="#F5C842"
+                            StrokeShape="RoundRectangle 50"
+                            HeightRequest="80" WidthRequest="80"
+                            Stroke="Transparent"
+                            HorizontalOptions="Center">
+                        <Label x:Name="LblAvatar"
+                               Text="U"
+                               TextColor="#0D0D0D"
+                               FontSize="36"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Border>
+                    <Label x:Name="LblNombre"
+                           Text="..."
+                           TextColor="White"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Border BackgroundColor="#1E1E1E"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="Transparent"
+                            Padding="12,4"
+                            HorizontalOptions="Center">
+                        <Label x:Name="LblRol"
+                               Text="Cliente"
+                               TextColor="#F5C842"
+                               FontSize="12"
+                               FontAttributes="Bold"/>
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Campos editables -->
+            <VerticalStackLayout Padding="20,24,20,0" Spacing="16">
+
+                <Label Text="INFORMACIÓN PERSONAL"
+                       TextColor="#888888" FontSize="11"
+                       FontAttributes="Bold" CharacterSpacing="2"/>
+
+                <!-- Nombre -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Nombre" TextColor="#888888" FontSize="12"/>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="#2A2A2A" StrokeThickness="1"
+                            Padding="16,0" HeightRequest="50">
+                        <Entry x:Name="EntryNombre"
+                               TextColor="White"
+                               PlaceholderColor="#555555"
+                               Placeholder="Tu nombre"
+                               BackgroundColor="Transparent"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Correo (solo lectura) -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Correo" TextColor="#888888" FontSize="12"/>
+                    <Border BackgroundColor="#141414"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="#2A2A2A" StrokeThickness="1"
+                            Padding="16,0" HeightRequest="50">
+                        <Entry x:Name="EntryCorreo"
+                               TextColor="#666666"
+                               BackgroundColor="Transparent"
+                               IsReadOnly="True"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Teléfono -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Teléfono" TextColor="#888888" FontSize="12"/>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="#2A2A2A" StrokeThickness="1"
+                            Padding="16,0" HeightRequest="50">
+                        <Entry x:Name="EntryTelefono"
+                               TextColor="White"
+                               PlaceholderColor="#555555"
+                               Placeholder="Tu teléfono"
+                               Keyboard="Telephone"
+                               BackgroundColor="Transparent"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Domicilio -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Domicilio" TextColor="#888888" FontSize="12"/>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="#2A2A2A" StrokeThickness="1"
+                            Padding="16,8">
+                        <Editor x:Name="EntryDomicilio"
+                                TextColor="White"
+                                PlaceholderColor="#555555"
+                                Placeholder="Tu dirección"
+                                BackgroundColor="Transparent"
+                                AutoSize="TextChanges"
+                                MinimumHeightRequest="60"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Notas -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Notas / Preferencias" TextColor="#888888" FontSize="12"/>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="#2A2A2A" StrokeThickness="1"
+                            Padding="16,8">
+                        <Editor x:Name="EntryNotas"
+                                TextColor="White"
+                                PlaceholderColor="#555555"
+                                Placeholder="Ej: sin cebolla, alergia a..."
+                                BackgroundColor="Transparent"
+                                AutoSize="TextChanges"
+                                MinimumHeightRequest="60"/>
+                    </Border>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- Botón guardar -->
+            <Button x:Name="BtnGuardar"
+                    Text="💾 Guardar Cambios"
+                    Clicked="OnGuardarClicked"
+                    BackgroundColor="#F5C842"
+                    TextColor="#0D0D0D"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HeightRequest="54"
+                    CornerRadius="12"
+                    Margin="20,24,20,16"/>
+
+            <!-- Cerrar sesión -->
+            <Button Text="🚪 Cerrar Sesión"
+                    Clicked="OnCerrarSesionClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="#FF4444"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    HeightRequest="48"
+                    Margin="20,0,20,40"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

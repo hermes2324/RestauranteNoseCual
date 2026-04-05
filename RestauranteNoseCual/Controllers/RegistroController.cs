@@ -35,7 +35,8 @@ namespace RestauranteNoseCual.Controllers
                 Telefono = telefono,
                 Domicilio = domicilio,
                 Correo = correo,
-                Contrasena = contrasena
+                Contrasena = contrasena,
+                Rol = "Cliente"
             };
 
             await _clienteService.GuardarClienteAsync(nuevoCliente);

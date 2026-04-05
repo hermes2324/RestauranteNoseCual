@@ -18,18 +18,39 @@ namespace RestauranteNoseCual.View
             InitializeComponent();
             _mesa = mesa;
 
-            if (_mesa == null) 
+            
+            if (SesionService.HaySesionActiva())
+            {
+                var (correo, nombre) = SesionService.ObtenerSesion();
+                string rol = SesionService.ObtenerRol();
+
+                
+                if (rol == "Cliente")
+                {
+                    EntNombreCliente.Text = nombre;
+
+                    
+                    PedidoTemporal.NombreCliente = nombre;
+                    PedidoTemporal.IdCliente = Preferences.Get("sesion_id", (long)0);
+                }
+            }
+
+          
+            if (_mesa == null)
             {
                 PkrEntrega.SelectedItem = "Domicilio";
                 PkrEntrega.IsEnabled = false;
 
-               
-                EntNombreCliente.Text = PedidoTemporal.NombreCliente;
+              
+                if (string.IsNullOrEmpty(EntNombreCliente.Text))
+                {
+                    EntNombreCliente.Text = PedidoTemporal.NombreCliente;
+                }
             }
             else
             {
                 PkrEntrega.SelectedItem = "Mesa";
-                PedidoTemporal.NombreCliente = string.Empty;
+                
             }
 
             ActualizarTotal();
@@ -87,7 +108,7 @@ namespace RestauranteNoseCual.View
                     mesaId: _mesa?.Id,
                     nombreCliente: EntNombreCliente.Text.Trim(),
                     tipoEntrega: tipoEntrega,
-                    clienteId: PedidoTemporal.IdCliente,     
+                    clienteId: PedidoTemporal.IdCliente > 0 ? PedidoTemporal.IdCliente : null,
                     notas: PedidoTemporal.Notas,             
                     costoEnvio: esDomicilio ? 20m : 0m        
                 );

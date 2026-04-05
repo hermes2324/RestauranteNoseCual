@@ -1,4 +1,4 @@
-using Supabase.Postgrest.Attributes;
+﻿using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 using System.Text.Json.Serialization;
 
@@ -22,11 +22,16 @@ namespace RestauranteNoseCual.Models
         [Column("Correo")]
         public string Correo { get; set; }
 
-        [Column("Contrase�a")]
+        [Column("Contraseña")]
         public string Contrasena { get; set; }
+        [Column("Rol")]
+        public string Rol { get; set; } = "Cliente";
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public string UltimasNotas { get; set; } = string.Empty;
+
+        [Column("Notas")] 
+        public string Notas { get; set; } = string.Empty;
 
     }
 }

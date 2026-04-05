@@ -9,7 +9,7 @@ public partial class MenuPage : ContentPage
     private readonly MenuController _menuController = new();
     //private readonly Mesa _mesaSeleccionada;
     private string _categoriaActual = "Todos";
-
+    public MenuPage() : this(null, "Todos") { }
 
     private readonly Mesa? _mesaSeleccionada;
 

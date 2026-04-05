@@ -224,7 +224,14 @@ namespace RestauranteNoseCual.Services
         //        return false;
         //    }
         //}
-
+        public async Task<List<Pedido>> ObtenerPorClienteAsync(long clienteId)
+        {
+            var result = await _supabase
+                .From<Pedido>()
+                .Where(o => o.ClienteId == clienteId)
+                .Get();
+            return result.Models;
+        }
         public async Task<bool> CerrarOrdenAsync(long ordenId, long? mesaId) 
         {
             try

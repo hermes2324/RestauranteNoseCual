@@ -27,7 +27,13 @@ namespace RestauranteNoseCual.Controllers
 
                 var clienteGuardado = await _clienteService.GuardarClienteAsync(cliente);
 
-                SesionService.GuardarSesion(clienteGuardado.Correo, clienteGuardado.Nombre);
+                
+                SesionService.GuardarSesion(
+                    clienteGuardado.Id,
+                    clienteGuardado.Correo,
+                    clienteGuardado.Nombre,
+                    clienteGuardado.Rol  
+                );
 
                 return (true, $"Bienvenido, {clienteGuardado.Nombre}", clienteGuardado);
             }
@@ -37,7 +43,7 @@ namespace RestauranteNoseCual.Controllers
             }
         }
 
-      
+
         public async Task<(bool exito, string mensaje, Cliente? cliente)> LoginManualAsync(string correo, string contrasena)
         {
             try
@@ -46,11 +52,17 @@ namespace RestauranteNoseCual.Controllers
                     return (false, "Ingresa correo y contraseña", null);
 
                 var cliente = await _clienteService.ValidarLoginAsync(correo, contrasena);
+
                 if (cliente == null)
                     return (false, "Correo o contraseña incorrectos", null);
 
-      
-                SesionService.GuardarSesion(cliente.Correo, cliente.Nombre);
+                
+                SesionService.GuardarSesion(
+                    cliente.Id,     
+                    cliente.Correo,  
+                    cliente.Nombre,  
+                    cliente.Rol      
+                );
 
                 return (true, $"Bienvenido, {cliente.Nombre}", cliente);
             }
