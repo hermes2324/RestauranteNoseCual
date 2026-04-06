@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
              x:Class="RestauranteNoseCual.View.MisPedidosPage"
              BackgroundColor="#0D0D0D"
              Title="Mis Órdenes">
@@ -18,66 +19,108 @@
                    FontAttributes="Bold"/>
         </Border>
 
-        <!-- Lista de órdenes -->
-        <CollectionView Grid.Row="1"
-                        x:Name="ListaOrdenes"
-                        SelectionMode="Single"
-                        SelectionChanged="OnOrdenSeleccionada"
-                        Margin="16,8,16,16">
+        <!-- SfDataGrid -->
+        <Grid Grid.Row="1" RowDefinitions="*,Auto" Margin="16,8,16,16">
 
-            <CollectionView.EmptyView>
-                <VerticalStackLayout VerticalOptions="Center"
-                                     HorizontalOptions="Center"
-                                     Spacing="12">
-                    <Label Text="🍽️" FontSize="48" HorizontalOptions="Center"/>
-                    <Label Text="Aún no tienes órdenes"
-                           TextColor="#555555" FontSize="15"
-                           HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-            </CollectionView.EmptyView>
+            <syncfusion:SfDataGrid x:Name="GridOrdenes"
+                                   Grid.Row="0"
+                                   AutoGenerateColumnsMode="None"
+                                   GridLinesVisibility="Horizontal"
+                                   HeaderGridLinesVisibility="Horizontal"
+                                   BackgroundColor="#1A1A1A"
+                                   SelectionMode="Single"
+                                   NavigationMode="Row"
+                                   CellTapped="OnOrdenTapped">
 
-            
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border BackgroundColor="#1A1A1A"
-                            StrokeShape="RoundRectangle 16"
-                            Stroke="#2A2A2A"
-                            Margin="0,0,0,12"
-                            Padding="16,14">
-                        <Grid ColumnDefinitions="*,Auto"
-                              RowDefinitions="Auto,Auto,Auto"
-                              RowSpacing="6">
+                <syncfusion:SfDataGrid.DefaultStyle>
+                    <syncfusion:DataGridStyle
+                        HeaderRowBackground="#111111"
+                        HeaderRowTextColor="#F5C842"
+                        GridLineColor="#2A2A2A"
+                        SelectionBackground="#2A2A2A"/>
+                </syncfusion:SfDataGrid.DefaultStyle>
 
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="{Binding Id, StringFormat='Orden #{0}'}"
-                                   TextColor="White" FontSize="15" FontAttributes="Bold"/>
+                <syncfusion:SfDataGrid.Columns>
 
-                            <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding FechaHora, StringFormat='{0:dd/MM/yy}'}"
-                                   TextColor="#888888" FontSize="11"
-                                   VerticalOptions="Center"/>
+                    <syncfusion:DataGridTextColumn MappingName="Id"
+                                                   HeaderText="Orden"
+                                                   Width="70">
+                        <syncfusion:DataGridTextColumn.CellStyle>
+                            <Style TargetType="syncfusion:DataGridCell">
+                                <Setter Property="TextColor" Value="White"/>
+                                <Setter Property="FontAttributes" Value="Bold"/>
+                            </Style>
+                        </syncfusion:DataGridTextColumn.CellStyle>
+                    </syncfusion:DataGridTextColumn>
 
-                            <Label Grid.Row="1" Grid.Column="0"
-                                   Text="{Binding TipoEntrega}"
-                                   TextColor="#888888" FontSize="12"/>
+                    <syncfusion:DataGridTextColumn MappingName="FechaHora"
+                                                   HeaderText="Fecha"
+                                                   Format="dd/MM/yy"
+                                                   Width="90">
+                        <syncfusion:DataGridTextColumn.CellStyle>
+                            <Style TargetType="syncfusion:DataGridCell">
+                                <Setter Property="TextColor" Value="#888888"/>
+                            </Style>
+                        </syncfusion:DataGridTextColumn.CellStyle>
+                    </syncfusion:DataGridTextColumn>
 
-                            <Label Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding Estado}"
-                                   TextColor="#F5C842" FontSize="12"
-                                   FontAttributes="Bold"
-                                   VerticalOptions="Center"/>
+                    <syncfusion:DataGridTextColumn MappingName="TipoEntrega"
+                                                   HeaderText="Tipo"
+                                                   Width="90">
+                        <syncfusion:DataGridTextColumn.CellStyle>
+                            <Style TargetType="syncfusion:DataGridCell">
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </syncfusion:DataGridTextColumn.CellStyle>
+                    </syncfusion:DataGridTextColumn>
 
-                            <Label Grid.Row="2" Grid.Column="0"
-                                   Grid.ColumnSpan="2"
-                                   Text="{Binding Total, StringFormat='Total: ${0:F2}'}"
-                                   TextColor="#F5C842" FontSize="15"
-                                   FontAttributes="Bold"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+                    <syncfusion:DataGridTextColumn MappingName="Estado"
+                                                   HeaderText="Estado"
+                                                   Width="100">
+                        <syncfusion:DataGridTextColumn.CellStyle>
+                            <Style TargetType="syncfusion:DataGridCell">
+                                <Setter Property="TextColor" Value="#F5C842"/>
+                                <Setter Property="FontAttributes" Value="Bold"/>
+                            </Style>
+                        </syncfusion:DataGridTextColumn.CellStyle>
+                    </syncfusion:DataGridTextColumn>
 
-        </CollectionView>
+                    <syncfusion:DataGridNumericColumn MappingName="Total"
+                                                      HeaderText="Total"
+                                                      Format="C2"
+                                                      Width="100">
+                        <syncfusion:DataGridNumericColumn.CellStyle>
+                            <Style TargetType="syncfusion:DataGridCell">
+                                <Setter Property="TextColor" Value="#F5C842"/>
+                                <Setter Property="FontAttributes" Value="Bold"/>
+                            </Style>
+                        </syncfusion:DataGridNumericColumn.CellStyle>
+                    </syncfusion:DataGridNumericColumn>
 
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
+            <!-- Empty view manual -->
+            <VerticalStackLayout x:Name="PanelVacio"
+                                 Grid.Row="0"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="12"
+                                 IsVisible="False">
+                <Label Text="🍽️" FontSize="48" HorizontalOptions="Center"/>
+                <Label Text="Aún no tienes órdenes"
+                       TextColor="#555555" FontSize="15"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <!-- Toca una fila para ver detalle -->
+            <Label Grid.Row="1"
+                   Text="Toca una orden para ver el detalle"
+                   TextColor="#444444"
+                   FontSize="11"
+                   HorizontalOptions="Center"
+                   Margin="0,8,0,0"/>
+
+        </Grid>
     </Grid>
 </ContentPage>

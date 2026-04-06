@@ -1,15 +1,26 @@
 using RestauranteNoseCual.Models;
 using RestauranteNoseCual.Services;
+using Syncfusion.Maui.DataGrid;
 
 namespace RestauranteNoseCual.View;
 
 public partial class MisPedidosPage : ContentPage
 {
     private readonly OrdenService _ordenService = new();
+    private List<Pedido> _ordenes = new();
 
     public MisPedidosPage()
     {
         InitializeComponent();
+
+        GridOrdenes.QueryRowHeight += (s, e) =>
+        {
+            if (e.RowIndex > 0)
+            {
+                e.Height = 52;
+                e.Handled = true;
+            }
+        };
     }
 
     protected override async void OnAppearing()
@@ -22,10 +33,22 @@ public partial class MisPedidosPage : ContentPage
     {
         try
         {
-            // Obtiene el id del cliente desde la sesión
             long clienteId = SesionService.ObtenerIdCliente();
-            var ordenes = await _ordenService.ObtenerPorClienteAsync(clienteId);
-            ListaOrdenes.ItemsSource = ordenes.OrderByDescending(o => o.FechaHora).ToList();
+            _ordenes = (await _ordenService.ObtenerPorClienteAsync(clienteId))
+                        .OrderByDescending(o => o.FechaHora)
+                        .ToList();
+
+            if (_ordenes.Any())
+            {
+                GridOrdenes.ItemsSource = _ordenes;
+                GridOrdenes.IsVisible = true;
+                PanelVacio.IsVisible = false;
+            }
+            else
+            {
+                GridOrdenes.IsVisible = false;
+                PanelVacio.IsVisible = true;
+            }
         }
         catch (Exception ex)
         {
@@ -33,14 +56,13 @@ public partial class MisPedidosPage : ContentPage
         }
     }
 
-    private async void OnOrdenSeleccionada(object sender, SelectionChangedEventArgs e)
+    private async void OnOrdenTapped(object sender, DataGridCellTappedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not Pedido pedido)
-            return;
+        if (e.RowData is not Pedido pedido) return;
 
-        ListaOrdenes.SelectedItem = null;
+        // Quita la selección visual
+        GridOrdenes.SelectedRow = null;
 
-        // Reutiliza tu OrdenDetallePage existente
         await Navigation.PushAsync(new OrdenDetallePage(pedido));
     }
 }
