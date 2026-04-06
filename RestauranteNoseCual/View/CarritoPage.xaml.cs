@@ -156,6 +156,29 @@ namespace RestauranteNoseCual.View
             string rol = SesionService.ObtenerRol();
             bool esClienteDomicilio = esDomicilio && rol == "Cliente";
 
+            if (esClienteDomicilio)
+            {
+                var (correo, _) = SesionService.ObtenerSesion();
+                var cliente = await _clienteService.ObtenerPorCorreoAsync(correo);
+
+                bool perfilIncompleto = cliente == null
+                    || string.IsNullOrWhiteSpace(cliente.Telefono)
+                    || string.IsNullOrWhiteSpace(cliente.Domicilio);
+
+                if (perfilIncompleto)
+                {
+                    bool irAPerfil = await DisplayAlert(
+                        "Perfil incompleto",
+                        "Necesitas teléfono y domicilio para hacer un pedido a domicilio.\n¿Ir a tu perfil ahora?",
+                        "Sí, completar", "Cancelar");
+
+                    if (irAPerfil)
+                        await Navigation.PushAsync(new PerfilPage());
+
+                    return; 
+                }
+            }
+
             string destino = !esDomicilio ? $"Mesa {_mesa.Numero}" : "Domicilio";
             string tipoEntrega = PkrEntrega.SelectedItem?.ToString() ?? (esDomicilio ? "Domicilio" : "Mesa");
 

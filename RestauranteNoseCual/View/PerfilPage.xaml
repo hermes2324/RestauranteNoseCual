@@ -91,10 +91,18 @@
                         <Entry x:Name="EntryTelefono"
                                TextColor="White"
                                PlaceholderColor="#555555"
-                               Placeholder="Tu teléfono"
+                               Placeholder="10 dígitos"
                                Keyboard="Telephone"
-                               BackgroundColor="Transparent"/>
+                               MaxLength="10"
+                               BackgroundColor="Transparent"
+                               TextChanged="OnTelefonoChanged"/>
                     </Border>
+                    
+                    <Label x:Name="LblContadorTel"
+                                   Text="0/10"
+                                   TextColor="#555555"
+                                   FontSize="11"
+                                   HorizontalOptions="End"/>
                 </VerticalStackLayout>
 
                 <!-- Domicilio -->

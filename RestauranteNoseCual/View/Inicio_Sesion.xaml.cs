@@ -17,13 +17,30 @@ public partial class Inicio_Sesion : ContentPage
 
         if (exito && cliente != null)
         {
-            // 1. Guardamos la sesión incluyendo el Rol que viene de la base de datos
             SesionService.GuardarSesion(cliente.Id, cliente.Correo, cliente.Nombre, cliente.Rol);
-
             await DisplayAlert("Éxito", mensaje, "Continuar");
 
-            // 2. Redirigimos según el rol
-            RedirigirSegunRol(cliente.Rol);
+           
+            bool perfilIncompleto = string.IsNullOrWhiteSpace(cliente.Telefono)
+                                 || string.IsNullOrWhiteSpace(cliente.Domicilio);
+
+            if (perfilIncompleto && cliente.Rol == "Cliente")
+            {
+                await DisplayAlert(
+                    "Completa tu perfil",
+                    "Para hacer pedidos necesitamos tu teléfono y domicilio.",
+                    "Entendido");
+
+                
+                var flyout = new View.FlyoutMenuPage();
+                Application.Current.MainPage = flyout;
+
+                await flyout.Detail.Navigation.PushAsync(new View.PerfilPage());
+            }
+            else
+            {
+                RedirigirSegunRol(cliente.Rol);
+            }
         }
         else
         {

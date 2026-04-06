@@ -73,6 +73,7 @@ namespace RestauranteNoseCual.Services
                 await _supabase.From<Cliente>()
                     .Where(c => c.Id == cliente.Id)
                     .Set(c => c.Domicilio, cliente.Domicilio)
+                    .Set(c => c.Telefono, cliente.Telefono)
                     .Set(c => c.Nombre, cliente.Nombre)
                     .Set(c => c.Notas, cliente.Notas)
                     .Update();

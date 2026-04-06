@@ -48,10 +48,60 @@ public partial class PerfilPage : ContentPage
             Console.WriteLine($"Error cargando perfil: {ex.Message}");
         }
     }
+    // Evento para filtrar solo números y mostrar contador
+    private void OnTelefonoChanged(object sender, TextChangedEventArgs e)
+    {
+        var entry = (Entry)sender;
+
+        // Solo permite dígitos
+        string soloNumeros = new string(entry.Text?.Where(char.IsDigit).ToArray() ?? Array.Empty<char>());
+
+        if (entry.Text != soloNumeros)
+        {
+            entry.Text = soloNumeros;
+            return;
+        }
+
+        if (LblContadorTel != null)
+        {
+            int digitos = soloNumeros.Length;
+            LblContadorTel.Text = $"{digitos}/10";
+            LblContadorTel.TextColor = digitos == 10
+                ? Color.FromArgb("#4CAF50")  // verde = completo
+                : Color.FromArgb("#555555"); // gris = incompleto
+        }
+    }
 
     private async void OnGuardarClicked(object sender, EventArgs e)
     {
         if (_clienteActual == null) return;
+
+  
+        string telefono = EntryTelefono.Text?.Trim() ?? "";
+        if (telefono.Length != 10 || !telefono.All(char.IsDigit))
+        {
+            await DisplayAlert("Atención", "El teléfono debe tener exactamente 10 dígitos.", "OK");
+            return;
+        }
+
+        
+        if (telefono != _clienteActual.Telefono) 
+        {
+            var existente = await _clienteService.BuscarPorTelefonoAsync(telefono);
+            if (existente != null && existente.Id != _clienteActual.Id)
+            {
+                await DisplayAlert("Teléfono en uso",
+                    "Este número ya está registrado por otro cliente.", "OK");
+                return;
+            }
+        }
+
+        
+        if (string.IsNullOrWhiteSpace(EntryDomicilio.Text))
+        {
+            await DisplayAlert("Atención", "El domicilio no puede estar vacío.", "OK");
+            return;
+        }
 
         BtnGuardar.IsEnabled = false;
         BtnGuardar.Text = "Guardando...";
@@ -59,13 +109,12 @@ public partial class PerfilPage : ContentPage
         try
         {
             _clienteActual.Nombre = EntryNombre.Text?.Trim() ?? _clienteActual.Nombre;
-            _clienteActual.Telefono = EntryTelefono.Text?.Trim() ?? _clienteActual.Telefono;
+            _clienteActual.Telefono = telefono;
             _clienteActual.Domicilio = EntryDomicilio.Text?.Trim() ?? _clienteActual.Domicilio;
             _clienteActual.Notas = EntryNotas.Text?.Trim() ?? string.Empty;
 
             await _clienteService.GuardarOActualizarAsync(_clienteActual);
 
-            // Actualiza nombre en sesión
             SesionService.GuardarSesion(
                 _clienteActual.Id,
                 _clienteActual.Correo,
