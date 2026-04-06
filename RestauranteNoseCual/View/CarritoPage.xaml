@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
              xmlns:controllers="clr-namespace:RestauranteNoseCual.Controllers"
              x:Class="RestauranteNoseCual.View.CarritoPage"
              BackgroundColor="#0D0D0D"
@@ -12,19 +11,23 @@
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="20" Spacing="20">
 
-                <Border BackgroundColor="#1A1A1A" Stroke="#2A2A2A" StrokeShape="RoundRectangle 12" Padding="15">
+                <!-- DATOS DE LA ORDEN -->
+                <Border BackgroundColor="#1A1A1A" Stroke="#2A2A2A"
+                        StrokeShape="RoundRectangle 12" Padding="15">
                     <VerticalStackLayout Spacing="12">
-                        <Label Text="📝 DATOS DE LA ORDEN" TextColor="#F5C842" FontAttributes="Bold" FontSize="12" CharacterSpacing="1"/>
 
-                        <Entry x:Name="EntNombreCliente" 
-                               Placeholder="Nombre del cliente" 
-                               PlaceholderColor="#666666" 
+                        <Label Text="📝 DATOS DE LA ORDEN" TextColor="#F5C842"
+                               FontAttributes="Bold" FontSize="12" CharacterSpacing="1"/>
+
+                        <Entry x:Name="EntNombreCliente"
+                               Placeholder="Nombre del cliente"
+                               PlaceholderColor="#666666"
                                TextColor="White"
                                FontSize="14"/>
 
-                        <Picker x:Name="PkrEntrega" 
-                                Title="Tipo de entrega" 
-                                TextColor="White" 
+                        <Picker x:Name="PkrEntrega"
+                                Title="Tipo de entrega"
+                                TextColor="White"
                                 TitleColor="#666666"
                                 FontSize="14">
                             <Picker.ItemsSource>
@@ -35,98 +38,189 @@
                             </Picker.ItemsSource>
                         </Picker>
 
+                        <!-- Panel domicilio (solo clientes) -->
+                        <VerticalStackLayout x:Name="PanelDomicilio" IsVisible="False" Spacing="10">
+                            <BoxView HeightRequest="1" Color="#2A2A2A"/>
+                            <Label Text="📍 ENTREGA A" TextColor="#F5C842"
+                                   FontAttributes="Bold" FontSize="12" CharacterSpacing="1"/>
+                            <Border BackgroundColor="#111111" StrokeShape="RoundRectangle 10"
+                                    Stroke="#3A3A3A" Padding="12,8">
+                                <Editor x:Name="EntDomicilioCliente"
+                                        TextColor="White" PlaceholderColor="#555555"
+                                        Placeholder="Tu dirección de entrega..."
+                                        BackgroundColor="Transparent"
+                                        AutoSize="TextChanges"
+                                        MinimumHeightRequest="50" FontSize="13"/>
+                            </Border>
+                            <Label Text="📝 NOTAS / REFERENCIA" TextColor="#888888"
+                                   FontAttributes="Bold" FontSize="11" CharacterSpacing="1"/>
+                            <Border BackgroundColor="#111111" StrokeShape="RoundRectangle 10"
+                                    Stroke="#3A3A3A" Padding="12,8">
+                                <Editor x:Name="EntNotasCliente"
+                                        TextColor="White" PlaceholderColor="#555555"
+                                        Placeholder="Ej: casa azul, entre calles..."
+                                        BackgroundColor="Transparent"
+                                        AutoSize="TextChanges"
+                                        MinimumHeightRequest="50" FontSize="13"/>
+                            </Border>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0" Text="Costo de envío"
+                                       TextColor="#888888" FontSize="12" VerticalOptions="Center"/>
+                                <Label Grid.Column="1" Text="$20.00"
+                                       TextColor="#F5C842" FontSize="13"
+                                       FontAttributes="Bold" VerticalOptions="Center"/>
+                            </Grid>
+                        </VerticalStackLayout>
+
                         <Label x:Name="LblFecha" TextColor="#888888" FontSize="11"/>
                     </VerticalStackLayout>
                 </Border>
 
+                <!-- DETALLE DE PRODUCTOS con CollectionView -->
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🛒 DETALLE DE PRODUCTOS" TextColor="#666666" FontAttributes="Bold" FontSize="12"/>
+                    <Label Text="🛒 DETALLE DE PRODUCTOS" TextColor="#666666"
+           FontAttributes="Bold" FontSize="12"/>
 
-                    <Border Stroke="#2A2A2A" StrokeShape="RoundRectangle 8" Padding="1">
-                        <syncfusion:SfDataGrid x:Name="GridProductos"
-                       ItemsSource="{x:Static controllers:CarritoController.Items}"
-                       AutoGenerateColumnsMode="None"
-                       HeaderGridLinesVisibility="Horizontal"
-                       GridLinesVisibility="Horizontal"
-                       SelectionMode="None"
-                       HeaderRowHeight="45"
-                       RowHeight="50"
-                       BackgroundColor="#1A1A1A">
-                            <syncfusion:SfDataGrid.DefaultStyle>
-                                <syncfusion:DataGridStyle HeaderRowBackground="#1A1A1A" 
-                                  HeaderRowTextColor="#F5C842" 
-                                  GridLineColor="#FFFFFF"/>
-                            </syncfusion:SfDataGrid.DefaultStyle>
+                    <CollectionView x:Name="ListaCarrito"
+                    ItemsSource="{x:Static controllers:CarritoController.Items}"
+                    SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <Label Text="El carrito está vacío"
+                   TextColor="#555555" FontSize="13"
+                   HorizontalOptions="Center" Margin="0,20"/>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="#2A2A2A"
+                        Margin="0,0,0,8"
+                        Padding="0">
+                                    <Grid ColumnDefinitions="80,*,Auto,Auto,Auto"
+                          ColumnSpacing="10">
 
-                            <syncfusion:SfDataGrid.Columns>
-                                <syncfusion:DataGridTextColumn MappingName="Producto.Nombre" 
-                                       HeaderText="Producto"
-                                       Width="140"
-                                       HeaderTextAlignment="Start">
-                                    <syncfusion:DataGridTextColumn.CellStyle>
-                                        <Style TargetType="syncfusion:DataGridCell">
-                                            <Setter Property="TextColor" Value="White" />
-                                        </Style>
-                                    </syncfusion:DataGridTextColumn.CellStyle>
-                                </syncfusion:DataGridTextColumn>
+                                        <!-- Imagen del producto -->
+                                        <Border Grid.Column="0"
+                                StrokeShape="RoundRectangle 12,0,0,12"
+                                Stroke="Transparent"
+                                BackgroundColor="#2A2A2A"
+                                HeightRequest="80"
+                                WidthRequest="80">
+                                            <Image Source="{Binding Producto.Fotografia}"
+                                   Aspect="AspectFill"
+                                   HeightRequest="80"
+                                   WidthRequest="80"/>
+                                        </Border>
 
-                                <syncfusion:DataGridNumericColumn MappingName="Cantidad" 
-                                          HeaderText="Cant." 
-                                          Format="N0"
-                                          HeaderTextAlignment="Center"
-                                          CellTextAlignment="Center">
-                                    <syncfusion:DataGridNumericColumn.CellStyle>
-                                        <Style TargetType="syncfusion:DataGridCell">
-                                            <Setter Property="TextColor" Value="White" />
-                                        </Style>
-                                    </syncfusion:DataGridNumericColumn.CellStyle>
-                                </syncfusion:DataGridNumericColumn>
+                                        <!-- Nombre y subtotal -->
+                                        <VerticalStackLayout Grid.Column="1"
+                                             VerticalOptions="Center"
+                                             Spacing="2">
+                                            <Label Text="{Binding Producto.Nombre}"
+                                   TextColor="White" FontSize="13"
+                                   FontAttributes="Bold"
+                                   MaxLines="2"
+                                   LineBreakMode="TailTruncation"/>
+                                            <Label Text="{Binding Subtotal, StringFormat='${0:F2}'}"
+                                   TextColor="#F5C842" FontSize="12"/>
+                                        </VerticalStackLayout>
 
-                                <syncfusion:DataGridNumericColumn MappingName="Subtotal" 
-                                          HeaderText="Importe" 
-                                          Format="C2"
-                                          HeaderTextAlignment="End"
-                                          CellTextAlignment="End">
-                                    <syncfusion:DataGridNumericColumn.CellStyle>
-                                        <Style TargetType="syncfusion:DataGridCell">
-                                            <Setter Property="TextColor" Value="White" />
-                                        </Style>
-                                    </syncfusion:DataGridNumericColumn.CellStyle>
-                                </syncfusion:DataGridNumericColumn>
-                            </syncfusion:SfDataGrid.Columns>
-                        </syncfusion:SfDataGrid>
-                    </Border>
+                                        <!-- Botón − -->
+                                        <Border Grid.Column="2"
+                                BackgroundColor="#2A2A2A"
+                                StrokeShape="RoundRectangle 8"
+                                Stroke="Transparent"
+                                HeightRequest="36" WidthRequest="36"
+                                VerticalOptions="Center">
+                                            <Label Text="−" TextColor="White" FontSize="22"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                        CommandParameter="{Binding .}"
+                                        Tapped="OnRestarCantidad"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Border>
+
+                                        <!-- Cantidad -->
+                                        <Label Grid.Column="3"
+                               Text="{Binding Cantidad}"
+                               TextColor="White" FontSize="15"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               WidthRequest="24"/>
+
+                                        <!-- Botón + -->
+                                        <Border Grid.Column="4"
+                                BackgroundColor="#F5C842"
+                                StrokeShape="RoundRectangle 8"
+                                Stroke="Transparent"
+                                HeightRequest="36" WidthRequest="36"
+                                VerticalOptions="Center"
+                                Margin="0,0,12,0">
+                                            <Label Text="+" TextColor="#0D0D0D" FontSize="22"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                        CommandParameter="{Binding .}"
+                                        Tapped="OnSumarCantidad"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Border>
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
-
             </VerticalStackLayout>
         </ScrollView>
 
-        <Border Grid.Row="1" 
-                BackgroundColor="#141414" 
+        <!-- TOTAL Y CONFIRMAR -->
+        <Border Grid.Row="1"
+                BackgroundColor="#141414"
                 StrokeShape="RoundRectangle 24,24,0,0"
                 Padding="25,20"
                 Stroke="#2A2A2A">
-            <VerticalStackLayout Spacing="15">
+            <VerticalStackLayout Spacing="10">
+
+                <Grid ColumnDefinitions="*, Auto" x:Name="FilaEnvio" IsVisible="False">
+                    <Label Text="Envío" TextColor="#888888"
+                           FontSize="13" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" Text="+ $20.00"
+                           TextColor="#888888" FontSize="13" VerticalOptions="Center"/>
+                </Grid>
+
                 <Grid ColumnDefinitions="*, Auto">
-                    <Label Text="TOTAL NETO" TextColor="White" VerticalOptions="Center" FontSize="14"/>
-                    <Label Grid.Column="1" 
-                           x:Name="LblTotal" 
-                           TextColor="#F5C842" 
-                           FontSize="26" 
+                    <Label Text="TOTAL" TextColor="White"
+                           FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Label Grid.Column="1"
+                           x:Name="LblTotal"
+                           TextColor="#F5C842"
+                           FontSize="28"
                            FontAttributes="Bold"/>
                 </Grid>
 
-                <Button Text="CONFIRMAR Y GUARDAR"
+                <Button Text="✅ CONFIRMAR ORDEN"
                         BackgroundColor="#F5C842"
-                        TextColor="Black"
+                        TextColor="#0D0D0D"
                         FontAttributes="Bold"
+                        FontSize="15"
                         CornerRadius="15"
                         HeightRequest="55"
                         Clicked="OnConfirmarPedido"/>
             </VerticalStackLayout>
         </Border>
 
-        <BoxView x:Name="OverlayCarga" Grid.RowSpan="2" BackgroundColor="#CC000000" IsVisible="False"/>
-        <ActivityIndicator x:Name="Loader" Grid.RowSpan="2" IsRunning="False" Color="#F5C842" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <BoxView x:Name="OverlayCarga" Grid.RowSpan="2"
+                 BackgroundColor="#CC000000" IsVisible="False"/>
+        <ActivityIndicator x:Name="Loader" Grid.RowSpan="2"
+                           IsRunning="False" Color="#F5C842"
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
     </Grid>
 </ContentPage>

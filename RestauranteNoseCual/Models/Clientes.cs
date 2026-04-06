@@ -24,11 +24,9 @@ namespace RestauranteNoseCual.Models
 
         [Column("Contraseña")]
         public string Contrasena { get; set; }
+        
         [Column("Rol")]
         public string Rol { get; set; } = "Cliente";
-
-        [Newtonsoft.Json.JsonIgnore]
-        public string UltimasNotas { get; set; } = string.Empty;
 
         [Column("Notas")] 
         public string Notas { get; set; } = string.Empty;

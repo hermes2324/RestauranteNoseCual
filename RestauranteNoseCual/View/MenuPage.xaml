@@ -70,22 +70,22 @@
                            FontSize="13">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
-                                                  CommandParameter="Boneless"/>
+                                                  CommandParameter="Boneles"/>
                         </Label.GestureRecognizers>
                     </Label>
                 </Border>
 
-                <Border x:Name="BtnExtra"
+                <Border x:Name="BtnCombos"
                         BackgroundColor="#1A1A1A"
                         StrokeShape="RoundRectangle 20"
                         Stroke="#2A2A2A"
                         Padding="20,10">
-                    <Label Text="🥔 Extras"
+                    <Label Text="🥔 Combo"
                            TextColor="White"
                            FontSize="13">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
-                                                  CommandParameter="Extra"/>
+                                                  CommandParameter="Combo"/>
                         </Label.GestureRecognizers>
                     </Label>
                 </Border>

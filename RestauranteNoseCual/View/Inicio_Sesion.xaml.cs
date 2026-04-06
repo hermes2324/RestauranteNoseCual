@@ -54,15 +54,7 @@ public partial class Inicio_Sesion : ContentPage
    
     private void RedirigirSegunRol(string rol)
     {
-        if (rol == "Admin" || rol == "Mesero")
-        {
-           
-            Application.Current.MainPage = new AppShell();
-        }
-        else
-        {
-            Application.Current.MainPage = new AppShell();
-        }
+        Application.Current.MainPage = new View.FlyoutMenuPage();
     }
 
     private void OnRegistrarseClicked(object sender, EventArgs e)

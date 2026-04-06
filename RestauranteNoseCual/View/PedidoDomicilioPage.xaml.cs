@@ -24,8 +24,8 @@ public partial class PedidoDomicilioPage : ContentPage
             EntNombre.Text = cliente.Nombre;
             EntTelefono.Text = cliente.Telefono;
             EntDomicilio.Text = cliente.Domicilio;
-            EntNotas.Text = cliente.UltimasNotas;
-            PedidoTemporal.Notas = cliente.UltimasNotas;
+            EntNotas.Text = cliente.Notas;
+            PedidoTemporal.Notas = cliente.Notas;
             await DisplayAlert("Cliente Encontrado", $"Bienvenido de nuevo {cliente.Nombre}", "OK");
         }
         else

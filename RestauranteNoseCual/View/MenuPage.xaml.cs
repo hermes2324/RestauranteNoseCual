@@ -61,7 +61,7 @@ public partial class MenuPage : ContentPage
         _categoriaActual = categoria;
 
         
-        var tabs = new[] { BtnTodos, BtnHamburguesa, BtnAlita, BtnBonel, BtnExtra };
+        var tabs = new[] { BtnTodos, BtnHamburguesa, BtnAlita, BtnBonel, BtnCombos };
         foreach (var tab in tabs)
         {
             tab.BackgroundColor = Color.FromArgb("#1A1A1A");
@@ -74,8 +74,8 @@ public partial class MenuPage : ContentPage
         {
             "Hamburguesa" => BtnHamburguesa,
             "Alita" => BtnAlita,
-            "Boneless" => BtnBonel,
-            "Extra" => BtnExtra,
+            "Boneles" => BtnBonel,
+            "Combo" => BtnCombos,
             _ => BtnTodos
         };
 

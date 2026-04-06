@@ -66,25 +66,64 @@
                 </Grid>
             </Border>
 
-            <Border BackgroundColor="#1A1A1A"
+            <!-- Carrusel de combos dinámico -->
+            <CarouselView x:Name="CarruselCombos"
+              Margin="20,16,20,0"
+              HeightRequest="160"
+              Loop="True"
+              PeekAreaInsets="0">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="#1A1A1A"
                     StrokeShape="RoundRectangle 20"
                     Stroke="Transparent"
-                    Margin="20,16,20,0"
-                    HeightRequest="160">
-                <Grid>
-                    <BoxView Color="#F5C842" Opacity="0.08"/>
-                    <Grid ColumnDefinitions="*,Auto" Padding="24,20">
-                        <VerticalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
-                            <Border BackgroundColor="#F5C842" StrokeShape="RoundRectangle 8" Padding="8,4" HorizontalOptions="Start">
-                                <Label Text="🔥 OFERTA DEL DÍA" TextColor="#0D0D0D" FontSize="10" FontAttributes="Bold"/>
-                            </Border>
-                            <Label Text="Combo Smash&#10;+ Refresco" TextColor="White" FontSize="22" FontAttributes="Bold" LineHeight="1.1"/>
-                            <Label Text="Solo por hoy $149" TextColor="#F5C842" FontSize="14" FontAttributes="Bold"/>
-                        </VerticalStackLayout>
-                        <Label Grid.Column="1" Text="🍔" FontSize="80" VerticalOptions="Center" Margin="0,0,8,0"/>
-                    </Grid>
-                </Grid>
-            </Border>
+                    Margin="0,0,8,0">
+                            <Grid>
+                                <BoxView Color="#F5C842" Opacity="0.08"/>
+                                <Grid ColumnDefinitions="*,130" Padding="24,20">
+
+                                    <VerticalStackLayout Grid.Column="0" Spacing="6"
+                                             VerticalOptions="Center">
+                                        <Border BackgroundColor="#F5C842"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="8,4" HorizontalOptions="Start">
+                                            <Label Text="🔥 OFERTA DEL DÍA"
+                                       TextColor="#0D0D0D"
+                                       FontSize="10" FontAttributes="Bold"/>
+                                        </Border>
+                                        <Label Text="{Binding Nombre}"
+                                   TextColor="White" FontSize="20"
+                                   FontAttributes="Bold" LineHeight="1.1"
+                                   MaxLines="2" LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding Precio, StringFormat='Solo por hoy ${0:F2}'}"
+                                   TextColor="Yellow" FontSize="14"
+                                   FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                    <!-- Imagen real del combo -->
+                                    <Border Grid.Column="1"
+                                StrokeShape="RoundRectangle 16"
+                                Stroke="Transparent"
+                                BackgroundColor="#2A2A2A"
+                                Margin="0,8,0,8">
+                                        <Image Source="{Binding Fotografia}"
+                                   Aspect="AspectFill"/>
+                                    </Border>
+
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+            <!-- Indicador de puntos -->
+            <IndicatorView x:Name="IndicadorCombos"
+               HorizontalOptions="Center"
+               IndicatorColor="#333333"
+               SelectedIndicatorColor="#F5C842"
+               IndicatorSize="7"
+               Margin="0,8,0,0"/>
 
             <VerticalStackLayout Padding="20,24,20,0" Spacing="14">
                 <Label Text="CATEGORÍAS" TextColor="#888888" FontSize="12" FontAttributes="Bold" CharacterSpacing="2"/>

@@ -61,13 +61,13 @@ namespace RestauranteNoseCual.Services
 
         // Todos los pedidos
         public async Task<bool> GuardarOrdenAsync(
-       List<CarritoItem> items,
-       long? mesaId, 
-       string nombreCliente,
-       string tipoEntrega,
-       long? clienteId = null,
-       string? notas = null,
-       decimal costoEnvio = 0)
+    List<CarritoItem> items,
+    long? mesaId,
+    string nombreCliente,
+    string tipoEntrega,
+    long? clienteId = null,
+    string? notas = null,
+    decimal costoEnvio = 0)
         {
             try
             {
@@ -75,22 +75,20 @@ namespace RestauranteNoseCual.Services
 
                 var nuevaOrden = new Pedido
                 {
-                    MesaId = mesaId, 
+                    MesaId = mesaId,
                     NombreCliente = nombreCliente,
                     TipoEntrega = tipoEntrega,
                     Total = totalOrden,
                     Estado = "Pendiente",
                     FechaHora = DateTime.Now,
-                    ClienteId = clienteId, 
+                    ClienteId = clienteId,
                     Notas = notas,
                     CostoEnvio = costoEnvio
                 };
 
-                
                 var respuesta = await _supabase.From<Pedido>().Insert(nuevaOrden);
                 var ordenReal = respuesta.Models.FirstOrDefault();
 
-                
                 if (ordenReal == null)
                 {
                     var query = _supabase.From<Pedido>()
@@ -109,7 +107,6 @@ namespace RestauranteNoseCual.Services
 
                 if (ordenReal == null) return false;
 
-               
                 var detalles = items.Select(item => new DetallePedido
                 {
                     OrdenId = ordenReal.Id,
@@ -119,6 +116,16 @@ namespace RestauranteNoseCual.Services
                 }).ToList();
 
                 await _supabase.From<DetallePedido>().Insert(detalles);
+
+                
+                if (clienteId.HasValue && !string.IsNullOrWhiteSpace(notas))
+                {
+                    await _supabase
+                        .From<Cliente>()
+                        .Where(c => c.Id == clienteId.Value)
+                        .Set(c => c.Notas, notas)
+                        .Update();
+                }
 
                 return true;
             }

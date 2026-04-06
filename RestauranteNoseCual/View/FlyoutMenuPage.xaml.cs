@@ -13,7 +13,11 @@ public partial class FlyoutMenuPage : FlyoutPage
         InitializeComponent();
         CargarMenuPorRol();
     }
-
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        CargarMenuPorRol();
+    }
     private async void CargarMenuPorRol()
     {
         var sesion = SesionService.ObtenerSesion();
@@ -37,6 +41,10 @@ public partial class FlyoutMenuPage : FlyoutPage
         menuItems.Add(new() { Title = "Cerrar Sesión", IconSource = "🚪", TargetType = null });
 
         menuItemsCollection.ItemsSource = menuItems;
+        Detail = new NavigationPage(new Pantalla_Principal())
+        {
+            BackgroundColor = Color.FromArgb("#0D0D0D")
+        };
     }
 
     private async void OnMenuItemSelected(object sender, SelectionChangedEventArgs e)

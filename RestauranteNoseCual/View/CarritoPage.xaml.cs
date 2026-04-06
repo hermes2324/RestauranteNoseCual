@@ -1,16 +1,14 @@
-using RestauranteNoseCual.Models;
+Ôªøusing RestauranteNoseCual.Models;
 using RestauranteNoseCual.Controllers;
 using RestauranteNoseCual.Services;
-using Syncfusion.Maui.DataGrid;
 
 namespace RestauranteNoseCual.View
 {
     public partial class CarritoPage : ContentPage
     {
-        //private readonly Mesa _mesa;
         private readonly OrdenService _ordenService = new();
         private readonly CarritoController _carritoController = new();
-
+        private readonly ClienteService _clienteService = new();
         private readonly Mesa? _mesa;
 
         public CarritoPage(Mesa? mesa)
@@ -18,82 +16,171 @@ namespace RestauranteNoseCual.View
             InitializeComponent();
             _mesa = mesa;
 
-            
             if (SesionService.HaySesionActiva())
             {
                 var (correo, nombre) = SesionService.ObtenerSesion();
                 string rol = SesionService.ObtenerRol();
 
-                
                 if (rol == "Cliente")
                 {
                     EntNombreCliente.Text = nombre;
-
-                    
                     PedidoTemporal.NombreCliente = nombre;
                     PedidoTemporal.IdCliente = Preferences.Get("sesion_id", (long)0);
                 }
             }
 
-          
             if (_mesa == null)
             {
                 PkrEntrega.SelectedItem = "Domicilio";
                 PkrEntrega.IsEnabled = false;
-
-              
                 if (string.IsNullOrEmpty(EntNombreCliente.Text))
-                {
                     EntNombreCliente.Text = PedidoTemporal.NombreCliente;
-                }
             }
             else
             {
                 PkrEntrega.SelectedItem = "Mesa";
-                
             }
 
             ActualizarTotal();
         }
 
-        private void ActualizarTotal()
+        protected override async void OnAppearing()
         {
-            if (LblTotal != null)
-                LblTotal.Text = _carritoController.CalcularTotal().ToString("C2");
+            base.OnAppearing();
+
+            string rol = SesionService.ObtenerRol();
+
+            if (rol == "Cliente" && _mesa == null)
+            {
+                PanelDomicilio.IsVisible = true;
+                await CargarDatosClienteAsync();
+            }
+
+            RefrescarLista();
+            ActualizarTotal();
         }
 
-        private void OnEliminarItem(object sender, EventArgs e)
+        private async Task CargarDatosClienteAsync()
         {
-            if (sender is ImageButton button && button.CommandParameter is CarritoItem item)
+            try
             {
-                _carritoController.EliminarItem(item);
-                ActualizarTotal();
+                var (correo, _) = SesionService.ObtenerSesion();
+                var cliente = await _clienteService.ObtenerPorCorreoAsync(correo);
+
+                if (cliente != null)
+                {
+                    EntDomicilioCliente.Text = cliente.Domicilio;
+                    EntNotasCliente.Text = cliente.Notas;
+                    PedidoTemporal.Notas = cliente.Notas;
+                    PedidoTemporal.Direccion = cliente.Domicilio;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error cargando datos cliente: {ex.Message}");
+            }
+        }
+
+        private void ActualizarTotal()
+        {
+            if (LblTotal == null) return;
+
+            bool esDomicilio = _mesa == null && SesionService.ObtenerRol() == "Cliente";
+            decimal subtotal = _carritoController.CalcularTotal();
+            decimal envio = esDomicilio ? 20m : 0m;
+            decimal total = subtotal + envio;
+
+            LblTotal.Text = total.ToString("C2");
+
+            if (FilaEnvio != null)
+                FilaEnvio.IsVisible = esDomicilio;
+        }
+
+        private void RefrescarLista()
+        {
+            ListaCarrito.ItemsSource = null;
+            ListaCarrito.ItemsSource = CarritoController.Items;
+        }
+
+        private void OnSumarCantidad(object sender, TappedEventArgs e)
+        {
+            if (e.Parameter is not CarritoItem item) return;
+
+            item.Cantidad++;
+            
+
+            RefrescarLista();
+            ActualizarTotal();
+        }
+
+        private async void OnRestarCantidad(object sender, TappedEventArgs e)
+        {
+            if (e.Parameter is not CarritoItem item) return;
+
+            if (item.Cantidad <= 1)
+            {
+                bool confirmar = await DisplayAlert(
+                    "Eliminar producto",
+                    $"¬øQuitar '{item.Producto.Nombre}' del carrito?",
+                    "S√≠", "No");
+
+                if (!confirmar) return;
+
+                _carritoController.EliminarItem(item);
+            }
+            else
+            {
+                item.Cantidad--;
+                
+            }
+
+            RefrescarLista();
+            ActualizarTotal();
         }
 
         private async void OnConfirmarPedido(object sender, EventArgs e)
         {
-            // 1. Validaciones iniciales
             if (string.IsNullOrWhiteSpace(EntNombreCliente.Text))
             {
-                await DisplayAlert("AtenciÛn", "Escribe el nombre del cliente.", "OK");
+                await DisplayAlert("Atenci√≥n", "Escribe el nombre del cliente.", "OK");
                 return;
             }
 
             if (CarritoController.Items == null || CarritoController.Items.Count == 0)
             {
-                await DisplayAlert("VacÌo", "No hay productos en el carrito.", "OK");
+                await DisplayAlert("Vac√≠o", "No hay productos en el carrito.", "OK");
                 return;
             }
 
-            // 2. Determinar destino y tipo de entrega
             bool esDomicilio = _mesa == null;
+            string rol = SesionService.ObtenerRol();
+            bool esClienteDomicilio = esDomicilio && rol == "Cliente";
+
             string destino = !esDomicilio ? $"Mesa {_mesa.Numero}" : "Domicilio";
             string tipoEntrega = PkrEntrega.SelectedItem?.ToString() ?? (esDomicilio ? "Domicilio" : "Mesa");
 
-            // 3. Mensaje de confirmaciÛn
-            bool confirmar = await DisplayAlert("Confirmar",
-                $"ø{destino} - Cliente: {EntNombreCliente.Text}?", "SÌ", "No");
+            if (esClienteDomicilio)
+            {
+                PedidoTemporal.Notas = EntNotasCliente.Text?.Trim() ?? "";
+                PedidoTemporal.Direccion = EntDomicilioCliente.Text?.Trim() ?? "";
+            }
+
+            if (esClienteDomicilio && string.IsNullOrWhiteSpace(PedidoTemporal.Direccion))
+            {
+                await DisplayAlert("Atenci√≥n", "Agrega tu direcci√≥n de entrega.", "OK");
+                return;
+            }
+
+            decimal costoEnvio = esClienteDomicilio ? 20m : 0m;
+            decimal subtotal = _carritoController.CalcularTotal();
+            decimal total = subtotal + costoEnvio;
+
+            bool confirmar = await DisplayAlert("Confirmar pedido",
+                $"{destino} ‚Äî {EntNombreCliente.Text}\n" +
+                $"Subtotal: {subtotal:C2}" +
+                (costoEnvio > 0 ? $"\nEnv√≠o: {costoEnvio:C2}" : "") +
+                $"\nTotal: {total:C2}",
+                "‚úÖ Confirmar", "Cancelar");
 
             if (!confirmar) return;
 
@@ -102,24 +189,21 @@ namespace RestauranteNoseCual.View
 
             try
             {
-                // 4. Llamada al servicio pasando TODOS los par·metros del PedidoTemporal
                 bool exito = await _ordenService.GuardarOrdenAsync(
                     items: CarritoController.Items.ToList(),
                     mesaId: _mesa?.Id,
                     nombreCliente: EntNombreCliente.Text.Trim(),
                     tipoEntrega: tipoEntrega,
                     clienteId: PedidoTemporal.IdCliente > 0 ? PedidoTemporal.IdCliente : null,
-                    notas: PedidoTemporal.Notas,             
-                    costoEnvio: esDomicilio ? 20m : 0m        
+                    notas: PedidoTemporal.Notas,
+                    costoEnvio: costoEnvio
                 );
 
                 if (exito)
                 {
-                    // 5. Limpiar datos tras el Èxito
                     LimpiarDatosTemporales();
                     CarritoController.Items.Clear();
-
-                    await DisplayAlert("°…xito!", "Orden enviada a cocina.", "OK");
+                    await DisplayAlert("¬°√âxito!", "Orden enviada a cocina. üçî", "OK");
                     await Navigation.PopToRootAsync();
                 }
                 else
@@ -129,7 +213,7 @@ namespace RestauranteNoseCual.View
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error CrÌtico", ex.Message, "OK");
+                await DisplayAlert("Error Cr√≠tico", ex.Message, "OK");
             }
             finally
             {
@@ -138,7 +222,6 @@ namespace RestauranteNoseCual.View
             }
         }
 
-        // MÈtodo auxiliar para resetear la clase est·tica y que no se mezclen pedidos
         private void LimpiarDatosTemporales()
         {
             PedidoTemporal.IdCliente = null;
@@ -146,7 +229,5 @@ namespace RestauranteNoseCual.View
             PedidoTemporal.Notas = "";
             PedidoTemporal.Direccion = "";
         }
-
-
     }
 }

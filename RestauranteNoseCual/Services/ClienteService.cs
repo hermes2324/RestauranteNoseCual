@@ -49,29 +49,12 @@ namespace RestauranteNoseCual.Services
         {
             try
             {
-                // 1. Buscamos al cliente
                 var resultadoCliente = await _supabase
                     .From<Cliente>()
                     .Where(c => c.Telefono == telefono)
                     .Get();
 
                 var cliente = resultadoCliente.Models.FirstOrDefault();
-
-                // 2. Si el cliente existe, buscamos sus últimas notas en la tabla Orden
-                if (cliente != null)
-                {
-                    var resultadoOrden = await _supabase
-                        .From<Pedido>()
-                        .Where(p => p.ClienteId == cliente.Id)
-                        .Order("id", Supabase.Postgrest.Constants.Ordering.Descending)
-                        .Limit(1)
-                        .Get();
-
-                    var ultimaOrden = resultadoOrden.Models.FirstOrDefault();
-
-                  
-                    cliente.UltimasNotas = ultimaOrden?.Notas ?? "";
-                }
 
                 return cliente;
             }
