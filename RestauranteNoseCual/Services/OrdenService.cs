@@ -118,14 +118,14 @@ namespace RestauranteNoseCual.Services
                 await _supabase.From<DetallePedido>().Insert(detalles);
 
                 
-                if (clienteId.HasValue && !string.IsNullOrWhiteSpace(notas))
-                {
-                    await _supabase
-                        .From<Cliente>()
-                        .Where(c => c.Id == clienteId.Value)
-                        .Set(c => c.Notas, notas)
-                        .Update();
-                }
+                //if (clienteId.HasValue && !string.IsNullOrWhiteSpace(notas))
+                //{
+                //    await _supabase
+                //        .From<Cliente>()
+                //        .Where(c => c.Id == clienteId.Value)
+                //        .Set(c => c.Notas, notas)
+                //        .Update();
+                //}
 
                 return true;
             }
