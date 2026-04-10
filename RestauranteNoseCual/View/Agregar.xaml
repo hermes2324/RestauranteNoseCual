@@ -87,7 +87,7 @@
                             <x:String>Hamburguesa</x:String>
                             <x:String>Boneles</x:String>
                             <x:String>Combo</x:String>
-                            <x:String>Bebida</x:String>
+                            <x:String>Bebidas</x:String>
                         </Picker.Items>
                     </Picker>
 

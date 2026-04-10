@@ -76,6 +76,7 @@ public partial class MenuPage : ContentPage
             "Alita" => BtnAlita,
             "Boneles" => BtnBonel,
             "Combo" => BtnCombos,
+            "Bebidas" => BtnBebidas,
             _ => BtnTodos
         };
 

@@ -90,6 +90,21 @@
                     </Label>
                 </Border>
 
+                <Border x:Name="BtnBebidas"
+                        BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="#2A2A2A"
+                        Padding="20,10">
+                    <Label Text="🥤 Bebidas"
+                            TextColor="White"
+                            FontSize="13">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
+                                   CommandParameter="Hamburguesa"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+                
             </HorizontalStackLayout>
         </ScrollView>
 
