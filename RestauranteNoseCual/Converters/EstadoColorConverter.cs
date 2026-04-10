@@ -9,9 +9,11 @@ namespace RestauranteNoseCual.Converters
         {
             return value?.ToString() switch
             {
-                "Pagada" => Color.FromArgb("#E53935"), 
-                "Pendiente" => Color.FromArgb("#43A047"), 
-                "En proceso" => Color.FromArgb("#FB8C00"), 
+                "En proceso de entrega" => Color.FromArgb("#3B82F6"), 
+                "Entregado" => Color.FromArgb("#10B981"), 
+                "En preparación" => Color.FromArgb("#F59E0B"), 
+                "Cancelado por el cliente" => Color.FromArgb("#EF4444"),
+                "Pagada" => Color.FromArgb("#8B5CF6"),
                 _ => Colors.White
             };
         }

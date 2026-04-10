@@ -5,7 +5,8 @@
              xmlns:converters="clr-namespace:RestauranteNoseCual.Converters"
              x:Class="RestauranteNoseCual.View.Pedidos"
              Title="Historial de Pedidos"
-             BackgroundColor="#121212">
+             BackgroundColor="#121212"
+             x:Name="Page">
 
     <ContentPage.Resources>
         <converters:EstadoColorConverter x:Key="EstadoColor"/>
@@ -51,7 +52,12 @@
                                HeaderGridLinesVisibility="Horizontal"
                                GridLinesVisibility="Horizontal"
                                BackgroundColor="#1A1A1A"
-                               RowHeight="52">
+                               RowHeight="52"
+                               AllowEditing="True"
+                               NavigationMode="Cell"
+                               SelectionMode="Single"
+                               
+                              >
 
             <syncfusion:SfDataGrid.DefaultStyle>
                 <syncfusion:DataGridStyle HeaderRowBackground="#1A1A1A"
@@ -63,7 +69,8 @@
 
                 <syncfusion:DataGridTextColumn MappingName="Id"
                                                HeaderText="Folio"
-                                               Width="70">
+                                               Width="70"
+                                               AllowEditing="False">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="White"/>
@@ -73,7 +80,8 @@
 
                 <syncfusion:DataGridTextColumn MappingName="MesaId"
                                                HeaderText="Mesa"
-                                               Width="65">
+                                               Width="65"
+                                               AllowEditing="False">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="White"/>
@@ -83,7 +91,8 @@
 
                 <syncfusion:DataGridTextColumn MappingName="NombreCliente"
                                                HeaderText="Cliente"
-                                               Width="170">
+                                               Width="170"
+                                               AllowEditing="False">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="White"/>
@@ -93,26 +102,27 @@
 
                 <syncfusion:DataGridTextColumn MappingName="TipoEntrega"
                                                HeaderText="Tipo"
-                                               Width="90">
+                                               Width="90"
+                                               AllowEditing="False">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="#F5C842"/>
                         </Style>
                     </syncfusion:DataGridTextColumn.CellStyle>
                 </syncfusion:DataGridTextColumn>
-
+                <!--
                 <syncfusion:DataGridTemplateColumn HeaderText="Estatus"
                                    Width="100">
                     <syncfusion:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Margin="6,8">
-                                <!-- Fondo con opacidad baja -->
-                                <Border StrokeShape="RoundRectangle 6"
+                                 Fondo con opacidad baja -->
+                <!--                <Border StrokeShape="RoundRectangle 6"
                         Stroke="Transparent"
                         BackgroundColor="{Binding Estado, Converter={StaticResource EstadoColor}}"
                         Opacity="0.2"/>
-                                <!-- Texto encima con opacidad completa -->
-                                <Label Text="{Binding Estado}"
+                                 Texto encima con opacidad completa -->
+                <!--                            <Label Text="{Binding Estado}"
                        TextColor="{Binding Estado, Converter={StaticResource EstadoColor}}"
                        FontSize="11"
                        FontAttributes="Bold"
@@ -122,11 +132,48 @@
                         </DataTemplate>
                     </syncfusion:DataGridTemplateColumn.CellTemplate>
                 </syncfusion:DataGridTemplateColumn>
+                
+     -->
+
+                <syncfusion:DataGridTemplateColumn HeaderText="Estatus" Width="180">
+
+                    <syncfusion:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6,8">
+
+                                <!-- Fondo -->
+                                <Border StrokeShape="RoundRectangle 6"
+                        Stroke="Transparent"
+                        BackgroundColor="{Binding Estado, Converter={StaticResource EstadoColor}}"
+                        Opacity="0.2"/>
+
+                                <!-- Picker invisible encima -->
+                               <Picker ItemsSource="{Binding Source={x:Reference Page}, Path=ListaEstados}"
+                                 SelectedItem="{Binding Estado}"
+                                 SelectedIndexChanged="Picker_SelectedIndexChanged"
+                                 BackgroundColor="Transparent"
+                                 TextColor="Transparent"
+                                  Opacity="0.01"/>
+
+                                <!-- Texto bonito -->
+                                <Label Text="{Binding Estado}"
+                       TextColor="{Binding Estado, Converter={StaticResource EstadoColor}}"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:DataGridTemplateColumn.CellTemplate>
+
+                </syncfusion:DataGridTemplateColumn>
 
                 <syncfusion:DataGridTextColumn MappingName="Total"
                                                HeaderText="Total"
                                                Format="C2"
-                                               Width="90">
+                                               Width="90"
+                                                   AllowEditing="False">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="White"/>
@@ -137,7 +184,8 @@
                 <syncfusion:DataGridTextColumn MappingName="FechaHora"
                                                HeaderText="Fecha"
                                                Format="dd/MM/yy HH:mm"
-                                               Width="120">
+                                               Width="120"
+                                               AllowEditing="False">
                     <syncfusion:DataGridTextColumn.CellStyle>
                         <Style TargetType="syncfusion:DataGridCell">
                             <Setter Property="TextColor" Value="White"/>

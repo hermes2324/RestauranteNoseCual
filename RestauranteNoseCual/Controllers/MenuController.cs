@@ -18,5 +18,11 @@ namespace RestauranteNoseCual.Controllers
             try { return await _menuService.ObtenerPorCategoriaAsync(categoria); }
             catch { return new List<AltaMenu>(); }
         }
+
+        public async Task<AltaMenu> AgregarProducto(AltaMenu alta)
+        {
+            try { return await _menuService.AgregarProductoAsync(alta); }
+            catch { return null; }  
+        }
     }
 }

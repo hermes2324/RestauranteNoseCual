@@ -79,7 +79,7 @@ namespace RestauranteNoseCual.Services
                     NombreCliente = nombreCliente,
                     TipoEntrega = tipoEntrega,
                     Total = totalOrden,
-                    Estado = "Pendiente",
+                    Estado = "En preparación",
                     FechaHora = DateTime.Now,
                     ClienteId = clienteId,
                     Notas = notas,
@@ -92,7 +92,7 @@ namespace RestauranteNoseCual.Services
                 if (ordenReal == null)
                 {
                     var query = _supabase.From<Pedido>()
-                        .Where(p => p.NombreCliente == nombreCliente && p.Estado == "Pendiente");
+                        .Where(p => p.NombreCliente == nombreCliente && p.Estado == "En preparación");
 
                     if (mesaId.HasValue)
                         query = query.Where(p => p.MesaId == mesaId.Value);
@@ -203,6 +203,23 @@ namespace RestauranteNoseCual.Services
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 return new List<DetallePedido>();
+            }
+        }
+
+        public async Task<bool> ActualizarEstadoPedido(Pedido pedido)
+        {
+            try
+            {
+                await _supabase.From<Pedido>()
+                    .Where(p => p.Id == pedido.Id)
+                    .Set(p => p.Estado, pedido.Estado)
+                    .Update();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
             }
         }
 

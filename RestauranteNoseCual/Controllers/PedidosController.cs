@@ -29,5 +29,11 @@ namespace RestauranteNoseCual.Controllers
                 return await _service.ObtenerPedidosAsync();
             return await _service.ObtenerPorTipoAsync(tipo);
         }
+
+        public async Task ActualizarEstadoAsync(Pedido pedido, string nuevoEstado)
+        {
+            pedido.Estado = nuevoEstado;
+            await _service.ActualizarEstadoPedido(pedido);
+        }
     }
 }

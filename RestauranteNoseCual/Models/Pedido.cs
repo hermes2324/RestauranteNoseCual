@@ -1,40 +1,58 @@
 ﻿using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-namespace RestauranteNoseCual.Models
+[Table("Orden")]
+public class Pedido : BaseModel, INotifyPropertyChanged
 {
-    [Table("Orden")]
-    public class Pedido : BaseModel
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    private string estado = "Pendiente";
+
+    [PrimaryKey("id", false)]
+    public long Id { get; set; }
+
+    [Column("MesaId")]
+    public long? MesaId { get; set; }
+
+    [Column("NombreCliente")]
+    public string NombreCliente { get; set; } = string.Empty;
+
+    [Column("Estado")]
+    public string Estado
     {
-        [PrimaryKey("id", false)]
-        public long Id { get; set; }
+        get => estado;
+        set
+        {
+            if (estado != value)
+            {
+                estado = value;
+                OnPropertyChanged();
+            }
+        }
+    }
 
-        [Column("MesaId")]
-        public long? MesaId { get; set; }
+    [Column("TipoEntrega")]
+    public string TipoEntrega { get; set; } = "Mesa";
 
-        [Column("NombreCliente")]
-        public string NombreCliente { get; set; } = string.Empty;
+    [Column("Total")]
+    public decimal Total { get; set; }
 
-        [Column("Estado")]
-        public string Estado { get; set; } = "Pendiente";
+    [Column("FechaHora")]
+    public DateTime FechaHora { get; set; } = DateTime.Now;
 
-        [Column("TipoEntrega")]
-        public string TipoEntrega { get; set; } = "Mesa";
+    [Column("ClienteId")]
+    public long? ClienteId { get; set; }
 
-        [Column("Total")]
-        public decimal Total { get; set; }
+    [Column("Notas")]
+    public string? Notas { get; set; }
 
-        [Column("FechaHora")]
-        public DateTime FechaHora { get; set; } = DateTime.Now;
+    [Column("CostoEnvio")]
+    public decimal CostoEnvio { get; set; }
 
-       
-        [Column("ClienteId")]
-        public long? ClienteId { get; set; }
-
-        [Column("Notas")]
-        public string? Notas { get; set; }
-
-        [Column("CostoEnvio")]
-        public decimal CostoEnvio { get; set; }
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

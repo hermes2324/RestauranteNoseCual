@@ -28,5 +28,13 @@ namespace RestauranteNoseCual.Services
                 .Get();
             return resultado.Models;
         }
+
+        public async Task<AltaMenu> AgregarProductoAsync(AltaMenu alta)
+        {
+            var resultado = await _supabase
+                .From<AltaMenu>()
+                .Insert(alta);
+            return resultado.Models.FirstOrDefault();
+        }
     }
 }

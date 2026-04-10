@@ -127,7 +127,7 @@
 
             <VerticalStackLayout Padding="20,24,20,0" Spacing="14">
                 <Label Text="CATEGORÍAS" TextColor="#888888" FontSize="12" FontAttributes="Bold" CharacterSpacing="2"/>
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
                     <Border Grid.Column="0" StrokeShape="RoundRectangle 20" Stroke="Transparent" BackgroundColor="#1E1E1E">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCategoriaClicked" CommandParameter="Hamburguesa"/>
@@ -162,6 +162,18 @@
                             </Border>
                             <Label Grid.Row="1" Text="Boneles" TextColor="White" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center" Margin="8,10,8,2"/>
                             <Label Grid.Row="2" x:Name="LblCountBon" Text="..." TextColor="#F5C842" FontSize="10" HorizontalOptions="Center" Margin="0,0,0,12"/>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="3" StrokeShape="RoundRectangle 20" Stroke="Transparent" BackgroundColor="#1E1E1E">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCategoriaClicked" CommandParameter="Bebidas"/>
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="110,Auto,Auto">
+                            <Border Grid.Row="0" StrokeShape="RoundRectangle 20,20,0,0" BackgroundColor="#2A2A2A">
+                                <Image Source="https://enlacocinamagazine.b-cdn.net/wp-content/uploads/2018/07/granizados.jpg" Aspect="AspectFill" HeightRequest="110"/>
+                            </Border>
+                            <Label Grid.Row="1" Text="Bebidas" TextColor="White" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center" Margin="8,10,8,2"/>
+                            <Label Grid.Row="2" x:Name="LblCountBebi" Text="..." TextColor="#F5C842" FontSize="10" HorizontalOptions="Center" Margin="0,0,0,12"/>
                         </Grid>
                     </Border>
                 </Grid>

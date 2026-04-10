@@ -64,10 +64,12 @@ public partial class Pantalla_Principal : ContentPage
             var hamburguesas = await _menuService.ObtenerPorCategoriaAsync("Hamburguesa");
             var alitas = await _menuService.ObtenerPorCategoriaAsync("Alita");
             var boneles = await _menuService.ObtenerPorCategoriaAsync("Boneles");
+            var bebidas = await _menuService.ObtenerPorCategoriaAsync("Bebidas");
 
             if (LblCountHamb != null) LblCountHamb.Text = $"{hamburguesas.Count} items";
             if (LblCountAlit != null) LblCountAlit.Text = $"{alitas.Count} items";
             if (LblCountBon != null) LblCountBon.Text = $"{boneles.Count} items";
+            if (LblCountBebi != null) LblCountBebi.Text = $"{bebidas.Count} items";
 
             // Lo más pedido
             var todos = await _menuService.ObtenerTodosAsync();

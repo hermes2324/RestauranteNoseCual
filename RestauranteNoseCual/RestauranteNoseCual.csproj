@@ -80,7 +80,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		  <MauiXaml Update="View\CarritoPage.xaml">
+		  <MauiXaml Update="View\Agregar.xaml">
+  <Generator>MSBuild:Compile</Generator>
+</MauiXaml><MauiXaml Update="View\CarritoPage.xaml">
 			    <Generator>MSBuild:Compile</Generator>
 			 
 		</MauiXaml>
