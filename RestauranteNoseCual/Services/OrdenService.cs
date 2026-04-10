@@ -283,5 +283,25 @@ namespace RestauranteNoseCual.Services
                 return false;
             }
         }
+
+        public async Task<bool> ActualizarEstadoPedidoasync(long id, string nuevoEstado)
+        {
+            try
+            {
+                
+                await _supabase.From<Pedido>()
+                    .Where(p => p.Id == id)
+                    .Set(p => p.Estado, nuevoEstado)
+                    .Update();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+               
+                Console.WriteLine($"[OrdenService] Error al actualizar estado: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
