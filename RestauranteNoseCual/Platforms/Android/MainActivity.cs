@@ -29,5 +29,9 @@ namespace RestauranteNoseCual
 
             RequestPermissions(notiPermission, requestNotification);
         }
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

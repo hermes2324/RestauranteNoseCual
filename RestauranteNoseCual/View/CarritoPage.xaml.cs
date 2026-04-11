@@ -1,6 +1,7 @@
 ﻿using RestauranteNoseCual.Models;
 using RestauranteNoseCual.Controllers;
 using RestauranteNoseCual.Services;
+using Plugin.LocalNotification;
 
 namespace RestauranteNoseCual.View
 {
@@ -227,6 +228,7 @@ namespace RestauranteNoseCual.View
                     LimpiarDatosTemporales();
                     CarritoController.Items.Clear();
                     await DisplayAlert("¡Éxito!", "Orden enviada a cocina. 🍔", "OK");
+                    EnviarNotificacion();
                     await Navigation.PopToRootAsync();
                 }
                 else
@@ -245,6 +247,17 @@ namespace RestauranteNoseCual.View
             }
         }
 
+        public void EnviarNotificacion()
+        {
+            var request = new NotificationRequest()
+            {
+                NotificationId = 1332,
+                Title = "Pedido confirmado 🍔",
+                Description = "Tu orden fue enviada correctamente"
+            };
+
+            LocalNotificationCenter.Current.Show(request);
+        }
         private void LimpiarDatosTemporales()
         {
             PedidoTemporal.IdCliente = null;
