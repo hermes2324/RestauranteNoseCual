@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "675832947971",
+    "project_id": "notificacionesrestaurant-645be",
+    "storage_bucket": "notificacionesrestaurant-645be.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675832947971:android:53faef77a8fe05203ef536",
+        "android_client_info": {
+          "package_name": "com.companyname.restaurantenosecual"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCki-g2kPyyN0XhVcMNI_ZDARw1SY_nKqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

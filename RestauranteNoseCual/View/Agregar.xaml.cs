@@ -47,15 +47,23 @@ public partial class AgregarPage : ContentPage
 
         try
         {
-            await _controller.AgregarProducto(alta);
+            if (alta.Nombre == null || alta.Descripcion == null || alta.Precio == null || alta.Categoria == null)
+            {
+                await DisplayAlert("Error", "Por favor, complete todos los campos antes de agregar el producto.", "OK");
+            }
+            else 
+            {
+                await _controller.AgregarProducto(alta);
 
-            await DisplayAlert("Éxito", "Producto agregado correctamente", "OK");
-            // Limpiar campos después de agregar
-            txNombre.Text = "";
-            txDescripcion.Text = "";
-            txPrecio.Text = "";
-            cmCategoria.SelectedIndex = -1;
-            ImgProducto.Source = null;
+                await DisplayAlert("Éxito", "Producto agregado correctamente", "OK");
+                // Limpiar campos después de agregar
+                txNombre.Text = "";
+                txDescripcion.Text = "";
+                txPrecio.Text = "";
+                cmCategoria.SelectedIndex = -1;
+                ImgProducto.Source = null;
+            }
+            
         }
         catch (Exception ex)
         {

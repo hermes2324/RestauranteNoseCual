@@ -100,7 +100,7 @@
                             FontSize="13">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCategoriaSeleccionada"
-                                   CommandParameter="Hamburguesa"/>
+                                   CommandParameter="Bebidas"/>
                         </Label.GestureRecognizers>
                     </Label>
                 </Border>

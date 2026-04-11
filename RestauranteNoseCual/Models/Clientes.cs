@@ -31,5 +31,8 @@ namespace RestauranteNoseCual.Models
         [Column("Notas")] 
         public string Notas { get; set; } = string.Empty;
 
+        [Column("fcm_token")]  // 👈 esto es lo único nuevo
+        public string? FcmToken { get; set; }
+
     }
 }

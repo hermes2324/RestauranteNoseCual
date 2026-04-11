@@ -11,6 +11,7 @@ namespace RestauranteNoseCual.View
         private readonly CarritoController _carritoController = new();
         private readonly ClienteService _clienteService = new();
         private readonly Mesa? _mesa;
+        Cliente clienteDom = new Cliente();
 
         public CarritoPage(Mesa? mesa)
         {
@@ -45,6 +46,12 @@ namespace RestauranteNoseCual.View
             ActualizarTotal();
         }
 
+        //public CarritoPage(Cliente cliente)
+        //{
+        //    clienteDom = cliente;
+        //    EntNombreCliente.Text = cliente.Nombre;
+        //    EntDomicilioCliente.Text = cliente.Domicilio;
+        //}
         protected override async void OnAppearing()
         {
             base.OnAppearing();

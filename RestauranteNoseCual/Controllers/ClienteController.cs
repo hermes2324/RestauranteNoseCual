@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RestauranteNoseCual.Base_de_Datos;
+using RestauranteNoseCual.Models;
 using RestauranteNoseCual.Services;
 
 namespace RestauranteNoseCual.Controllers
@@ -25,6 +26,28 @@ namespace RestauranteNoseCual.Controllers
             catch (Exception)
             {
                 return "Cliente";
+            }
+        }
+
+        public async Task<Cliente> ObtenerCliente(string Telefono)
+        {
+
+            try
+            {
+                var cliente = await _clienteService.BuscarPorTelefonoAsync(Telefono);
+                if (cliente != null) 
+                {
+                    return cliente;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
             }
         }
     }

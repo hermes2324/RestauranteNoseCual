@@ -90,6 +90,15 @@ public partial class Pantalla_Principal : ContentPage
 
     private async void OnVerTodoClicked(object sender, TappedEventArgs e)
     {
-        await Navigation.PushAsync(new MenuPage());
+        var rol = SesionService.ObtenerRol();
+        if(rol == "Mesero")
+        {
+            await Navigation.PushAsync(new PedidoDomicilioPage());
+        }
+        else
+        {
+            await Navigation.PushAsync(new MenuPage());
+        }
+            
     }
 }
