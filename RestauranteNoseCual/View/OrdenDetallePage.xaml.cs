@@ -93,7 +93,7 @@ namespace RestauranteNoseCual.View
             }
 
             // Botón Cancelar: Solo para Cliente y si el estado es inicial
-            BtnCancelar.IsVisible = esCliente && _pedido.Estado == "Pendiente";
+            BtnCancelar.IsVisible = esCliente && _pedido.Estado == "En preparación";
 
             // Cargar Grid
             var detalle = await _ordenService.ObtenerDetalleAsync(_pedido.Id);
@@ -122,7 +122,7 @@ namespace RestauranteNoseCual.View
 
             try
             {
-                bool exito = await _ordenService.ActualizarEstadoPedidoasync(_pedido.Id, "Cancelado");
+                bool exito = await _ordenService.ActualizarEstadoPedidoasync(_pedido.Id, "Cancelado por el cliente");
 
                 if (exito)
                 {

@@ -76,7 +76,7 @@
 
                     <syncfusion:DataGridTextColumn MappingName="Estado"
                                                    HeaderText="Estado"
-                                                   Width="100">
+                                                   Width="170">
                         <syncfusion:DataGridTextColumn.CellStyle>
                             <Style TargetType="syncfusion:DataGridCell">
                                 <Setter Property="TextColor" Value="#F5C842"/>
