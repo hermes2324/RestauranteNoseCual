@@ -251,7 +251,8 @@ namespace RestauranteNoseCual.View
         {
             "En preparación",
             "En proceso de entrega",
-            "Entregado"
+            "Entregado", 
+            "Pagada"
         };
 
         private async void Picker_SelectedIndexChanged(object sender, EventArgs e)

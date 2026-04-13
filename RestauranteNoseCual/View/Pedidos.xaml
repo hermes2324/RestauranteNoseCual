@@ -10,6 +10,7 @@
 
     <ContentPage.Resources>
         <converters:EstadoColorConverter x:Key="EstadoColor"/>
+        <converters:EstadoPagadoConverter x:Key="EstadoPagado"/>
     </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,Auto,*">
@@ -148,12 +149,13 @@
                         Opacity="0.2"/>
 
                                 <!-- Picker invisible encima -->
-                               <Picker ItemsSource="{Binding Source={x:Reference Page}, Path=ListaEstados}"
+                                <Picker ItemsSource="{Binding Source={x:Reference Page}, Path=ListaEstados}"
                                  SelectedItem="{Binding Estado}"
                                  SelectedIndexChanged="Picker_SelectedIndexChanged"
                                  BackgroundColor="Transparent"
                                  TextColor="Transparent"
-                                  Opacity="0.01"/>
+                                  Opacity="0.01"
+                                       IsEnabled="{Binding Estado, Converter={StaticResource EstadoPagado}}" />
 
                                 <!-- Texto bonito -->
                                 <Label Text="{Binding Estado}"
