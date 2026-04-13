@@ -110,6 +110,15 @@ namespace RestauranteNoseCual.Controllers
                     clienteGuardado.Rol
                 );
 
+                // 👇 Iniciar escucha realtime si es mesero
+                if (clienteGuardado.Rol == "Mesero")
+                {
+                    if (Application.Current is App app)
+                    {
+                        app.IniciarRealtimeNotifications();
+                    }
+                }
+
                 await _notificationService.RegistrarTokenAsync(); // 👈
 
                 return (true, $"Bienvenido, {clienteGuardado.Nombre}", clienteGuardado);

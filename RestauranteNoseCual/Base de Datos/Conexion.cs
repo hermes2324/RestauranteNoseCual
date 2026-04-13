@@ -20,6 +20,8 @@ namespace RestauranteNoseCual.Base_de_Datos
                         AutoConnectRealtime = true
                     };
                     _supabase = new Supabase.Client(url, key, options);
+
+                    Task.Run(async () => await _supabase.InitializeAsync()).Wait();
                 }
                 return _supabase;
             }

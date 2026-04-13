@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Firebase;
 
 namespace RestauranteNoseCual
 {
@@ -12,23 +13,25 @@ namespace RestauranteNoseCual
         {
             base.OnCreate(savedInstanceState);
 
-            const int requestNotification = 0;
+            // 👇 Deshabilitar Crashlytics antes de inicializar Firebase
+            Java.Lang.JavaSystem.SetProperty("firebase_crashlytics_collection_enabled", "false");
 
+            FirebaseApp.InitializeApp(this);
+
+            const int requestNotification = 0;
             string[] notiPermission =
             {
                 Manifest.Permission.PostNotifications
             };
-
-            if((int)Build.VERSION.SdkInt < 33)
+            if ((int)Build.VERSION.SdkInt < 33)
             {
                 return;
             }
-
             if (CheckSelfPermission(Manifest.Permission.PostNotifications) == Permission.Granted)
                 return;
-
             RequestPermissions(notiPermission, requestNotification);
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
