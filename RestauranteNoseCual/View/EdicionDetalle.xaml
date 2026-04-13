@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.EdicionDetalle"
+             Title="EdicionDetalle">
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- HEADER (MISMO ESTILO) -->
+            <Grid BackgroundColor="#111111"
+                  Padding="20,48,20,20"
+                  ColumnDefinitions="*,Auto">
+
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Edicion de producto"
+                           TextColor="#888888"
+                           FontSize="13"/>
+                    <Label Text="Editar Producto"
+                           TextColor="White"
+                           FontSize="22"
+                           FontAttributes="Bold"/>
+                </VerticalStackLayout>
+
+                <Border BackgroundColor="#F5C842"
+                        StrokeShape="RoundRectangle 28"
+                        HeightRequest="52"
+                        WidthRequest="52"
+                         HorizontalOptions="End">
+                    <Label Text="-"
+                           TextColor="#0D0D0D"
+                           FontSize="26"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Border>
+            </Grid>
+
+            <!-- FORMULARIO -->
+            <VerticalStackLayout Padding="20,20" Spacing="16">
+
+                <!-- NOMBRE -->
+                <Border BackgroundColor="#1A1A1A"
+                        Stroke="#2A2A2A"
+                        StrokeShape="RoundRectangle 16"
+                        Padding="16">
+                    <Entry Placeholder="Nombre del producto"
+                           TextColor="White"
+                           PlaceholderColor="#555555"
+                           x:Name="txNombre"/>
+                </Border>
+
+                <!-- DESCRIPCIÓN -->
+                <Border BackgroundColor="#1A1A1A"
+                        Stroke="#2A2A2A"
+                        StrokeShape="RoundRectangle 16"
+                        Padding="16">
+                    <Editor Placeholder="Descripción"
+                            TextColor="White"
+                            PlaceholderColor="#555555"
+                            AutoSize="TextChanges"
+                            x:Name="txDescripcion"/>
+                </Border>
+
+                <!-- PRECIO -->
+                <Border BackgroundColor="#1A1A1A"
+                        Stroke="#2A2A2A"
+                        StrokeShape="RoundRectangle 16"
+                        Padding="16">
+                    <Entry Placeholder="Precio"
+                           Keyboard="Numeric"
+                           TextColor="White"
+                           PlaceholderColor="#555555"
+                           x:Name="txPrecio"/>
+                </Border>
+
+                <!-- CATEGORÍA -->
+                <Border BackgroundColor="#1A1A1A"
+                        Stroke="#2A2A2A"
+                        StrokeShape="RoundRectangle 16"
+                        Padding="16">
+                    <Picker Title="Seleccionar categoría"
+                            TextColor="White"
+                            TitleColor="#555555"
+                            x:Name="cmCategoria">
+                        <Picker.Items>
+                            <x:String>Hamburguesa</x:String>
+                            <x:String>Boneles</x:String>
+                            <x:String>Combo</x:String>
+                            <x:String>Bebidas</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                </Border>
+
+                <!-- IMAGEN -->
+                <Border BackgroundColor="#1A1A1A"
+                        Stroke="#2A2A2A"
+                        StrokeShape="RoundRectangle 16"
+                        HeightRequest="160">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                    </Border.GestureRecognizers>
+
+                    <Grid>
+                        <Label Text="📷 Agregar imagen"
+                            TextColor="#666666"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"/>
+
+                        <Image x:Name="ImgProducto"
+                                Aspect="AspectFill"/>
+                    </Grid>
+                </Border>
+
+                <!-- BOTÓN -->
+                <Button Text="Guardar producto"
+                        x:Name="Guardar"
+                        BackgroundColor="#F5C842"
+                        TextColor="#0D0D0D"
+                        FontAttributes="Bold"
+                        CornerRadius="16"
+                        HeightRequest="55"
+                        Clicked="Guardar_Clicked"/>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

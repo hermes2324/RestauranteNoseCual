@@ -28,6 +28,7 @@ public partial class FlyoutMenuPage : FlyoutPage
             menuItems.Add(new() { Title = "Pedidos", IconSource = "📦", TargetType = typeof(Pedidos) });
             menuItems.Add(new() { Title = "Crear Orden", IconSource = "🪑", TargetType = typeof(SeleccionMesaPage) });
             menuItems.Add(new() { Title = "Agregar Producto", IconSource = "🆕", TargetType = typeof(AgregarPage) });
+            menuItems.Add(new() { Title = " Menu / Editar Producto", IconSource = "Ⓜ️", TargetType = typeof(EditarProducto) });
         }
         if (rol == "Cliente")
         {

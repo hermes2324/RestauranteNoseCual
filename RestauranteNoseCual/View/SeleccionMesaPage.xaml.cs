@@ -34,7 +34,7 @@ public partial class SeleccionMesaPage : ContentPage
         }
     }
 
-    private async void CargarMesasAsync()
+    public async void CargarMesasAsync()
     {
         var mesas = await _mesaController.ObtenerMesasAsync();
         _mesas = new ObservableCollection<Mesa>(mesas);
@@ -72,6 +72,22 @@ public partial class SeleccionMesaPage : ContentPage
                     });
                 }
             );
+            //           postgresChanges.AddPostgresChangeHandler(
+            //    PostgresChangesOptions.ListenType.Updates,
+            //    (_, change) =>
+            //    {
+            //        var props = change.GetType().GetProperties();
+            //        foreach (var prop in props)
+            //        {
+            //            try
+            //            {
+            //                var val = prop.GetValue(change);
+            //                Console.WriteLine($"[PROP] {prop.Name} = {val}");
+            //            }
+            //            catch { }
+            //        }
+            //    }
+            //);
 
             await _channel.Subscribe();
             Console.WriteLine("[REALTIME] SeleccionMesa escuchando cambios...");

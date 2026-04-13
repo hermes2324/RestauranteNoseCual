@@ -24,5 +24,15 @@ namespace RestauranteNoseCual.Controllers
             try { return await _menuService.AgregarProductoAsync(alta); }
             catch { return null; }  
         }
+
+        public async Task<AltaMenu> ActualizarProducto(AltaMenu alta)
+        {
+            try { return await _menuService.ActualizarProductoAsync(alta); }
+            catch { return null; }
+        }
+        public async Task EliminarProducto(long id)
+        {
+            await _menuService.EliminarProductoAsync(id);
+        }
     }
 }

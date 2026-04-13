@@ -11,6 +11,7 @@ namespace RestauranteNoseCual.View
         private readonly CarritoController _carritoController = new();
         private readonly ClienteService _clienteService = new();
         private readonly Mesa? _mesa;
+        SeleccionMesaPage seleccionMesaPage = new SeleccionMesaPage();
         Cliente clienteDom = new Cliente();
 
         public CarritoPage(Mesa? mesa)
@@ -236,6 +237,7 @@ namespace RestauranteNoseCual.View
                     CarritoController.Items.Clear();
                     await DisplayAlert("¡Éxito!", "Orden enviada a cocina. 🍔", "OK");
                     EnviarNotificacion();
+                    seleccionMesaPage.CargarMesasAsync();
                     await Navigation.PopToRootAsync();
                 }
                 else

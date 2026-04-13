@@ -36,5 +36,20 @@ namespace RestauranteNoseCual.Services
                 .Insert(alta);
             return resultado.Models.FirstOrDefault();
         }
+        public async Task<AltaMenu> ActualizarProductoAsync(AltaMenu alta)
+        {
+            var resultado = await _supabase
+                .From<AltaMenu>()
+                .Where(p => p.Id == alta.Id)
+                .Update(alta);
+            return resultado.Models.FirstOrDefault();
+        }
+        public async Task EliminarProductoAsync(long id)
+        {
+            await _supabase
+                .From<AltaMenu>()
+                .Where(p => p.Id == id)
+                .Delete();
+        }
     }
 }

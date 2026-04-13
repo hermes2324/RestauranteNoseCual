@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestauranteNoseCual.View.EditarProducto"
+             Title="Menu">
+    <Grid RowDefinitions="Auto,Auto,*">
+
+
+        <!-- Cargando -->
+        <ActivityIndicator Grid.Row="1"
+                           x:Name="Cargando"
+                           IsRunning="False"
+                           IsVisible="False"
+                           Color="#F5C842"
+                           Margin="0,16"/>
+
+        <!-- Lista de productos -->
+        <CollectionView Grid.Row="2"
+                        x:Name="ListaProductos"
+                        Margin="16,12,16,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="#1A1A1A"
+                            StrokeShape="RoundRectangle 16"
+                            Stroke="#2A2A2A"
+                            StrokeThickness="1"
+                            Margin="0,0,0,12">
+                        <Grid ColumnDefinitions="100,*"
+                              HeightRequest="100">
+
+                            <!-- Imagen desde URL -->
+                            <!-- ✅ Queda así, sin IsClippedToBounds -->
+                            <Border Grid.Column="0"
+                                BackgroundColor="#262626"
+                                StrokeShape="RoundRectangle 16,0,0,16"
+                                Stroke="Transparent">
+                                <Image Source="{Binding Fotografia}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="100"
+                                       WidthRequest="100">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                             Binding="{Binding Fotografia}"
+                             Value="">
+                                            <Setter Property="Source" Value="dotnet_bot.png"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Border>
+
+                            <!-- Info del producto -->
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Padding="14,10"
+                                                 Spacing="3"
+                                                 VerticalOptions="Center">
+                                <Label Text="{Binding Nombre}"
+                                       TextColor="White"
+                                       FontSize="14"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding Descripcion}"
+                                       TextColor="#666666"
+                                       FontSize="11"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation"/>
+                                <Label Text="{Binding Precio, StringFormat='${0:F2}'}"
+                                       TextColor="#F5C842"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       Margin="0,4,0,0"/>
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="1"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                        Spacing="6">
+
+                                <!-- BOTÓN EDITAR -->
+                                <Button Text="Editar"
+                                        BackgroundColor="#F5C842"
+                                        TextColor="Black"
+                                        FontSize="12"
+                                        HeightRequest="30"
+                                        Padding="10,0"
+                                        Clicked="Button_Clicked"
+                                        CommandParameter="{Binding .}"/>
+
+                                                            <!-- BOTÓN BORRAR -->
+                                <Button Text="Borrar"
+                                        BackgroundColor="#FF4D4D"
+                                        TextColor="White"
+                                        FontSize="12"
+                                        HeightRequest="30"
+                                        Padding="10,0"
+                                        Clicked="Button_Clicked_1"
+                                        CommandParameter="{Binding .}"/>
+
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

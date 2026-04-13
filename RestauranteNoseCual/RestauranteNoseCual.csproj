@@ -95,7 +95,11 @@
 </MauiXaml><MauiXaml Update="View\CarritoPage.xaml">
 			    <Generator>MSBuild:Compile</Generator>
 			 
-		</MauiXaml>
+		</MauiXaml><MauiXaml Update="View\EdicionDetalle.xaml">
+  <Generator>MSBuild:Compile</Generator>
+</MauiXaml><MauiXaml Update="View\EditarProducto.xaml">
+  <Generator>MSBuild:Compile</Generator>
+</MauiXaml>
 		  <MauiXaml Update="View\FlyoutMenuPage.xaml">
 			    <Generator>MSBuild:Compile</Generator>
 			 
