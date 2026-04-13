@@ -148,47 +148,63 @@ namespace RestauranteNoseCual.View
         {
             if(LblTipo.Text == "Domicilio")
             {
-                 bool confirmar = await DisplayAlert(
-                " Pagar pedido",
-                $"¿Confirmas el pago de {_pedido.Total:C2} para el pedido a domicilio?\nSe marcará como pagado.",
-                "Sí, pagar", "Cancelar");
-                if (!confirmar) return;
-                BtnCobrar.IsEnabled = false;
-                bool exito = await _ordenService.CerrarOrdenAsync(_pedido.Id,_pedido.MesaId);
-                if (exito)
+                if(_pedido.Estado == "Cancelado por el cliente")
                 {
-                    await DisplayAlert("Listo", "Pedido a domicilio pagado", "OK");
-                    await Navigation.PopAsync(); 
+                    BtnCobrar.IsVisible = false;
                 }
                 else
                 {
-                    await DisplayAlert("Error", "No se pudo completar el pago", "OK");
-                    BtnCobrar.IsEnabled = true;
+                    bool confirmar = await DisplayAlert(
+                   " Pagar pedido",
+                   $"¿Confirmas el pago de {_pedido.Total:C2} para el pedido a domicilio?\nSe marcará como pagado.",
+                   "Sí, pagar", "Cancelar");
+                    if (!confirmar) return;
+                    BtnCobrar.IsEnabled = false;
+                    bool exito = await _ordenService.CerrarOrdenAsync(_pedido.Id, _pedido.MesaId);
+                    if (exito)
+                    {
+                        await DisplayAlert("Listo", "Pedido a domicilio pagado", "OK");
+                        await Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "No se pudo completar el pago", "OK");
+                        BtnCobrar.IsEnabled = true;
+                    }
                 }
+                    
             }
             else
             {
-                bool confirmar = await DisplayAlert(
-                " Cobrar",
-                $"¿Confirmas el cobro de {_pedido.Total:C2}?\nSe liberará la Mesa {_pedido.MesaId}.",
-                "Sí, cobrar", "Cancelar");
-
-                if (!confirmar) return;
-
-                BtnCobrar.IsEnabled = false;
-
-                bool exito = await _ordenService.CerrarOrdenAsync(_pedido.Id, _pedido.MesaId);
-
-                if (exito)
+                if (_pedido.Estado == "Cancelado por el cliente")
                 {
-                    await DisplayAlert("Listo", "Orden cobrada y mesa liberada", "OK");
-                    await Navigation.PopAsync();
+                    BtnCobrar.IsVisible = false;
                 }
                 else
                 {
-                    await DisplayAlert("Error", "No se pudo completar el cobro", "OK");
-                    BtnCobrar.IsEnabled = true;
+                    bool confirmar = await DisplayAlert(
+                    " Cobrar",
+                    $"¿Confirmas el cobro de {_pedido.Total:C2}?\nSe liberará la Mesa {_pedido.MesaId}.",
+                    "Sí, cobrar", "Cancelar");
+
+                    if (!confirmar) return;
+
+                    BtnCobrar.IsEnabled = false;
+
+                    bool exito = await _ordenService.CerrarOrdenAsync(_pedido.Id, _pedido.MesaId);
+
+                    if (exito)
+                    {
+                        await DisplayAlert("Listo", "Orden cobrada y mesa liberada", "OK");
+                        await Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "No se pudo completar el cobro", "OK");
+                        BtnCobrar.IsEnabled = true;
+                    }
                 }
+                    
             }
                 
         }

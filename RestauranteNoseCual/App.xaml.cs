@@ -45,7 +45,6 @@ namespace RestauranteNoseCual
 
             CrossFirebaseCloudMessaging.Current.NotificationReceived += OnNotificacionRecibida;
 
-            // 👇 Iniciar realtime siempre al arrancar
             Task.Run(async () =>
             {
                 try
@@ -53,7 +52,13 @@ namespace RestauranteNoseCual
                     await Conexion.Supabase.InitializeAsync();
                     Console.WriteLine("[REALTIME] Supabase inicializado");
                     var realtimeService = new RestauranteNoseCual.Services.RealtimeNotificationService();
+
+                    // Mesero escucha nuevas órdenes
                     await realtimeService.IniciarEscuchaAsync();
+
+                    // Cliente escucha cambios en sus órdenes
+                    var clienteId = SesionService.ObtenerIdCliente();
+                    await realtimeService.IniciarEscuchaClienteAsync(clienteId);
                 }
                 catch (Exception ex)
                 {
