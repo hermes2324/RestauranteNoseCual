@@ -37,6 +37,10 @@ public partial class Inicio_Sesion : ContentPage
 
                 await flyout.Detail.Navigation.PushAsync(new View.PerfilPage());
             }
+            else
+            {
+                RedirigirSegunRol(cliente.Rol);
+            }
             //if (perfilIncompleto && cliente.Rol == "Cliente")
             //{
             //    await DisplayAlert(
