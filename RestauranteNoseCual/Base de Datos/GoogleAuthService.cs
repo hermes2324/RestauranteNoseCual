@@ -70,10 +70,17 @@ namespace RestauranteNoseCual.Base_de_Datos
                 }
                 return user;
             }
-            catch (TaskCanceledException) { return null; }
+            catch (TaskCanceledException ex)
+            {
+                // ❌ Antes: return null; (silencia el error)
+                Console.WriteLine($"[GoogleAuth] Cancelado: {ex.Message}");
+                Console.WriteLine($"[GoogleAuth] Inner: {ex.InnerException?.Message}");
+                return null;
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"[GoogleAuth] Error: {ex.Message}");
+                Console.WriteLine($"[GoogleAuth] Inner: {ex.InnerException?.Message}");
                 throw;
             }
         }

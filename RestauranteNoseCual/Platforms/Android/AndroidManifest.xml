@@ -1,9 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true">
+	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true" android:usesCleartextTraffic="true">
 		<meta-data
 			android:name="firebase_crashlytics_collection_enabled"
 			android:value="false" />
+		<activity android:name="microsoft.identity.client.BrowserTabActivity"
+				  android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="com.googleusercontent.apps.134372964689-avv8eggc7ejfpqddhmvb7046upopi255"
+					  android:host="oauth2redirect" />
+			</intent-filter>
+		</activity>
 	</application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
