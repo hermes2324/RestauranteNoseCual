@@ -80,7 +80,7 @@ namespace RestauranteNoseCual.View
                 LblMesa.Text = $"Mesa {_pedido.MesaId}";
             }
 
-            // --- LÓGICA DE ROLES Y BOTONES ---
+            //  LÓGICA DE ROLES Y BOTONES
             string rol = SesionService.ObtenerRol();
             bool esPersonalInterno = rol == "Admin" || rol == "Mesero";
             bool esCliente = rol == "Cliente";

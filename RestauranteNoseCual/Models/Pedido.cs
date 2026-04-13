@@ -20,16 +20,26 @@ public class Pedido : BaseModel, INotifyPropertyChanged
     public string NombreCliente { get; set; } = string.Empty;
 
     [Column("Estado")]
+    //public string Estado
+    //{
+    //    get => estado;
+    //    set
+    //    {
+    //        if (estado != value)
+    //        {
+    //            estado = value;
+    //            OnPropertyChanged();
+    //        }
+    //    }
+    //}
     public string Estado
     {
         get => estado;
         set
         {
-            if (estado != value)
-            {
-                estado = value;
-                OnPropertyChanged();
-            }
+            if (estado == value) return;
+            estado = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Estado)));
         }
     }
 

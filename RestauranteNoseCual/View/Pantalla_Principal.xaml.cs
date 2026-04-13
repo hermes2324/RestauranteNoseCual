@@ -12,7 +12,7 @@ public partial class Pantalla_Principal : ContentPage
     {
         InitializeComponent();
 
-        // Conecta el IndicatorView al CarruselCombos
+        
         CarruselCombos.IndicatorView = IndicadorCombos;
 
         CargarUsuario();
@@ -50,11 +50,10 @@ public partial class Pantalla_Principal : ContentPage
                 {
                     CarruselCombos.ItemsSource = combos;
                     CarruselCombos.IsVisible = true;
-                    IndicadorCombos.IsVisible = combos.Count > 1; // puntos solo si hay más de 1
+                    IndicadorCombos.IsVisible = combos.Count > 1; 
                 }
                 else
                 {
-                    // Oculta el carrusel si no hay combos
                     CarruselCombos.IsVisible = false;
                     IndicadorCombos.IsVisible = false;
                 }

@@ -135,7 +135,7 @@ namespace RestauranteNoseCual.View
         public Pedidos()
         {
             InitializeComponent();
-            // 👇 Asignar una sola vez, nunca volver a tocar
+            // Asignar una sola vez, nunca volver a tocar
             GridPedidos.ItemsSource = _controller.ListaPedidos;
             FiltroPicker.SelectedIndex = 0;
         }
@@ -185,38 +185,56 @@ namespace RestauranteNoseCual.View
                 );
 
                 // 👇 Escuchar cambios de estado (UPDATE)
+                //postgresChanges.AddPostgresChangeHandler(
+                //    PostgresChangesOptions.ListenType.Updates,
+                //    (_, change) =>
+                //    {
+                //        var pedidoActualizado = change.Model<Pedido>();
+                //        if (pedidoActualizado == null) return;
+
+                //        Console.WriteLine($"[REALTIME] Pedido {pedidoActualizado.Id} → {pedidoActualizado.Estado}");
+
+                //        MainThread.BeginInvokeOnMainThread(() =>
+                //        {
+                //            var index = -1;
+                //            for (int i = 0; i < _controller.ListaPedidos.Count; i++)
+                //            {
+                //                if (_controller.ListaPedidos[i].Id == pedidoActualizado.Id)
+                //                {
+                //                    index = i;
+                //                    break;
+                //                }
+                //            }
+
+                //            if (index >= 0)
+                //            {
+                //                // 👇 Quitar y reinsertar fuerza a Syncfusion a redibujar solo esa fila
+                //                var pedido = _controller.ListaPedidos[index];
+                //                pedido.Estado = pedidoActualizado.Estado;
+                //                _controller.ListaPedidos.RemoveAt(index);
+                //                _controller.ListaPedidos.Insert(index, pedido);
+                //            }
+                //        });
+                //    }
+                //);
+
                 postgresChanges.AddPostgresChangeHandler(
-                    PostgresChangesOptions.ListenType.Updates,
-                    (_, change) =>
-                    {
-                        var pedidoActualizado = change.Model<Pedido>();
-                        if (pedidoActualizado == null) return;
+    PostgresChangesOptions.ListenType.Updates,
+    (_, change) =>
+    {
+        var pedidoActualizado = change.Model<Pedido>();
+        if (pedidoActualizado == null) return;
 
-                        Console.WriteLine($"[REALTIME] Pedido {pedidoActualizado.Id} → {pedidoActualizado.Estado}");
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            var pedido = _controller.ListaPedidos
+                .FirstOrDefault(p => p.Id == pedidoActualizado.Id);
 
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            var index = -1;
-                            for (int i = 0; i < _controller.ListaPedidos.Count; i++)
-                            {
-                                if (_controller.ListaPedidos[i].Id == pedidoActualizado.Id)
-                                {
-                                    index = i;
-                                    break;
-                                }
-                            }
-
-                            if (index >= 0)
-                            {
-                                // 👇 Quitar y reinsertar fuerza a Syncfusion a redibujar solo esa fila
-                                var pedido = _controller.ListaPedidos[index];
-                                pedido.Estado = pedidoActualizado.Estado;
-                                _controller.ListaPedidos.RemoveAt(index);
-                                _controller.ListaPedidos.Insert(index, pedido);
-                            }
-                        });
-                    }
-                );
+            if (pedido != null)
+                pedido.Estado = pedidoActualizado.Estado; // 👈 solo esto, sin Remove/Insert
+        });
+    }
+);
 
                 await _channel.Subscribe();
                 Console.WriteLine("[REALTIME] Pedidos escuchando...");
