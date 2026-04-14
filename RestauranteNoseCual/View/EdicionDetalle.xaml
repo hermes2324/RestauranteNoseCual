@@ -90,6 +90,28 @@
                     </Picker>
 
                 </Border>
+                <!-- Disponibilidad del producto -->
+                <Border BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="#333333"
+                        Padding="16,12"
+                        Margin="0,8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackLayout Grid.Column="0">
+                            <Label Text="Disponible en el menú"
+                   TextColor="White"
+                   FontSize="15"
+                   FontAttributes="Bold"/>
+                            <Label Text="Desactiva para ocultar del menú del cliente"
+                   TextColor="#888888"
+                   FontSize="12"/>
+                        </StackLayout>
+                        <Switch x:Name="swDisponible"
+                Grid.Column="1"
+                OnColor="#F5C842"
+                VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
 
                 <!-- IMAGEN -->
                 <Border BackgroundColor="#1A1A1A"

@@ -131,6 +131,7 @@ namespace RestauranteNoseCual.View
     {
         private readonly PedidosController _controller = new();
         private Supabase.Realtime.RealtimeChannel _channel;
+        private bool _inicializado = false;
 
         public Pedidos()
         {
@@ -143,19 +144,25 @@ namespace RestauranteNoseCual.View
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            // 👇 Solo inicializar una vez en toda la vida de la página
+            if (_inicializado) return;
+            _inicializado = true;
+
             await _controller.CargarPedidosAsync();
             await IniciarRealtimeAsync();
         }
 
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            if (_channel != null)
-            {
-                _channel.Unsubscribe();
-                _channel = null;
-            }
-        }
+
+        //protected override void OnDisappearing()
+        //{
+        //    base.OnDisappearing();
+        //    if (_channel != null)
+        //    {
+        //        _channel.Unsubscribe();
+        //        _channel = null;
+        //    }
+        //}
 
         private async Task IniciarRealtimeAsync()
         {
@@ -217,6 +224,24 @@ namespace RestauranteNoseCual.View
                 //        });
                 //    }
                 //);
+                //ESTA ES LA OPCION QUE SI PONE BIEN LO DE PAGADO PERO NO NOTIFICA
+                //                postgresChanges.AddPostgresChangeHandler(
+                //    PostgresChangesOptions.ListenType.Updates,
+                //    (_, change) =>
+                //    {
+                //        var pedidoActualizado = change.Model<Pedido>();
+                //        if (pedidoActualizado == null) return;
+
+                //        MainThread.BeginInvokeOnMainThread(() =>
+                //        {
+                //            var pedido = _controller.ListaPedidos
+                //                .FirstOrDefault(p => p.Id == pedidoActualizado.Id);
+
+                //            if (pedido != null)
+                //                pedido.Estado = pedidoActualizado.Estado; // 👈 solo esto, sin Remove/Insert
+                //        });
+                //    }
+                //);
 
                 postgresChanges.AddPostgresChangeHandler(
     PostgresChangesOptions.ListenType.Updates,
@@ -227,11 +252,17 @@ namespace RestauranteNoseCual.View
 
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            var pedido = _controller.ListaPedidos
-                .FirstOrDefault(p => p.Id == pedidoActualizado.Id);
+            var index = _controller.ListaPedidos
+                .ToList()
+                .FindIndex(p => p.Id == pedidoActualizado.Id);
 
-            if (pedido != null)
-                pedido.Estado = pedidoActualizado.Estado; // 👈 solo esto, sin Remove/Insert
+            if (index >= 0)
+            {
+                var pedido = _controller.ListaPedidos[index];
+                pedido.Estado = pedidoActualizado.Estado;
+                _controller.ListaPedidos.RemoveAt(index);
+                _controller.ListaPedidos.Insert(index, pedido);
+            }
         });
     }
 );
@@ -273,14 +304,39 @@ namespace RestauranteNoseCual.View
             "Pagada"
         };
 
-        private async void Picker_SelectedIndexChanged(object sender, EventArgs e)
+        private async void GridPedidos_CurrentCellEndEdit(object sender, Syncfusion.Maui.DataGrid.DataGridCurrentCellEndEditEventArgs e)
         {
-            var picker = sender as Picker;
-            if (picker?.BindingContext is Pedido pedido)
+            try
             {
-                string nuevoEstado = pedido.Estado;
-                await _controller.ActualizarEstadoAsync(pedido, nuevoEstado);
+                var grid = sender as Syncfusion.Maui.DataGrid.SfDataGrid;
+                if (grid == null) return;
+
+                int rowIndex = e.RowColumnIndex.RowIndex;
+                if (rowIndex <= 0) return;
+
+                var record = grid.View?.Records?[rowIndex - 1];
+                if (record?.Data is not Pedido pedido) return;
+
+                await _controller.ActualizarEstadoAsync(pedido, pedido.Estado);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ESTADO] Error: {ex.Message}");
             }
         }
+
+        
+
+        //private async void Picker_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    var picker = sender as Picker;
+        //    if (picker?.BindingContext is Pedido pedido)
+        //    {
+        //        string nuevoEstado = pedido.Estado;
+        //        await _controller.ActualizarEstadoAsync(pedido, nuevoEstado);
+        //    }
+        //}
+
+
     }
 }

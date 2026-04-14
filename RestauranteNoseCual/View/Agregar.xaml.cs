@@ -7,10 +7,11 @@ public partial class AgregarPage : ContentPage
 {
     private readonly MenuController _controller = new MenuController();
     string rutaImagenSeleccionada = "";
+
     public AgregarPage()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
     {
@@ -19,17 +20,13 @@ public partial class AgregarPage : ContentPage
             var photo = await MediaPicker.Default.PickPhotoAsync();
             if (photo != null)
             {
-                // GUARDAMOS LA RUTA AQUÍ
                 rutaImagenSeleccionada = photo.FullPath;
-
-                // Mostramos la imagen
                 var stream = await photo.OpenReadAsync();
                 ImgProducto.Source = ImageSource.FromStream(() => stream);
             }
         }
         catch (Exception ex)
         {
-            // Manejar errores (permisos denegados, etc.)
             await DisplayAlert("Error", $"No se pudo cargar la imagen: {ex.Message}", "OK");
         }
     }
@@ -41,34 +38,36 @@ public partial class AgregarPage : ContentPage
             Nombre = txNombre.Text,
             Descripcion = txDescripcion.Text,
             Precio = decimal.TryParse(txPrecio.Text, out decimal precio) ? precio : 0,
-            Categoria = cmCategoria.SelectedItem?.ToString(), 
-            Fotografia = rutaImagenSeleccionada
+            Categoria = cmCategoria.SelectedItem?.ToString(),
+            Fotografia = rutaImagenSeleccionada,
+            Disponible = swDisponible.IsToggled // ?? nuevo
         };
 
         try
         {
-            if (alta.Nombre == null || alta.Descripcion == null || alta.Precio == null || alta.Categoria == null)
+            if (string.IsNullOrEmpty(alta.Nombre) ||
+                string.IsNullOrEmpty(alta.Descripcion) ||
+                alta.Precio == 0 ||
+                string.IsNullOrEmpty(alta.Categoria))
             {
                 await DisplayAlert("Error", "Por favor, complete todos los campos antes de agregar el producto.", "OK");
+                return;
             }
-            else 
-            {
-                await _controller.AgregarProducto(alta);
 
-                await DisplayAlert("Éxito", "Producto agregado correctamente", "OK");
-                // Limpiar campos después de agregar
-                txNombre.Text = "";
-                txDescripcion.Text = "";
-                txPrecio.Text = "";
-                cmCategoria.SelectedIndex = -1;
-                ImgProducto.Source = null;
-            }
-            
+            await _controller.AgregarProducto(alta);
+            await DisplayAlert("Éxito", "Producto agregado correctamente", "OK");
+
+            // Limpiar campos
+            txNombre.Text = "";
+            txDescripcion.Text = "";
+            txPrecio.Text = "";
+            cmCategoria.SelectedIndex = -1;
+            ImgProducto.Source = null;
+            swDisponible.IsToggled = true; // ?? resetear switch
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", $"No se pudo agregar el producto: {ex.Message}", "OK");
         }
-
     }
 }

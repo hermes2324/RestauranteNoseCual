@@ -14,8 +14,13 @@ namespace RestauranteNoseCual.Controllers
         private readonly OrdenService _service = new();
         public ObservableCollection<Pedido> ListaPedidos { get; set; } = new();
 
+        private bool _cargado = false;
+
         public async Task CargarPedidosAsync()
         {
+            if (_cargado) return;
+            _cargado = true;
+
             var pedidos = await _service.ObtenerPedidosAsync();
             ListaPedidos.Clear();
             foreach (var p in pedidos)

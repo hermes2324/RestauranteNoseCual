@@ -37,24 +37,40 @@ public partial class MenuPage : ContentPage
     //    CargarProductosAsync("Todos");
     //}
 
+    //private async void CargarProductosAsync(string categoria)
+    //{
+    //    Cargando.IsVisible = true;
+    //    Cargando.IsRunning = true;
+
+    //    List<AltaMenu> productos;
+
+    //    if (categoria == "Todos")
+    //        productos = await _menuController.ObtenerTodosAsync();
+    //    else
+    //        productos = await _menuController.ObtenerPorCategoriaAsync(categoria);
+
+    //    ListaProductos.ItemsSource = productos;
+
+    //    Cargando.IsVisible = false;
+    //    Cargando.IsRunning = false;
+    //}
     private async void CargarProductosAsync(string categoria)
     {
         Cargando.IsVisible = true;
         Cargando.IsRunning = true;
 
         List<AltaMenu> productos;
-
         if (categoria == "Todos")
             productos = await _menuController.ObtenerTodosAsync();
         else
             productos = await _menuController.ObtenerPorCategoriaAsync(categoria);
 
-        ListaProductos.ItemsSource = productos;
+        // 👇 Solo mostrar productos disponibles
+        ListaProductos.ItemsSource = productos.Where(p => p.Disponible).ToList();
 
         Cargando.IsVisible = false;
         Cargando.IsRunning = false;
     }
-
     private void OnCategoriaSeleccionada(object sender, TappedEventArgs e)
     {
         string categoria = e.Parameter?.ToString() ?? "Todos";

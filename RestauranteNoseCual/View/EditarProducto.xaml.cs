@@ -47,9 +47,7 @@ public partial class EditarProducto : ContentPage
     {
         var button = sender as Button;
         var producto = button?.BindingContext as AltaMenu;
-
-        if (producto == null)
-            return;
+        if (producto == null) return;
 
         await Navigation.PushAsync(new EdicionDetalle(
             producto.Nombre,
@@ -57,7 +55,8 @@ public partial class EditarProducto : ContentPage
             producto.Descripcion,
             producto.Fotografia,
             producto.Categoria,
-            producto.Id
+            producto.Id,
+            producto.Disponible // ?? nuevo parámetro
         ));
 
         //CargarProductosAsync("Todos");

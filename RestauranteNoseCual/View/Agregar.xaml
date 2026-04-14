@@ -8,11 +8,10 @@
     <ScrollView>
         <VerticalStackLayout Spacing="0">
 
-            <!-- HEADER (MISMO ESTILO) -->
+            <!-- HEADER -->
             <Grid BackgroundColor="#111111"
                   Padding="20,48,20,20"
                   ColumnDefinitions="*,Auto">
-
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Nuevo producto"
                            TextColor="#888888"
@@ -22,12 +21,11 @@
                            FontSize="22"
                            FontAttributes="Bold"/>
                 </VerticalStackLayout>
-
                 <Border BackgroundColor="#F5C842"
                         StrokeShape="RoundRectangle 28"
                         HeightRequest="52"
                         WidthRequest="52"
-                         HorizontalOptions="End">
+                        HorizontalOptions="End">
                     <Label Text="+"
                            TextColor="#0D0D0D"
                            FontSize="26"
@@ -90,7 +88,6 @@
                             <x:String>Bebidas</x:String>
                         </Picker.Items>
                     </Picker>
-
                 </Border>
 
                 <!-- IMAGEN -->
@@ -98,19 +95,39 @@
                         Stroke="#2A2A2A"
                         StrokeShape="RoundRectangle 16"
                         HeightRequest="160">
-
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                     </Border.GestureRecognizers>
-
                     <Grid>
                         <Label Text="📷 Agregar imagen"
-                            TextColor="#666666"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"/>
-
+                               TextColor="#666666"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
                         <Image x:Name="ImgProducto"
-                                Aspect="AspectFill"/>
+                               Aspect="AspectFill"/>
+                    </Grid>
+                </Border>
+
+                <!-- 👇 DISPONIBILIDAD -->
+                <Border BackgroundColor="#1A1A1A"
+                        StrokeShape="RoundRectangle 16"
+                        Stroke="#2A2A2A"
+                        Padding="16,12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Disponible en el menú"
+                                   TextColor="White"
+                                   FontSize="15"
+                                   FontAttributes="Bold"/>
+                            <Label Text="No disponible"
+                                   TextColor="#888888"
+                                   FontSize="12"/>
+                        </VerticalStackLayout>
+                        <Switch x:Name="swDisponible"
+                                Grid.Column="1"
+                                IsToggled="True"
+                                OnColor="#F5C842"
+                                VerticalOptions="Center"/>
                     </Grid>
                 </Border>
 
@@ -125,7 +142,6 @@
                         Clicked="Button_Clicked"/>
 
             </VerticalStackLayout>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

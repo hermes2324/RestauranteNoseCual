@@ -29,6 +29,7 @@ namespace RestauranteNoseCual
 
         //    CrossFirebaseCloudMessaging.Current.NotificationReceived += OnNotificacionRecibida;
         //}
+
         public App()
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JHaF5cWWdCe0x3WmFZfVhgdl9CYFZSQmYuP1ZhSXxVdkFjWH9cdX1UQWlbWEB9XEE=");

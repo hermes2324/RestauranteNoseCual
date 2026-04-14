@@ -45,16 +45,20 @@ namespace RestauranteNoseCual.Services
             Console.WriteLine("[REALTIME] Escuchando nuevas órdenes...");
         }
 
-        // 👇 Nuevo método para clientes
+        // 👇 Agregar esta variable a nivel de clase para que no se elimine
+        //PRUEBA
+        private Supabase.Realtime.RealtimeChannel _clienteChannel;
+
         public async Task IniciarEscuchaClienteAsync(long clienteId)
         {
             if (SesionService.ObtenerRol() != "Cliente") return;
 
+            // 👇 No abrir canal si ya existe
+            if (_clienteChannel != null) return;
+
             Console.WriteLine("[REALTIME] Cliente escuchando cambios de orden...");
 
-            // 👇 Guardar estados actuales antes de suscribirse
             var estadosConocidos = new Dictionary<long, string>();
-
             var ordenesActuales = await _supabase
                 .From<Pedido>()
                 .Where(p => p.ClienteId == clienteId)
@@ -66,9 +70,10 @@ namespace RestauranteNoseCual.Services
                 Console.WriteLine($"[REALTIME] Estado conocido orden {orden.Id}: {orden.Estado}");
             }
 
-            var channel = _supabase.Realtime.Channel($"realtime:public:Orden:ClienteId=eq.{clienteId}");
+            // 👇 Guardar en variable de instancia, no local
+            _clienteChannel = _supabase.Realtime.Channel($"realtime:public:Orden:ClienteId=eq.{clienteId}");
 
-            var postgresChanges = channel.Register(
+            var postgresChanges = _clienteChannel.Register(
                 new PostgresChangesOptions("public", "Orden")
                 {
                     Filter = $"ClienteId=eq.{clienteId}"
@@ -82,7 +87,6 @@ namespace RestauranteNoseCual.Services
                     var pedido = change.Model<Pedido>();
                     if (pedido?.Estado == null) return;
 
-                   
                     if (estadosConocidos.TryGetValue(pedido.Id, out var estadoAnterior))
                     {
                         if (estadoAnterior == pedido.Estado)
@@ -92,19 +96,76 @@ namespace RestauranteNoseCual.Services
                         }
                     }
 
-                    // Actualizar estado conocido
                     estadosConocidos[pedido.Id] = pedido.Estado;
-
                     Console.WriteLine($"[REALTIME] Estado cambió a: {pedido.Estado}");
-                    var titulo = "📋 Tu pedido fue actualizado";
-                    var cuerpo = $"El estado de tu pedido es: {pedido.Estado}";
-                    MostrarNotificacionLocal(titulo, cuerpo);
+                    MostrarNotificacionLocal("📋 Tu pedido fue actualizado", $"El estado de tu pedido es: {pedido.Estado}");
                 }
             );
 
-            await channel.Subscribe();
+            await _clienteChannel.Subscribe();
             Console.WriteLine("[REALTIME] Cliente escuchando...");
         }
+        //SI FUNCIONA PERO NO ES LO IDEAL
+        // 👇 Nuevo método para clientes
+        //public async Task IniciarEscuchaClienteAsync(long clienteId)
+        //{
+        //    if (SesionService.ObtenerRol() != "Cliente") return;
+
+        //    Console.WriteLine("[REALTIME] Cliente escuchando cambios de orden...");
+
+        //    // 👇 Guardar estados actuales antes de suscribirse
+        //    var estadosConocidos = new Dictionary<long, string>();
+
+        //    var ordenesActuales = await _supabase
+        //        .From<Pedido>()
+        //        .Where(p => p.ClienteId == clienteId)
+        //        .Get();
+
+        //    foreach (var orden in ordenesActuales.Models)
+        //    {
+        //        estadosConocidos[orden.Id] = orden.Estado;
+        //        Console.WriteLine($"[REALTIME] Estado conocido orden {orden.Id}: {orden.Estado}");
+        //    }
+
+        //    var channel = _supabase.Realtime.Channel($"realtime:public:Orden:ClienteId=eq.{clienteId}");
+
+        //    var postgresChanges = channel.Register(
+        //        new PostgresChangesOptions("public", "Orden")
+        //        {
+        //            Filter = $"ClienteId=eq.{clienteId}"
+        //        }
+        //    );
+
+        //    postgresChanges.AddPostgresChangeHandler(
+        //        PostgresChangesOptions.ListenType.Updates,
+        //        (_, change) =>
+        //        {
+        //            var pedido = change.Model<Pedido>();
+        //            if (pedido?.Estado == null) return;
+
+
+        //            if (estadosConocidos.TryGetValue(pedido.Id, out var estadoAnterior))
+        //            {
+        //                if (estadoAnterior == pedido.Estado)
+        //                {
+        //                    Console.WriteLine($"[REALTIME] Estado sin cambios, ignorando");
+        //                    return;
+        //                }
+        //            }
+
+        //            // Actualizar estado conocido
+        //            estadosConocidos[pedido.Id] = pedido.Estado;
+
+        //            Console.WriteLine($"[REALTIME] Estado cambió a: {pedido.Estado}");
+        //            var titulo = "📋 Tu pedido fue actualizado";
+        //            var cuerpo = $"El estado de tu pedido es: {pedido.Estado}";
+        //            MostrarNotificacionLocal(titulo, cuerpo);
+        //        }
+        //    );
+
+        //    await channel.Subscribe();
+        //    Console.WriteLine("[REALTIME] Cliente escuchando...");
+        //}
 
         private void MostrarNotificacionLocal(string titulo, string cuerpo)
         {
